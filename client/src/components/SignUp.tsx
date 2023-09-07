@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { BASE_ROUTE } from "../App";
+import { useNavigate } from "react-router-dom";
+
 
 export const SignUp = () => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [confirmedPassword, setConfirmedPassword] = useState<string>('');
     const [displayName, setDisplayName] = useState<string>('');
+    const navigate = useNavigate();
 
     const handleRegisterSubmit = async (event: any) => {
         event.preventDefault()
@@ -32,6 +35,7 @@ export const SignUp = () => {
 
           if(res.status === 201){
             console.log("Registration complete")
+            navigate('/login')
           }
           else{
             console.log("Registration error...")

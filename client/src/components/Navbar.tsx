@@ -13,15 +13,10 @@ export const Navbar = () => {
     navigate("/");
     window.location.reload();
   };
-
-  if (token) {
-    console.log("token exists: ", token);
-  } else {
-    console.log("no marble token");
-  }
+  
   return (
     <>
-      <nav className="absolute w-full z-50 border-b-2 border-solid border-black px-4 py-4 flex justify-between items-center bg-black opacity-90">
+      <nav className="absolute w-full z-50 select-none px-4 py-4 flex justify-between items-center bg-black opacity-90">
         <NavLink
           to={"/"}
           className={({ isActive }) =>
