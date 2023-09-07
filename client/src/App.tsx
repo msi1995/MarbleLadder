@@ -8,20 +8,22 @@ import { Contact } from "./components/Contact";
 import { SignIn } from "./components/SignIn";
 import { SignUp } from "./components/SignUp";
 import { PageNotFound } from "./components/PageNotFound";
+import {useState } from 'react';
 
 
 
 export const BASE_ROUTE = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3001'
 
 function App() {
+  const [loggedInUser, setLoggedInUser] = useState<string>('')
   return (
     <BrowserRouter>
     <Navbar/>
     <div className="-z-10 absolute w-full h-full bg-cover border-solid border-0 border-red-600 bg-fixed bg-[url('/public/MIU_1.jpg')]" />
       <Routes>
         <Route path="/" element={<Homepage/>} />
-        <Route path="/sign-up" element={<SignUp/>} />
-        <Route path="/sign-in" element={<SignIn/>} />
+        <Route path="/register" element={<SignUp/>} />
+        <Route path="/login" element={<SignIn/>} />
         <Route path="/ladder" element={<SoloLadder/>} />
         <Route path="/gem-hunt-records" element={<GemHuntRecords/>} />
         <Route path="/about" element={<About/>} />

@@ -15,6 +15,7 @@ var ladderPlayerModel = {
     username: {
         type: String,
         required: true,
+        unique: true,
     },
     ratingScore: {
         type: Number,
@@ -51,6 +52,9 @@ var ladderPlayerModel = {
             score: Number,
         },
     ],
+    createdAt:{
+        type: Date
+    }
 };
 
 const ladderPlayerSchema = new Schema(ladderPlayerModel)

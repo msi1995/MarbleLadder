@@ -1,18 +1,37 @@
 import { NavLink } from "react-router-dom";
+import Cookies from "universal-cookie";
+import { useNavigate } from "react-router-dom";
+
 export const Navbar = () => {
+  const cookies = new Cookies();
+  const token = cookies.get("MarbleToken");
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    cookies.remove("MarbleToken", { path: "/" });
+    localStorage.clear()
+    navigate("/");
+    window.location.reload();
+  };
+
+  if (token) {
+    console.log("token exists: ", token);
+  } else {
+    console.log("no marble token");
+  }
   return (
     <>
-      <nav className="absolute w-full z-50 border-b-2 border-solid border-black px-4 py-4 flex justify-between items-center bg-black">
-      <NavLink
-              to={"/"}
-              className={({ isActive }) =>
-                isActive
-                  ? "text-2xl text-white font-bold"
-                  : "text-2xl text-gray-400 hover:text-gray-500"
-              }
-            >
-              home btn
-            </NavLink>
+      <nav className="absolute w-full z-50 border-b-2 border-solid border-black px-4 py-4 flex justify-between items-center bg-black opacity-90">
+        <NavLink
+          to={"/"}
+          className={({ isActive }) =>
+            isActive
+              ? "text-2xl text-white font-bold"
+              : "text-2xl text-gray-400 hover:text-gray-500"
+          }
+        >
+          home btn
+        </NavLink>
         <div className="lg:hidden">
           <button className="navbar-burger flex items-center text-white p-3">
             <svg
@@ -27,7 +46,7 @@ export const Navbar = () => {
         </div>
         <ul className="hidden absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 lg:flex lg:mx-auto lg:flex lg:items-center lg:w-auto lg:space-x-6">
           <li>
-          <NavLink
+            <NavLink
               to={"/"}
               className={({ isActive }) =>
                 isActive
@@ -83,7 +102,7 @@ export const Navbar = () => {
             </svg>
           </li>
           <li>
-          <NavLink
+            <NavLink
               to={"/gem-hunt-records"}
               className={({ isActive }) =>
                 isActive
@@ -111,7 +130,7 @@ export const Navbar = () => {
             </svg>
           </li>
           <li>
-          <NavLink
+            <NavLink
               to={"/about"}
               className={({ isActive }) =>
                 isActive
@@ -139,7 +158,7 @@ export const Navbar = () => {
             </svg>
           </li>
           <li>
-          <NavLink
+            <NavLink
               to={"/contact"}
               className={({ isActive }) =>
                 isActive
@@ -151,18 +170,29 @@ export const Navbar = () => {
             </NavLink>
           </li>
         </ul>
-        <a
-          className="hidden lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6 bg-gray-50 hover:bg-gray-100 text-sm text-gray-900 font-bold  rounded-xl transition duration-200"
-          href="#"
-        >
-          Sign In
-        </a>
-        <a
+
+        {token ? (
+          //should probably also remove the local storage values.
+          <button
+            onClick={() => handleLogout()}
+            className='hidden lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6 bg-gray-50 hover:bg-gray-100 text-sm text-gray-900 font-bold  rounded-xl transition duration-200"'
+          >
+            Sign out
+          </button>
+        ) : (
+          <NavLink
+            to={"/login"}
+            className="hidden lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6 bg-gray-50 hover:bg-gray-100 text-sm text-gray-900 font-bold  rounded-xl transition duration-200"
+          >
+            Sign In
+          </NavLink>
+        )}
+        <NavLink
+          to={"/register"}
           className="hidden lg:inline-block py-2 px-6 bg-blue-500 hover:bg-blue-600 text-sm text-white font-bold rounded-xl transition duration-200"
-          href="#"
         >
-          Sign up
-        </a>
+          Sign Up
+        </NavLink>
       </nav>
       <div className="navbar-menu relative z-50 hidden">
         <div className="navbar-backdrop fixed inset-0 bg-gray-800 opacity-25"></div>

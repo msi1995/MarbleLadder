@@ -1,14 +1,16 @@
 import "../index.css";
 
 export const Homepage = () => {
+  const username = localStorage.getItem('username');
+
   return (
     <div className="sm:pt-16 h-screen w-screen relative overflow-x-hidden">
       <div className="sm:h-3/4 h-5/6 w-screen border-solid border-0 border-blue-600 flex justify-center align-middle items-center">
         <div className="text-center neon-text sm:text-7xl text-3xl text-white sm:mb-36">
-          Welcome to MarbleLadder!
+          {username === null ? 'Welcome to MarbleLadder!' : `Welcome to MarbleLadder, ${username}!`}
         </div>
       </div>
-      <div className="sm:absolute sm:bottom-0 sm:left-0 py-6 flex flex-col flex-wrap sm:max-h-1/4 max-h-4/6 w-full bg-black items-center justify-center">
+      <div className="sm:absolute sm:bottom-0 sm:left-0 py-6 flex flex-col flex-wrap sm:max-h-1/4 max-h-4/6 w-full bg-black items-center justify-center opacity-70">
         <span className="block w-full border-0 px-4 border-solid border-red-600 sm:text-4xl text-xl text-white text-center">
           For now, MarbleLadder only supports <i>Marble It Up!</i> scores and
           rankings, and is focused on Multiplayer/Gem Hunt.

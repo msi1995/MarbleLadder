@@ -29,7 +29,7 @@ const columns: ColumnsType<PlayerLadderData> = [
     render: (text) => <a>{text}</a>,
   },
   {
-    title: "ELO",
+    title: "Rating",
     dataIndex: "ratingScore",
     key: "ratingScore",
     width: "20%",
@@ -216,9 +216,9 @@ export const SoloLadder = () => {
     getLadderData();
   }, []);
 
-  useEffect(() => {
-    console.log(ladderData);
-  }, [ladderData]);
+  // useEffect(() => {
+  //   console.log(ladderData);
+  // }, [ladderData]);
 
   const getLadderData = async () => {
     try {
@@ -231,14 +231,23 @@ export const SoloLadder = () => {
   };
 
   const data: PlayerLadderData[] = ladderData;
-  const sortedData = [...data].sort((a, b) => b.ratingScore - a.ratingScore);
-  sortedData.forEach((item, index) => {
-    item.rank = index + 1;
-  });
+  let sortedData;
+  try {
+    sortedData = [...data]?.sort((a, b) => b.ratingScore - a.ratingScore);
+    sortedData.forEach((item, index) => {
+      item.rank = index + 1;
+    });
+  } catch {}
 
   return (
     <div className="pt-16 h-screen w-screen relative overflow-x-hidden">
-      <div className="pt-24 flex relative overflow-x-hidden justify-center opacity-95">
+      <div className="pt-24 flex flex-row flex-wrap relative overflow-x-hidden justify-center opacity-95">
+        <div className="border-0 border-solid border-red-600 flex sm:w-3/5 w-full justify-end">
+          <button className="block sm:w-64 w-48 rounded-md hover:bg-emerald-500 bg-black px-4 py-2.5 sm:mr-4 mr-2 mb-2 text-center text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+            Report Match Results
+          </button>
+        </div>
+
         <Table
           className="sm:w-3/5 w-full"
           columns={columns}
