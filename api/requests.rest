@@ -1,0 +1,14 @@
+GET http://localhost:3001/reviews
+
+###
+
+POST http://localhost:3001/register
+Content-Type: application/json
+
+{
+    "email": "testemail01@email.com",
+    "password": "123 pass",
+    "username": "msi"
+}
+
+###
