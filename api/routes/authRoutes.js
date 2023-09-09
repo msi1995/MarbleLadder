@@ -56,6 +56,11 @@ router.post("/login", (req, res) => {
     // check if email exists
     ladderPlayer.findOne({ email: req.body.email })
         .then((user) => {
+            // if(!Boolean(user.isVerified)){
+            //     return res.status(400).send({
+            //         message: "Email verification incomplete."
+            //     })
+            // }
             // compare the password entered and the hashed password found
             bcrypt
                 .compare(req.body.password, user.password)
@@ -64,7 +69,7 @@ router.post("/login", (req, res) => {
                     // check if password matches
                     if (!passwordCheck) {
                         return res.status(400).send({
-                            message: "Passwords does not match",
+                            message: "Incorrect email or password.",
                             error,
                         });
                     }
@@ -89,15 +94,15 @@ router.post("/login", (req, res) => {
                 // catch error if password does not match
                 .catch((error) => {
                     res.status(400).send({
-                        message: "Passwords does not match",
+                        message: "Incorrect email or password.",
                         error,
                     });
                 });
         })
         // catch error if email does not exist
         .catch((e) => {
-            res.status(404).send({
-                message: "Email not found",
+            res.status(400).send({
+                message: "Incorrect email or password",
                 e,
             });
         });

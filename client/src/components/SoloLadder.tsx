@@ -182,9 +182,14 @@ export const SoloLadder = () => {
     }
   };
 
-  const handleConfirmMatch = async () => {
+  const handleAction = async (actionType: string) => {
     try {
-      const data = await fetch(BASE_ROUTE + "/confirm-match", {
+      const endpoint =
+        actionType === "confirm"
+          ? BASE_ROUTE + "/confirm-match"
+          : BASE_ROUTE + "/dispute-match";
+
+      const data = await fetch(endpoint, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -194,38 +199,23 @@ export const SoloLadder = () => {
           traceID: unconfirmedMatches[matchConfirmationIdx].traceID,
         }),
       });
+
+      setMatchConfirmationIdx(matchConfirmationIdx + 1);
+      if (matchConfirmationIdx >= unconfirmedMatches.length - 1) {
+        setConfirmMatchModalVisible(false);
+        window.location.reload();
+      }
     } catch (error) {
       console.log(error);
-    }
-
-    setMatchConfirmationIdx(matchConfirmationIdx + 1);
-    if (matchConfirmationIdx >= unconfirmedMatches.length - 1) {
-      setConfirmMatchModalVisible(false);
-      window.location.reload();
     }
   };
 
-  const handleDisputeMatch = async () => {
-    try {
-      const data = await fetch(BASE_ROUTE + "/dispute-match", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          traceID: unconfirmedMatches[matchConfirmationIdx].traceID,
-        }),
-      });
-    } catch (error) {
-      console.log(error);
-    }
+  const handleConfirmMatch = () => {
+    handleAction("confirm");
+  };
 
-    setMatchConfirmationIdx(matchConfirmationIdx + 1);
-    if (matchConfirmationIdx >= unconfirmedMatches.length - 1) {
-      setConfirmMatchModalVisible(false);
-      window.location.reload();
-    }
+  const handleDisputeMatch = () => {
+    handleAction("dispute");
   };
 
   const data: PlayerLadderData[] = ladderData;
@@ -241,7 +231,8 @@ export const SoloLadder = () => {
   }
 
   const unconfirmedMatches = matchData?.filter(
-    (match: LadderMatch) => !match.confirmed && !match.userIsSubmitter && !match.disputed
+    (match: LadderMatch) =>
+      !match.confirmed && !match.userIsSubmitter && !match.disputed
   );
 
   const handleOpponentSelectChange = (opponent: any) => {
@@ -317,6 +308,7 @@ export const SoloLadder = () => {
           <form
             onSubmit={handleMatchResultsReported}
             className="mx-auto z-20 mt-12 max-w-2xl"
+            autoComplete="off"
           >
             <div className="grid grid-cols-1 gap-x-8 gap-y-4 sm:grid-cols-2">
               <div className="col-span-2">
@@ -380,9 +372,16 @@ export const SoloLadder = () => {
                     onChange={(e) => setReportedMap(e.target.value)}
                   >
                     <option value="Select">Select</option>
-                    <option value="brawl">Brawl</option>
-                    <option value="frostbite">Frostbite</option>
-                    <option value="nexus">Nexus</option>
+                    <option value="Arcadia">Arcadia</option>
+                    <option value="Assault">Assault</option>
+                    <option value="Brawl">Brawl</option>
+                    <option value="Frostbite">Frostbite</option>
+                    <option value="Jumphouse">Jumphouse</option>
+                    <option value="Nexus">Nexus</option>
+                    <option value="Mosh Pit">Mosh Pit</option>
+                    <option value="Pythagoras">Pythagoras</option>
+                    <option value="Stadion">Stadion</option>
+                    <option value="Surf's Up">Surf's Up</option>
                   </select>
                 </div>
               </div>
@@ -398,6 +397,7 @@ export const SoloLadder = () => {
                     type="text"
                     name="myScore"
                     id="myScore"
+                    maxLength={3}
                     onChange={(e) => setPlayerScore(Number(e.target.value))}
                     className="block w-full sm:border-0 border-solid border-2 border-slate-500 rounded-md border-0 px-3.5 py-2 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
@@ -415,6 +415,7 @@ export const SoloLadder = () => {
                     type="text"
                     name="opponentScore"
                     id="opponentScore"
+                    maxLength={3}
                     onChange={(e) => setOpponentScore(Number(e.target.value))}
                     className="block w-full sm:border-0 border-solid border-2 border-slate-500 rounded-md border-0 px-3.5 py-2 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />

@@ -34,7 +34,6 @@ export const SignUp = () => {
     });
 
     if (res.status === 201) {
-      console.log("Registration complete");
       navigate("/login");
     } else {
       const data = await res.json();

@@ -5,6 +5,7 @@ import Cookies from "universal-cookie";
 export const SignIn = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const navigate = useNavigate();
   const cookies = new Cookies();
@@ -35,6 +36,8 @@ export const SignIn = () => {
       localStorage.setItem("username", data.username);
       navigate("/");
     } else {
+      const data = await res.json();
+      setErrorMessage(data.message);
     }
   };
 
@@ -48,6 +51,9 @@ export const SignIn = () => {
             </h2>
             <p className="mt-2 sm:text-lg text-md leading-8 sm:px-24 text-white">
               Knock knock... who's there?
+            </p>
+            <p className="mt-2 sm:text-xl text-lg leading-8 sm:px-24 text-red-600">
+              {errorMessage}
             </p>
           </div>
           <form

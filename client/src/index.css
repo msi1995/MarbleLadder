@@ -49,19 +49,19 @@ code {
 }
 
 .custom-radio {
-  width: 20px; /* Adjust the width to make them larger */
-  height: 20px; /* Adjust the height to make them larger */
-  appearance: none; /* Remove the default radio button appearance */
-  -webkit-appearance: none; /* Remove the default radio button appearance for Safari */
-  border: 2px solid #fefefe; /* Add a border to create square appearance */
-  border-radius: 4px; /* Adjust the border-radius to control corner roundness */
-  outline: none; /* Remove focus border */
-  cursor: pointer; /* Change cursor on hover */
-  margin-right: 5px; /* Add some spacing between the radio button and label */
+  width: 20px;
+  height: 20px;
+  appearance: none;
+  -webkit-appearance: none;
+  border: 1px solid #ffffff;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+  margin-right: 5px;
 }
 
 .custom-radio:checked {
-  background-color: #ffffff; /* Change background color when selected */
+  background-color: #1bbe6f; /* Change background color when selected */
 }
 
 .select-search-select {
