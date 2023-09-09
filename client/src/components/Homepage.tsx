@@ -10,7 +10,7 @@ export const Homepage = () => {
           {username === null ? 'Welcome to MarbleLadder!' : `Welcome to MarbleLadder, ${username}!`}
         </div>
       </div>
-      <div className="sm:absolute sm:bottom-0 sm:left-0 sm:h-84 py-4 flex flex-col flex-wrap w-full bg-black items-center justify-center opacity-70">
+      <div className="sm:absolute sm:bottom-0 sm:left-0 sm:h-84 py-4 flex flex-col flex-wrap w-full bg-black-opacity-70 items-center justify-center">
         <span className="block w-full border-0 px-4 border-solid border-red-600 sm:text-4xl text-xl text-white text-center">
           MarbleLadder supports <i>Marble It Up!</i> scores and
           rankings, and is focused on Multiplayer/Gem Hunt.
@@ -20,7 +20,7 @@ export const Homepage = () => {
           If you are playing 1v1 games, navigate to 1v1 ladder and click 'Report
           Result'. Search for the player you played against, and report the
           result. The player will be notified and must confirm the result of the
-          match. ELO is updated upon confirmation.
+          match. Any rules or best of x series are up to you and your opponent -- you can report a best of 3 series as 1 result if you wish. ELO is updated upon confirmation by both parties.
         </span>
         <br />
         <span className="block w-full sm:px-56 px-4 border-0 border-solid border-red-600 sm:text-xl text-md text-white text-center">

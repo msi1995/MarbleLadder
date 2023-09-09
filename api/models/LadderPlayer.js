@@ -39,11 +39,20 @@ var ladderPlayerModel = {
     },
     matchHistory: [
         {
-            matchID: String,
-            matchP1: String,
-            matchP2: String,
-            matchWinner: { type: String, default: "Unconfirmed" },
+            traceID: String,
             matchDate: Date,
+            map: String,
+            matchP1: String,
+            matchP1Name: String,
+            matchP2: String,
+            matchP2Name: String,
+            P1Score: Number,
+            P2Score: Number,
+            matchWinner: String,
+            matchWinnerName: String,
+            confirmed: Boolean,
+            disputed: Boolean,
+            userIsSubmitter: Boolean,
         },
     ],
     gemHuntRecords: [
@@ -52,6 +61,11 @@ var ladderPlayerModel = {
             score: Number,
         },
     ],
+    matchCount: {
+        type: Number,
+        required: false,
+        default: 0,
+    },
     createdAt:{
         type: Date
     }

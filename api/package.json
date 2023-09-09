@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "author": "",
   "license": "ISC",
@@ -15,12 +16,12 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.5.0",
     "mongoose-unique-validator": "^4.0.0",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.17",
     "@types/node": "^20.5.9",
-    "nodemon": "^3.0.1",
     "typescript": "^5.2.2"
   }
 }

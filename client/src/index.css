@@ -34,3 +34,43 @@ code {
   padding: 0;
   margin: 0;
 }
+
+.bg-black-opacity-70 {
+  background-color: rgba(0, 0, 0, 0.7); /* Use rgba to control background opacity */
+}
+
+.bg-black-opacity-90 {
+  background-color: rgba(0, 0, 0, 0.9); /* Use rgba to control background opacity */
+}
+
+/* Set the text inside bg div to 100% opacity */
+.bg-black-opacity-70 > .block {
+  opacity: 1;
+}
+
+.custom-radio {
+  width: 20px; /* Adjust the width to make them larger */
+  height: 20px; /* Adjust the height to make them larger */
+  appearance: none; /* Remove the default radio button appearance */
+  -webkit-appearance: none; /* Remove the default radio button appearance for Safari */
+  border: 2px solid #fefefe; /* Add a border to create square appearance */
+  border-radius: 4px; /* Adjust the border-radius to control corner roundness */
+  outline: none; /* Remove focus border */
+  cursor: pointer; /* Change cursor on hover */
+  margin-right: 5px; /* Add some spacing between the radio button and label */
+}
+
+.custom-radio:checked {
+  background-color: #ffffff; /* Change background color when selected */
+}
+
+.select-search-select {
+
+  height: 14em;
+}
+
+@media screen and (max-width: 640px) {
+  .select-search-container{
+    width: 100% !important;
+  }
+}

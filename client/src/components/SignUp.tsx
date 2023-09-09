@@ -2,49 +2,49 @@ import { useState } from "react";
 import { BASE_ROUTE } from "../App";
 import { useNavigate } from "react-router-dom";
 
-
 export const SignUp = () => {
-    const [email, setEmail] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
-    const [confirmedPassword, setConfirmedPassword] = useState<string>('');
-    const [displayName, setDisplayName] = useState<string>('');
-    const navigate = useNavigate();
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [confirmedPassword, setConfirmedPassword] = useState<string>("");
+  const [displayName, setDisplayName] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const navigate = useNavigate();
 
-    const handleRegisterSubmit = async (event: any) => {
-        event.preventDefault()
-        if (!email || !password || !confirmedPassword || !displayName) {
-            alert("Please fill out all required fields.");
-            return;
-          }
-        if (password !== confirmedPassword){
-            alert("Passwords don't match.");
-            return;
-        }
-
-        const res = await fetch(BASE_ROUTE + "/register", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              email: email,
-              password: password,
-              username: displayName,
-            }),
-          });   
-
-          if(res.status === 201){
-            console.log("Registration complete")
-            navigate('/login')
-          }
-          else{
-            console.log("Registration error...")
-          }
+  const handleRegisterSubmit = async (event: any) => {
+    event.preventDefault();
+    if (!email || !password || !confirmedPassword || !displayName) {
+      alert("Please fill out all required fields.");
+      return;
     }
+    if (password !== confirmedPassword) {
+      alert("Passwords don't match.");
+      return;
+    }
+
+    const res = await fetch(BASE_ROUTE + "/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+        username: displayName,
+      }),
+    });
+
+    if (res.status === 201) {
+      console.log("Registration complete");
+      navigate("/login");
+    } else {
+      const data = await res.json();
+      setErrorMessage(data.message);
+    }
+  };
 
   return (
     <div className="flex pt-16 h-screen w-screen relative overflow-x-hidden justify-center items-center">
-      <div className="text-yellow-400 bg-black opacity-90 sm:px-24 sm:py-16 px-8 py-6">
+      <div className="text-yellow-400 bg-black opacity-90 sm:px-24 sm:py-16 px-8 py-6 rounded-md bg-black-opacity-90">
         <>
           <div className="mx-auto max-w-4xl text-center">
             <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
@@ -54,12 +54,18 @@ export const SignUp = () => {
               Email, password, and a username!
             </p>
             <p className="mt-2 sm:text-lg text-md leading-8 text-white">
-            Only your display name will be publicly visible.
+              Only your display name will be publicly visible.
             </p>
+            {errorMessage !== "" && (
+              <p className="mt-2 sm:text-xl text-md leading-8 text-red-500">
+                {errorMessage}
+              </p>
+            )}
           </div>
-          <form 
-          onSubmit={handleRegisterSubmit}
-          className="mx-auto z-20 mt-12 max-w-2xl">
+          <form
+            onSubmit={handleRegisterSubmit}
+            className="mx-auto z-20 mt-12 max-w-2xl"
+          >
             <div className="grid grid-cols-1 gap-x-8 gap-y-4 sm:grid-cols-1">
               <div>
                 <label

@@ -29,21 +29,18 @@ export const SignIn = () => {
 
     if (res.status === 200) {
       const data = await res.json();
-      console.log(data);
       cookies.set("MarbleToken", data.token, {
         path: "/",
       });
       localStorage.setItem("username", data.username);
-      localStorage.setItem("uid", data.uid);
       navigate("/");
     } else {
-      console.log("couldn't sign in");
     }
   };
 
   return (
     <div className="flex pt-16 h-screen w-screen relative overflow-x-hidden justify-center items-center">
-      <div className="text-yellow-400 bg-black opacity-90 sm:px-24 sm:py-16 px-8 py-6">
+      <div className="text-yellow-400 bg-black sm:px-24 sm:py-16 px-8 py-6 rounded-md bg-black-opacity-90">
         <>
           <div className="mx-auto max-w-4xl text-center">
             <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">

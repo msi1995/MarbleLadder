@@ -6,6 +6,8 @@ export const Navbar = () => {
   const cookies = new Cookies();
   const token = cookies.get("MarbleToken");
   const navigate = useNavigate();
+  const username = localStorage.getItem('username');
+
 
   const handleLogout = () => {
     cookies.remove("MarbleToken", { path: "/" });
@@ -13,7 +15,7 @@ export const Navbar = () => {
     navigate("/");
     window.location.reload();
   };
-  
+
   return (
     <>
       <nav className="absolute w-full z-50 select-none px-4 py-4 flex justify-between items-center bg-black opacity-90">
@@ -22,10 +24,10 @@ export const Navbar = () => {
           className={({ isActive }) =>
             isActive
               ? "text-2xl text-white font-bold"
-              : "text-2xl text-gray-400 hover:text-gray-500"
+              : "text-2xl text-pink-500 hover:text-pink-300"
           }
         >
-          home btn
+          Welcome{username && (`, ${username}!`)}
         </NavLink>
         <div className="lg:hidden">
           <button className="navbar-burger flex items-center text-white p-3">
