@@ -282,6 +282,11 @@ router.post('/dispute-match', async (req, res) => {
             {
                 $set: {
                     "matchHistory.$.disputed": true
+                },
+                $push: {
+                    disputes: {
+                        traceID: req.body.traceID,
+                    }
                 }
             }
         );
@@ -293,6 +298,11 @@ router.post('/dispute-match', async (req, res) => {
             {
                 $set: {
                     "matchHistory.$.disputed": true
+                },
+                $push: {
+                    disputes: {
+                        traceID: req.body.traceID,
+                    }
                 }
             }
         );

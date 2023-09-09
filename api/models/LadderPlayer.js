@@ -71,7 +71,12 @@ var ladderPlayerModel = {
         required: false,
         default: 0,
     },
-    createdAt:{
+    disputes: [
+        {
+            traceID: String,
+        }
+    ],
+    createdAt: {
         type: Date
     }
 };
