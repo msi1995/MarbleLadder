@@ -99,7 +99,7 @@ export const SoloLadder = () => {
   const [reporterIsWinner, setReporterIsWinner] = useState<boolean | null>(
     null
   );
-  const [reportedMap, setReportedMap] = useState<string>("Brawl");
+  const [reportedMap, setReportedMap] = useState<string>("Select");
   const [playerScore, setPlayerScore] = useState<number | null>(null);
   const [opponentScore, setOpponentScore] = useState<number | null>(null);
   const [matchConfirmationIdx, setMatchConfirmationIdx] = useState<number>(0);
@@ -160,6 +160,11 @@ export const SoloLadder = () => {
 
   const handleMatchResultsReported = async (event: any) => {
     event.preventDefault();
+
+    if(!Boolean(playerOpponent) || reporterIsWinner === null){
+      alert("Please complete the required fields.")
+      return;
+    }
     setReportMatchModalVisible(false);
 
     try {
@@ -172,7 +177,7 @@ export const SoloLadder = () => {
         body: JSON.stringify({
           opponentUsername: playerOpponent,
           reporterIsWinner: reporterIsWinner,
-          map: reportedMap,
+          map: reportedMap == 'Select' ? '' : reportedMap,
           playerScore: playerScore,
           opponentScore: opponentScore,
         }),
@@ -430,7 +435,7 @@ export const SoloLadder = () => {
                 Submit Match Info
               </button>
               <button
-                onClick={() => setReportMatchModalVisible(false)}
+                onClick={() => {setReportMatchModalVisible(false); setReporterIsWinner(null); setPlayerOpponent('') } }
                 type="submit"
                 className="block w-full rounded-md bg-red-500 hover:bg-red-700 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
