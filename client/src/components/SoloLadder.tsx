@@ -79,7 +79,7 @@ const columns: ColumnsType<PlayerLadderData> = [
           key={currentStreak}
         >
           {currentStreak == 0
-            ? "No games yet!"
+            ? "No Matches"
             : currentStreak > 0
             ? `${currentStreak}W`
             : `${Math.abs(currentStreak)}L`}
