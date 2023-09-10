@@ -137,6 +137,7 @@ export const SignUp = () => {
                     onChange={(e) => setDisplayName(e.target.value)}
                     name="displayName"
                     id="displayName"
+                    maxLength={18}
                     className="block w-full sm:border-0 border-solid border-2 border-slate-500 rounded-md border-0 px-3.5 py-2 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>

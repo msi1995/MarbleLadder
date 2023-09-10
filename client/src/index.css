@@ -73,4 +73,5 @@ code {
   .select-search-container{
     width: 100% !important;
   }
+  .ant-table table { font-size: 10px; }
 }
