@@ -465,6 +465,7 @@ export const SoloLadder = () => {
             </button>
           )}
         </div>
+        <div className="md:text-2xl text-xl text-white w-full text-center pb-2">Total Players: {ladderData.length}</div>
 
         <Table
           className="sm:w-3/5 w-full sm:px-0 px-2"
