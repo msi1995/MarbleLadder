@@ -18,7 +18,7 @@ export const Navbar = () => {
 
   return (
     <>
-      <nav className="absolute w-full z-50 select-none px-4 py-4 flex justify-between items-center bg-black opacity-90">
+      <nav className="fixed w-full z-50 select-none px-4 py-4 flex justify-between items-center bg-black opacity-90">
         <NavLink
           to={"/"}
           className={({ isActive }) =>
