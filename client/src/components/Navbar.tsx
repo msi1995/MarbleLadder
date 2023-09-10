@@ -57,7 +57,7 @@ export const Navbar = () => {
         >
           Welcome{username && `, ${username}!`}
         </NavLink>
-        <div className="lg:hidden">
+        <div className="xl:hidden">
           <button className="navbar-burger flex items-center text-white p-3">
             <svg
               className="block h-4 w-4 fill-current"
@@ -69,7 +69,7 @@ export const Navbar = () => {
             </svg>
           </button>
         </div>
-        <ul className="hidden absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 lg:flex lg:mx-auto lg:flex lg:items-center lg:w-auto lg:space-x-6">
+        <ul className="hidden absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 xl:flex xl:mx-auto xl:flex xl:items-center xl:w-auto xl:space-x-6">
           <li>
             <NavLink
               to={"/"}
@@ -199,21 +199,21 @@ export const Navbar = () => {
         {token ? (
           <button
             onClick={() => handleLogout()}
-            className='hidden lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6 bg-gray-50 hover:bg-gray-100 text-sm text-gray-900 font-bold  rounded-xl transition duration-200"'
+            className='hidden xl:inline-block xl:ml-auto xl:mr-3 py-2 px-6 bg-gray-50 hover:bg-gray-100 text-sm text-gray-900 font-bold  rounded-xl transition duration-200"'
           >
             Sign out
           </button>
         ) : (
           <NavLink
             to={"/login"}
-            className="hidden lg:inline-block lg:ml-auto lg:mr-3 py-2 px-6 bg-gray-50 hover:bg-gray-100 text-sm text-gray-900 font-bold  rounded-xl transition duration-200"
+            className="hidden xl:inline-block xl:ml-auto xl:mr-3 py-2 px-6 bg-gray-50 hover:bg-gray-100 text-sm text-gray-900 font-bold  rounded-xl transition duration-200"
           >
             Sign In
           </NavLink>
         )}
         <NavLink
           to={"/register"}
-          className="hidden lg:inline-block py-2 px-6 bg-blue-500 hover:bg-blue-600 text-sm text-white font-bold rounded-xl transition duration-200"
+          className="hidden xl:inline-block py-2 px-6 bg-blue-500 hover:bg-blue-600 text-sm text-white font-bold rounded-xl transition duration-200"
         >
           Sign Up
         </NavLink>
