@@ -466,13 +466,13 @@ export const SoloLadder = () => {
         </div>
 
         <Table
-          className="sm:w-3/5 w-full"
+          className="sm:w-3/5 w-full sm:px-0 px-2"
           columns={columns}
           dataSource={sortedData}
           pagination={{
             showSizeChanger: true,
-            defaultPageSize: 15,
-            pageSizeOptions: [5, 15, 25, 50],
+            defaultPageSize: 10,
+            pageSizeOptions: [5, 10, 20, 50],
           }}
         />
       </div>
