@@ -332,7 +332,7 @@ export const SoloLadder = () => {
                   />
                 </div>
               </div>
-              <div className="col-span-1">
+              <div className="col-span-2">
                 <label
                   htmlFor="reporterIsWinner"
                   className="block text-sm font-semibold leading-6 text-white"
@@ -363,6 +363,7 @@ export const SoloLadder = () => {
                   </div>
                 </div>
               </div>
+              <div className="col-span-2 text-emerald-500 text-lg justify-center text-center py-4">The fields below are optional! Only opponent and match result are required.</div>
               <div className="col-span-2">
                 <label
                   htmlFor="password"
