@@ -194,8 +194,6 @@ router.post('/confirm-match', auth, async (req, res) => {
             // Probability of Player B
             let matchLoserExpectedOdds = winProbability(ratingMatchWinner, ratingMatchLoser);
 
-            // Case 1 When Player A wins
-            // Updating the Elo Ratings
             ratingMatchWinner = ratingMatchWinner + K * (1 - matchWinnerExpectedOdds);
             ratingMatchLoser = ratingMatchLoser + K * (0 - matchLoserExpectedOdds);
 

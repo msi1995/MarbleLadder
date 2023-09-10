@@ -22,7 +22,6 @@ export const Navbar = () => {
     const menu = document.querySelector(".navbar-menu");
 
     if (burger && menu) {
-      console.log('in the loop');
         burger.addEventListener("click", () => {
           menu.classList.contains('hidden') ? menu.classList.remove("hidden") : menu.classList.add("hidden");
         });
