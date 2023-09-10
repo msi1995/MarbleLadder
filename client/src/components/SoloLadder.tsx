@@ -247,9 +247,9 @@ export const SoloLadder = () => {
   return (
     <div className="pt-16 h-screen w-screen relative overflow-x-hidden">
       {Boolean(confirmMatchModalVisible) && (
-        <div className="absolute sm:top-1/3 top-1/2 left-1/2 sm:w-1/3 w-full -translate-x-1/2 -translate-y-1/2 transform rounded-md bg-black-opacity-90 z-10 text-white">
+        <div className="absolute sm:top-1/3 top-1/2 left-1/2 xl:w-1/3 lg:w-2/3 w-5/6 -translate-x-1/2 -translate-y-1/2 transform rounded-md bg-black-opacity-90 z-10 text-white">
           <div className="flex flex-col pb-16 pb-12 justify-center items-center">
-            <span className="text-4xl pt-4 pb-6">Confirm/Deny Match</span>
+            <span className="text-4xl pt-4 pb-6 text-center">Confirm/Deny Match</span>
             <div className="flex flex-row gap-x-1.5 text-2xl pb-4">
               <span
                 className={
@@ -297,7 +297,7 @@ export const SoloLadder = () => {
         </div>
       )}
       {Boolean(reportMatchModalVisible) && (
-        <div className="absolute sm:w-1/4 sm:left-1/3 w-5/6 ml-10 mt-10 sm:top-60 sm:px-24 sm:py-8 px-8 py-6 rounded-md bg-black-opacity-90 z-10">
+        <div className="absolute mt-10 xl:w-1/3 lg:w-1/2 md:w-4/6 w-5/6 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 sm:px-16 sm:py-8 px-8 py-6 rounded-md bg-black-opacity-90 z-10">
           <div className="mx-auto max-w-4xl text-center">
             <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
               Report Match Results
@@ -332,7 +332,7 @@ export const SoloLadder = () => {
                   />
                 </div>
               </div>
-              <div className="col-span-2">
+              <div className="col-span-1">
                 <label
                   htmlFor="reporterIsWinner"
                   className="block text-sm font-semibold leading-6 text-white"
@@ -368,7 +368,7 @@ export const SoloLadder = () => {
                   htmlFor="password"
                   className="block text-sm font-semibold leading-6 text-white"
                 >
-                  Map (optional)
+                  Map
                 </label>
                 <div className="mt-2.5">
                   <select
@@ -395,7 +395,7 @@ export const SoloLadder = () => {
                   htmlFor="first-name"
                   className="block text-sm font-semibold leading-6 text-white"
                 >
-                  My score (optional)
+                  My score
                 </label>
                 <div className="mt-2.5">
                   <input
@@ -413,7 +413,7 @@ export const SoloLadder = () => {
                   htmlFor="first-name"
                   className="block text-sm font-semibold leading-6 text-white"
                 >
-                  Opponent score (optional)
+                  Opponent score
                 </label>
                 <div className="mt-2.5">
                   <input

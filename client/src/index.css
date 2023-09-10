@@ -68,10 +68,9 @@ code {
 
   height: 14em;
 }
-
+.select-search-container{
+  width: 100% !important;
+}
 @media screen and (max-width: 640px) {
-  .select-search-container{
-    width: 100% !important;
-  }
   .ant-table table { font-size: 10px; }
 }
