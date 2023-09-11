@@ -73,4 +73,7 @@ code {
 }
 @media screen and (max-width: 640px) {
   .ant-table table { font-size: 10px; }
+  .ant-tag {
+    font-size: 10px;
+  }
 }
