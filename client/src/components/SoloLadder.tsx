@@ -114,6 +114,10 @@ export const SoloLadder = () => {
     checkUnconfirmedMatches();
   }, []);
 
+  const smallScreen = () => {
+    return window.innerWidth <= 768; // You can adjust the threshold based on your design
+  };
+
   const getLadderData = async () => {
     try {
       const res: Response = await fetch(BASE_ROUTE + "/ladder-data");
@@ -473,7 +477,7 @@ export const SoloLadder = () => {
           dataSource={sortedData}
           pagination={{
             showSizeChanger: true,
-            defaultPageSize: 10,
+            defaultPageSize: smallScreen() ? 5 : 10,
             pageSizeOptions: [5, 10, 20, 50],
           }}
         />
