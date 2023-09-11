@@ -25,7 +25,7 @@ var ladderPlayerModel = {
     ratingScore: {
         type: Number,
         required: false,
-        default: 1000,
+        default: 1500,
     },
     wins: {
         type: Number,
