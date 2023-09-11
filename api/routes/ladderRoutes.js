@@ -36,6 +36,13 @@ router.post('/match-results', auth, async (req, res) => {
     const opponentInfo = await ladderPlayer.findOne({
         username: req.body.opponentUsername
     })
+
+    if(playerInfo._id === opponentInfo._id){
+        res.status(500).send({
+            message: "Don't do that."
+        })
+        return;
+    }
     //Convert objectID to string for opponent UID
     const opponentID = opponentInfo._id.toString();
 
