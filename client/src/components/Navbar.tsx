@@ -44,6 +44,12 @@ export const Navbar = () => {
       }
   }, []);
 
+  //localstorage needs to remove username if token is expired, otherwise makes it seem like user is logged in still.
+  useEffect(() => {
+    if(!token)
+    localStorage.clear();
+  }, [])
+
   return (
     <>
       <nav className="fixed w-full z-50 select-none px-4 py-4 flex justify-between items-center bg-black opacity-90">
