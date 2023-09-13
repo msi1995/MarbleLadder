@@ -19,7 +19,7 @@ function App() {
   return (
     <BrowserRouter>
     <Navbar/>
-    <div className="-z-10 absolute w-full h-full bg-cover border-solid border-0 border-red-600 bg-fixed bg-[url('/public/MIU_1.jpg')]" />
+    <div className="fixed -z-10 w-full h-full bg-cover bg-fixed bg-[url('/public/MIU_1.jpg')]" />
       <Routes>
         <Route path="/" element={<Homepage/>} />
         <Route path="/register" element={<SignUp/>} />
