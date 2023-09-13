@@ -5,12 +5,12 @@ export const Homepage = () => {
 
   return (
     <div className="sm:pt-16 h-screen w-screen relative overflow-x-hidden">
-      <div className="sm:h-3/4 h-5/6 w-screen border-solid border-0 border-blue-600 flex justify-center align-middle items-center">
+      <div className="h-3/4 w-screen border-solid border-0 border-blue-600 flex justify-center align-middle items-center">
         <div className="select-none text-center neon-text sm:text-6xl text-3xl text-white sm:mb-36">
           {username === null ? 'Welcome to MarbleLadder!' : `Welcome to MarbleLadder, ${username}!`}
         </div>
       </div>
-      <div className="sm:absolute sm:bottom-0 sm:left-0 sm:h-84 py-4 flex flex-col flex-wrap w-full bg-black-opacity-70 items-center justify-center">
+      <div className="sm:fixed sm:bottom-0 relative py-4 w-full bg-black-opacity-70 items-center justify-center">
         <span className="block w-full border-0 px-4 border-solid border-red-600 sm:text-4xl text-xl text-white text-center">
           MarbleLadder supports <i>Marble It Up!</i> scores and
           rankings, and is focused on Multiplayer/Gem Hunt.
