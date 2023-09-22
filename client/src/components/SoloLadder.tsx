@@ -303,8 +303,8 @@ export const SoloLadder = () => {
         </div>
       )}
       {Boolean(reportMatchModalVisible) && (
-        <div className="absolute sm:mt-10 xl:w-1/3 lg:w-1/2 md:w-4/6 w-5/6 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
-          <div className="sm:overflow-y-hidden overflow-y-scroll sm:px-16 sm:py-8 px-8 py-6 rounded-md bg-black-opacity-90 sm:h-full h-160">
+        <div className="flex fixed top-0 right-0 left-0 bottom-0 justify-center items-center sm:mt-10 w-full z-10">
+          <div className="sm:overflow-y-hidden overflow-y-scroll xl:w-1/3 lg:w-1/2 w-5/6 sm:h-auto h-4/6 sm:px-16 sm:py-8 px-8 py-6 rounded-md bg-black-opacity-90">
             <div className="mx-auto max-w-4xl text-center">
               <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
                 Report Match Results
