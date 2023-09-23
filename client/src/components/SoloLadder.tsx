@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { BASE_ROUTE } from "../App";
 import SelectSearch from "react-select-search";
 import Cookies from "universal-cookie";
+import { useNavigate } from "react-router-dom";
 import "react-select-search/style.css";
 
 interface PlayerLadderData {
@@ -90,6 +91,7 @@ const columns: ColumnsType<PlayerLadderData> = [
 ];
 
 export const SoloLadder = () => {
+  const navigate = useNavigate();
   const cookies = new Cookies();
   const token = cookies.get("MarbleToken");
   const [ladderData, setLadderData] = useState<PlayerLadderData[]>([]);
@@ -149,16 +151,19 @@ export const SoloLadder = () => {
 
   const handleOpenMatchReportModal = async (event: any) => {
     setReportMatchModalVisible(true);
-    const sortedOpponentData: any  = []
+    const sortedOpponentData: any = [];
     ladderData.forEach((entry) => {
       if (
         !opponentData.some((opponent) => opponent.name === entry.username) &&
         entry.username != username
       ) {
-        sortedOpponentData.push({ name: entry.username, value: entry.username })
+        sortedOpponentData.push({
+          name: entry.username,
+          value: entry.username,
+        });
       }
     });
-    sortedOpponentData.sort((p1:any, p2:any) => (p1.name > p2.name) ? 1 : -1)
+    sortedOpponentData.sort((p1: any, p2: any) => (p1.name > p2.name ? 1 : -1));
     setOpponentData(sortedOpponentData);
   };
 
@@ -172,7 +177,7 @@ export const SoloLadder = () => {
     setReportMatchModalVisible(false);
 
     try {
-      const data = await fetch(BASE_ROUTE + "/match-results", {
+      const res = await fetch(BASE_ROUTE + "/match-results", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -186,6 +191,9 @@ export const SoloLadder = () => {
           opponentScore: opponentScore,
         }),
       });
+      if (res.status === 403) {
+        navigate("/login");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -198,7 +206,7 @@ export const SoloLadder = () => {
           ? BASE_ROUTE + "/confirm-match"
           : BASE_ROUTE + "/dispute-match";
 
-      const data = await fetch(endpoint, {
+      const res = await fetch(endpoint, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -213,6 +221,9 @@ export const SoloLadder = () => {
       if (matchConfirmationIdx >= unconfirmedMatches.length - 1) {
         setConfirmMatchModalVisible(false);
         window.location.reload();
+      }
+      if (res.status === 403) {
+        navigate("/login");
       }
     } catch (error) {
       console.log(error);
