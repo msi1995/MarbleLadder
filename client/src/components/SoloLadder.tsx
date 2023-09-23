@@ -6,6 +6,7 @@ import { BASE_ROUTE } from "../App";
 import SelectSearch from "react-select-search";
 import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
+import { handleLogout } from "../utils/utils";
 import "react-select-search/style.css";
 
 interface PlayerLadderData {
@@ -192,7 +193,7 @@ export const SoloLadder = () => {
         }),
       });
       if (res.status === 403) {
-        navigate("/login");
+        handleLogout(navigate, cookies)
       }
     } catch (error) {
       console.log(error);
@@ -223,7 +224,7 @@ export const SoloLadder = () => {
         window.location.reload();
       }
       if (res.status === 403) {
-        navigate("/login");
+        handleLogout(navigate, cookies)
       }
     } catch (error) {
       console.log(error);

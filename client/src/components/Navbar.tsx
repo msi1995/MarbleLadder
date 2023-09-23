@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { handleLogout } from "../utils/utils";
 
 export const Navbar = () => {
   const cookies = new Cookies();
@@ -9,11 +10,8 @@ export const Navbar = () => {
   const navigate = useNavigate();
   const username = localStorage.getItem("username");
 
-  const handleLogout = () => {
-    cookies.remove("MarbleToken", { path: "/" });
-    localStorage.clear();
-    navigate("/");
-    window.location.reload();
+  const handleSignoutClick = () => {
+    handleLogout(navigate, cookies);
   };
 
   useEffect(() => {
@@ -204,7 +202,7 @@ export const Navbar = () => {
 
         {token ? (
           <button
-            onClick={() => handleLogout()}
+            onClick={() => handleSignoutClick()}
             className='hidden xl:inline-block xl:ml-auto xl:mr-3 py-2 px-6 bg-gray-50 hover:bg-gray-100 text-sm text-gray-900 font-bold  rounded-xl transition duration-200"'
           >
             Sign out
