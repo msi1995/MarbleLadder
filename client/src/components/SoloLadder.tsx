@@ -149,17 +149,17 @@ export const SoloLadder = () => {
 
   const handleOpenMatchReportModal = async (event: any) => {
     setReportMatchModalVisible(true);
+    const sortedOpponentData: any  = []
     ladderData.forEach((entry) => {
       if (
         !opponentData.some((opponent) => opponent.name === entry.username) &&
         entry.username != username
       ) {
-        setOpponentData((opponentData) => [
-          ...opponentData,
-          { name: entry.username, value: entry.username },
-        ]);
+        sortedOpponentData.push({ name: entry.username, value: entry.username })
       }
     });
+    sortedOpponentData.sort((p1:any, p2:any) => (p1.name > p2.name) ? 1 : -1)
+    setOpponentData(sortedOpponentData);
   };
 
   const handleMatchResultsReported = async (event: any) => {
