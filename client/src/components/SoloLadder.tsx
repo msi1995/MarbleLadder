@@ -96,7 +96,9 @@ export const SoloLadder = () => {
   const cookies = new Cookies();
   const token = cookies.get("MarbleToken");
   const [ladderData, setLadderData] = useState<PlayerLadderData[]>([]);
-  const [opponentData, setOpponentData] = useState<OpponentData[]>([]);
+  const [opponentDropdownData, setOpponentDropdownData] = useState<
+    OpponentData[]
+  >([]);
   const [matchData, setMatchData] = useState<any>();
   const [playerOpponent, setPlayerOpponent] = useState<string>("");
   const [reporterIsWinner, setReporterIsWinner] = useState<boolean | null>(
@@ -117,8 +119,29 @@ export const SoloLadder = () => {
     checkUnconfirmedMatches();
   }, []);
 
+  useEffect(() => {
+    populateOpponentDropdownList();
+  }, [ladderData]);
+
   const smallScreen = () => {
     return window.innerWidth <= 768; // You can adjust the threshold based on your design
+  };
+
+  const populateOpponentDropdownList = () => {
+    const sortedOpponentData: any = [];
+    ladderData.forEach((entry) => {
+      if (
+        !opponentDropdownData.some((opponent) => opponent.name === entry.username) &&
+        entry.username != username
+      ) {
+        sortedOpponentData.push({
+          name: entry.username,
+          value: entry.username,
+        });
+      }
+    });
+    sortedOpponentData.sort((p1: any, p2: any) => (p1.name > p2.name ? 1 : -1));
+    setOpponentDropdownData(sortedOpponentData);
   };
 
   const getLadderData = async () => {
@@ -152,20 +175,6 @@ export const SoloLadder = () => {
 
   const handleOpenMatchReportModal = async (event: any) => {
     setReportMatchModalVisible(true);
-    const sortedOpponentData: any = [];
-    ladderData.forEach((entry) => {
-      if (
-        !opponentData.some((opponent) => opponent.name === entry.username) &&
-        entry.username != username
-      ) {
-        sortedOpponentData.push({
-          name: entry.username,
-          value: entry.username,
-        });
-      }
-    });
-    sortedOpponentData.sort((p1: any, p2: any) => (p1.name > p2.name ? 1 : -1));
-    setOpponentData(sortedOpponentData);
   };
 
   const handleMatchResultsReported = async (event: any) => {
@@ -193,7 +202,7 @@ export const SoloLadder = () => {
         }),
       });
       if (res.status === 403) {
-        handleLogout(navigate, cookies)
+        handleLogout(navigate, cookies);
       }
     } catch (error) {
       console.log(error);
@@ -224,7 +233,7 @@ export const SoloLadder = () => {
         window.location.reload();
       }
       if (res.status === 403) {
-        handleLogout(navigate, cookies)
+        handleLogout(navigate, cookies);
       }
     } catch (error) {
       console.log(error);
@@ -344,7 +353,7 @@ export const SoloLadder = () => {
                   </label>
                   <div className="mt-2.5">
                     <SelectSearch
-                      options={opponentData}
+                      options={opponentDropdownData}
                       search={true}
                       onChange={handleOpponentSelectChange}
                       placeholder="Search opponent"
