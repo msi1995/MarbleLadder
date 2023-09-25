@@ -511,6 +511,7 @@ export const SoloLadder = () => {
           className="sm:w-3/5 w-full sm:px-0 px-2"
           columns={columns}
           dataSource={sortedData}
+          scroll={{ y: 825 }}
           pagination={{
             showSizeChanger: true,
             defaultPageSize: smallScreen() ? 5 : 10,
