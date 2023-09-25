@@ -504,7 +504,9 @@ export const SoloLadder = () => {
           )}
         </div>
         <div className="md:text-2xl text-xl text-white w-full text-center pb-2">
+          <span className="bg-black-opacity-50 py-1 px-3 rounded-md">
           Total Players: {ladderData.length}
+          </span>
         </div>
 
         <Table
