@@ -105,8 +105,8 @@ export const SoloLadder = () => {
     null
   );
   const [reportedMap, setReportedMap] = useState<string>("Select");
-  const [playerScore, setPlayerScore] = useState<number | null>(null);
-  const [opponentScore, setOpponentScore] = useState<number | null>(null);
+  const [winnerScore, setWinnerScore] = useState<number | null>(null);
+  const [loserScore, setLoserScore] = useState<number | null>(null);
   const [matchConfirmationIdx, setMatchConfirmationIdx] = useState<number>(0);
   const [reportMatchModalVisible, setReportMatchModalVisible] =
     useState<Boolean>(false);
@@ -116,7 +116,9 @@ export const SoloLadder = () => {
 
   useEffect(() => {
     getLadderData();
-    checkUnconfirmedMatches();
+    if (token) {
+      checkUnconfirmedMatches();
+    }
   }, []);
 
   useEffect(() => {
@@ -131,7 +133,9 @@ export const SoloLadder = () => {
     const sortedOpponentData: any = [];
     ladderData.forEach((entry) => {
       if (
-        !opponentDropdownData.some((opponent) => opponent.name === entry.username) &&
+        !opponentDropdownData.some(
+          (opponent) => opponent.name === entry.username
+        ) &&
         entry.username != username
       ) {
         sortedOpponentData.push({
@@ -141,7 +145,9 @@ export const SoloLadder = () => {
       }
     });
     sortedOpponentData.sort((p1: any, p2: any) => (p1.name > p2.name ? 1 : -1));
-    setOpponentDropdownData(sortedOpponentData);
+    if (sortedOpponentData.length) {
+      setOpponentDropdownData(sortedOpponentData);
+    }
   };
 
   const getLadderData = async () => {
@@ -166,6 +172,9 @@ export const SoloLadder = () => {
           },
         }
       );
+      if (res.status === 403) {
+        handleLogout(navigate, cookies);
+      }
       const data: LadderPlayer = await res.json();
       setMatchData(data.matchHistory);
     } catch (e) {
@@ -175,9 +184,9 @@ export const SoloLadder = () => {
 
   const handleOpenMatchReportModal = async (event: any) => {
     setReporterIsWinner(null);
-    setPlayerScore(null);
-    setOpponentScore(null);
-    setReportedMap("Select")
+    setWinnerScore(null);
+    setLoserScore(null);
+    setReportedMap("Select");
     setReportMatchModalVisible(true);
   };
 
@@ -201,8 +210,8 @@ export const SoloLadder = () => {
           opponentUsername: playerOpponent,
           reporterIsWinner: reporterIsWinner,
           map: reportedMap == "Select" ? "" : reportedMap,
-          playerScore: playerScore,
-          opponentScore: opponentScore,
+          playerScore: reporterIsWinner ? winnerScore : loserScore,
+          opponentScore: reporterIsWinner ? loserScore: winnerScore
         }),
       });
       if (res.status === 403) {
@@ -357,6 +366,7 @@ export const SoloLadder = () => {
                   </label>
                   <div className="mt-2.5">
                     <SelectSearch
+                      defaultValue={playerOpponent}
                       options={opponentDropdownData}
                       search={true}
                       onChange={handleOpponentSelectChange}
@@ -431,15 +441,15 @@ export const SoloLadder = () => {
                     htmlFor="first-name"
                     className="block text-sm font-semibold leading-6 text-white"
                   >
-                    My score
+                    Winner score
                   </label>
                   <div className="mt-2.5">
                     <input
                       type="text"
-                      name="myScore"
-                      id="myScore"
+                      name="winnerScore"
+                      id="loserScore"
                       maxLength={3}
-                      onChange={(e) => setPlayerScore(Number(e.target.value))}
+                      onChange={(e) => setWinnerScore(Number(e.target.value))}
                       className="block w-full sm:border-0 border-solid border-2 border-slate-500 rounded-md border-0 px-3.5 py-2 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
@@ -449,7 +459,7 @@ export const SoloLadder = () => {
                     htmlFor="first-name"
                     className="block text-sm font-semibold leading-6 text-white"
                   >
-                    Opponent score
+                    Loser score
                   </label>
                   <div className="mt-2.5">
                     <input
@@ -457,7 +467,7 @@ export const SoloLadder = () => {
                       name="opponentScore"
                       id="opponentScore"
                       maxLength={3}
-                      onChange={(e) => setOpponentScore(Number(e.target.value))}
+                      onChange={(e) => setLoserScore(Number(e.target.value))}
                       className="block w-full sm:border-0 border-solid border-2 border-slate-500 rounded-md border-0 px-3.5 py-2 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
@@ -505,7 +515,7 @@ export const SoloLadder = () => {
         </div>
         <div className="md:text-2xl text-xl text-white w-full text-center pb-2">
           <span className="bg-black-opacity-50 py-1 px-3 rounded-md">
-          Total Players: {ladderData.length}
+            Total Players: {ladderData.length}
           </span>
         </div>
 
