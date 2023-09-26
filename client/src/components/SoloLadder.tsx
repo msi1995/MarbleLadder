@@ -64,7 +64,7 @@ const columns: ColumnsType<PlayerLadderData> = [
     dataIndex: "ratingScore",
     key: "ratingScore",
     align: smallScreen() ? "center" : "justify",
-    width: smallScreen() ? "17%" : "20%",
+    width: "20%",
   },
   {
     title: "W/L",
