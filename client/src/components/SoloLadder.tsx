@@ -513,8 +513,8 @@ export const SoloLadder = () => {
             </button>
           )}
         </div>
-        <div className="md:text-2xl text-xl text-white w-full text-center pb-2">
-          <span className="bg-black-opacity-50 py-1 px-3 rounded-md">
+        <div className="flex justify-center items-center md:text-2xl text-xl text-white w-full text-center pb-2">
+          <span className="bg-black-opacity-50 pb-1.5 pt-1 px-3 rounded-md">
             Total Players: {ladderData.length}
           </span>
         </div>
