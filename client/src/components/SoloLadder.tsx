@@ -72,6 +72,7 @@ const columns: ColumnsType<PlayerLadderData> = [
   {
     title: "Streak",
     key: "streak",
+    align: "center",
     dataIndex: "streak",
     width: "20%",
     render: (_, { currentStreak }) => (
@@ -81,7 +82,7 @@ const columns: ColumnsType<PlayerLadderData> = [
           key={currentStreak}
         >
           {currentStreak == 0
-            ? "No Matches"
+            ? ''
             : currentStreak > 0
             ? `${currentStreak}W`
             : `${Math.abs(currentStreak)}L`}
