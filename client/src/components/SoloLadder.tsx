@@ -39,30 +39,38 @@ interface OpponentData {
   value: string;
 }
 
+const smallScreen = () => {
+  return window.innerWidth <= 768;
+};
+
 const columns: ColumnsType<PlayerLadderData> = [
   {
     title: "Rank",
     dataIndex: "rank",
     key: "rank",
-    width: "15%",
+    align: smallScreen() ? "center" : "justify",
+    width: smallScreen() ? "18%" : "15%",
   },
   {
     title: "Player",
     dataIndex: "username",
     key: "username",
-    width: "25%",
+    align: smallScreen() ? "center" : "justify",
+    width: smallScreen() ? "25%" : "30%",
     render: (text) => <a>{text}</a>,
   },
   {
     title: "Rating",
     dataIndex: "ratingScore",
     key: "ratingScore",
-    width: "20%",
+    align: smallScreen() ? "center" : "justify",
+    width: smallScreen() ? "17%" : "20%",
   },
   {
     title: "W/L",
     dataIndex: "winloss",
-    width: "20%",
+    align: smallScreen() ? "center" : "justify",
+    width:  smallScreen() ? "20%" : "15%",
     render: (_, record) => (
       <span>
         {record.wins}-{record.losses}
@@ -72,7 +80,7 @@ const columns: ColumnsType<PlayerLadderData> = [
   {
     title: "Streak",
     key: "streak",
-    align: "center",
+    align: smallScreen() ? "center" : "justify",
     dataIndex: "streak",
     width: "20%",
     render: (_, { currentStreak }) => (
@@ -125,10 +133,6 @@ export const SoloLadder = () => {
   useEffect(() => {
     populateOpponentDropdownList();
   }, [ladderData]);
-
-  const smallScreen = () => {
-    return window.innerWidth <= 768; // You can adjust the threshold based on your design
-  };
 
   const populateOpponentDropdownList = () => {
     const sortedOpponentData: any = [];
@@ -514,8 +518,8 @@ export const SoloLadder = () => {
             </button>
           )}
         </div>
-        <div className="flex justify-center items-center md:text-2xl text-xl text-white w-full text-center pb-2">
-          <span className="bg-black-opacity-50 pb-1.5 pt-1 px-3 rounded-md">
+        <div className="flex justify-center items-center md:text-2xl text-md text-white w-full text-center pb-2">
+          <span className="bg-black-opacity-50 sm:pb-1.5 sm:pt-1 sm:px-3 py-1 px-1.5 rounded-md">
             Total Players: {ladderData.length}
           </span>
         </div>
