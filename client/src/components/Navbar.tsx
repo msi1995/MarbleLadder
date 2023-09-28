@@ -292,7 +292,7 @@ export const Navbar = () => {
             <div className="pt-6">
               {token ? (
                 <button
-                  className="block px-4 py-3 mb-3 leading-loose text-xs text-center font-semibold leading-none bg-gray-50 hover:bg-gray-100 rounded-xl"
+                  className="block w-full px-4 py-3 mb-3 leading-loose text-xs text-center font-semibold leading-none bg-gray-50 hover:bg-gray-100 rounded-xl"
                   onClick={() => handleSignoutClick()}
                 >
                   Sign Out
