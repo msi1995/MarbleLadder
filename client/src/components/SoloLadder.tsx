@@ -409,15 +409,15 @@ export const SoloLadder = () => {
               </div>
               {bulkMode ? (
                 <div className="flex flex-row flex-wrap border-0 gap-y-4 border-solid border-red-500 text-white text-center justify-center">
-                  <span className="w-full pt-8 pb-8 text-2xl">
-                    Bulk entry mode allows you to paste comma separated results
-                    to report many games at once. Below is an example, if
-                    players were named Dog and Cat:{" "}
+                  <span className="w-full pt-8 pb-8 text-xl">
+                    Bulk entry allows you to paste comma separated results
+                    to report many games at once. Below is an example if
+                    players were named Dog & Cat:{" "}
                   </span>
-                  <span className="w-5/6 text-center">
-                    <b>Example:</b> Dog 82-70 frostbite, Cat 90-55 brawl -
-                    denotes Dog wins Frostbite 82-70, Cat wins Brawl 90-55
+                  <span className="w-full text-center text-md">
+                    <b>Example:</b> Dog 82-70 frostbite, Cat 90-55 brawl, Cat 70-68 mosh pit
                   </span>
+                  <span className="sm:w-1/2 w-4/6 text-center text-sm">This would mean that Dog won Frostbite 82-70, Cat won Brawl 90-55, and Cat won Mosh Pit 70-68.</span>
                   <span className="w-full pt-16 text-red-600 text-md">
                     You must use exact names for players/maps in your list!
                     Capitalization does not matter.
