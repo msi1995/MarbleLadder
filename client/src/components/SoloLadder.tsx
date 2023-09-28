@@ -7,6 +7,7 @@ import SelectSearch from "react-select-search";
 import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
 import { handleLogout } from "../utils/utils";
+import ToggleButton from "react-toggle-button";
 import "react-select-search/style.css";
 
 interface PlayerLadderData {
@@ -17,11 +18,6 @@ interface PlayerLadderData {
   wins: number;
   losses: number;
   currentStreak: number;
-}
-
-interface LadderPlayer {
-  matchHistory: object;
-  username: string;
 }
 
 interface LadderMatch {
@@ -70,7 +66,7 @@ const columns: ColumnsType<PlayerLadderData> = [
     title: "W/L",
     dataIndex: "winloss",
     align: smallScreen() ? "center" : "justify",
-    width:  smallScreen() ? "20%" : "15%",
+    width: smallScreen() ? "20%" : "15%",
     render: (_, record) => (
       <span>
         {record.wins}-{record.losses}
@@ -90,7 +86,7 @@ const columns: ColumnsType<PlayerLadderData> = [
           key={currentStreak}
         >
           {currentStreak == 0
-            ? ''
+            ? ""
             : currentStreak > 0
             ? `${currentStreak}W`
             : `${Math.abs(currentStreak)}L`}
@@ -108,7 +104,7 @@ export const SoloLadder = () => {
   const [opponentDropdownData, setOpponentDropdownData] = useState<
     OpponentData[]
   >([]);
-  const [matchData, setMatchData] = useState<any>();
+  const [unconfirmedMatches, setUnconfirmedMatches] = useState<any>();
   const [playerOpponent, setPlayerOpponent] = useState<string>("");
   const [reporterIsWinner, setReporterIsWinner] = useState<boolean | null>(
     null
@@ -180,8 +176,8 @@ export const SoloLadder = () => {
       if (res.status === 403) {
         handleLogout(navigate, cookies);
       }
-      const data: LadderPlayer = await res.json();
-      setMatchData(data.matchHistory);
+      const data: any = await res.json();
+      setUnconfirmedMatches(data);
     } catch (e) {
       console.log(e);
     }
@@ -216,7 +212,7 @@ export const SoloLadder = () => {
           reporterIsWinner: reporterIsWinner,
           map: reportedMap == "Select" ? "" : reportedMap,
           playerScore: reporterIsWinner ? winnerScore : loserScore,
-          opponentScore: reporterIsWinner ? loserScore: winnerScore
+          opponentScore: reporterIsWinner ? loserScore : winnerScore,
         }),
       });
       if (res.status === 403) {
@@ -278,10 +274,10 @@ export const SoloLadder = () => {
     console.log(e);
   }
 
-  const unconfirmedMatches = matchData?.filter(
-    (match: LadderMatch) =>
-      !match.confirmed && !match.userIsSubmitter && !match.disputed
-  );
+  // const unconfirmedMatches = matchData?.filter(
+  //   (match: LadderMatch) =>
+  //     !match.confirmed && !match.userIsSubmitter && !match.disputed
+  // );
 
   const handleOpponentSelectChange = (opponent: any) => {
     setPlayerOpponent(opponent);
@@ -361,6 +357,7 @@ export const SoloLadder = () => {
               className="mx-auto z-20 mt-12 max-w-2xl"
               autoComplete="off"
             >
+              <ToggleButton inactiveLabel={"off"} activeLabel={"on"} />
               <div className="grid grid-cols-1 gap-x-8 gap-y-4 sm:grid-cols-2">
                 <div className="col-span-2">
                   <label

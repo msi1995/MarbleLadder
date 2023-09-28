@@ -70,27 +70,12 @@ router.post('/match-results', auth, async (req, res) => {
         })
         newMatchResult.save()
 
-
         await ladderPlayer.updateOne({
             _id: new ObjectId(req.user.userId)
         }, {
             $push: {
                 matchHistory: {
                     traceID: traceID,
-                    matchP1: req.user.userId,
-                    matchP1Name: playerInfo.username,
-                    matchP2: opponentID,
-                    matchP2Name: opponentInfo.username,
-                    P1Score: req.body.playerScore,
-                    P2Score: req.body.opponentScore,
-                    matchWinner: matchWinnerID,
-                    matchWinnerName: matchWinnerName,
-                    matchDate: new Date(),
-                    confirmed: false,
-                    disputed: false,
-                    userIsSubmitter: true,
-                    map: req.body.map
-
                 }
             }
         });
@@ -100,24 +85,11 @@ router.post('/match-results', auth, async (req, res) => {
             $push: {
                 matchHistory: {
                     traceID: traceID,
-                    matchP1: req.user.userId,
-                    matchP1Name: playerInfo.username,
-                    matchP2: opponentID,
-                    matchP2Name: opponentInfo.username,
-                    P1Score: req.body.playerScore,
-                    P2Score: req.body.opponentScore,
-                    matchWinner: matchWinnerID,
-                    matchWinnerName: matchWinnerName,
-                    matchDate: new Date(),
-                    confirmed: false,
-                    disputed: false,
-                    userIsSubmitter: false,
-                    map: req.body.map
                 }
             }
         });
         res.status(200).send({
-            message: `Users updated`,
+            message: `Match submitted`,
         })
     }
     catch (e) {
@@ -129,11 +101,92 @@ router.post('/match-results', auth, async (req, res) => {
 
 });
 
+router.post('/match-results/bulk', auth, async (req, res) => {
+    //endpoint for comma separated match reporting (to facilitate faster reporting)
+    
+
+    // let matchWinnerID;
+    // let matchWinnerName;
+
+    // //Grab all player info
+    // const playerInfo = await ladderPlayer.findOne({
+    //     _id: new ObjectId(req.user.userId)
+    // })
+    // //Grab all opponent info
+    // const opponentInfo = await ladderPlayer.findOne({
+    //     username: req.body.opponentUsername
+    // })
+
+    // if(playerInfo._id === opponentInfo._id){
+    //     res.status(500).send({
+    //         message: "Don't do that."
+    //     })
+    //     return;
+    // }
+    // //Convert objectID to string for opponent UID
+    // const opponentID = opponentInfo._id.toString();
+
+    // //Set winner UID
+    // req.body.reporterIsWinner ? matchWinnerID = req.user.userId : matchWinnerID = opponentID;
+    // req.body.reporterIsWinner ? matchWinnerName = playerInfo.username : matchWinnerName = opponentInfo.username
+
+    // const traceID = uuidv4();
+
+    // try {
+    //     const newMatchResult = new matchResult({
+    //         traceID: traceID,
+    //         matchP1: req.user.userId,
+    //         matchP1Name: playerInfo.username,
+    //         matchP2: opponentID,
+    //         matchP2Name: opponentInfo.username,
+    //         P1Score: req.body.playerScore,
+    //         P2Score: req.body.opponentScore,
+    //         matchWinner: matchWinnerID,
+    //         matchWinnerName: matchWinnerName,
+    //         matchDate: new Date(),
+    //         confirmed: false,
+    //         disputed: false,
+    //         map: req.body.map
+    //     })
+    //     newMatchResult.save()
+
+    //     await ladderPlayer.updateOne({
+    //         _id: new ObjectId(req.user.userId)
+    //     }, {
+    //         $push: {
+    //             matchHistory: {
+    //                 traceID: traceID,
+    //             }
+    //         }
+    //     });
+    //     await ladderPlayer.updateOne({
+    //         _id: new ObjectId(opponentID)
+    //     }, {
+    //         $push: {
+    //             matchHistory: {
+    //                 traceID: traceID,
+    //             }
+    //         }
+    //     });
+    //     res.status(200).send({
+    //         message: `Matches submitted.`,
+    //     })
+    // }
+    // catch (e) {
+    //     console.log(e)
+    //     res.status(500).send({
+    //         message: `Server error -- ${e}`
+    //     })
+    // }
+
+});
+
 router.get('/matches-pending-confirmation', auth, async (req, res) => {
     try {
-        const unconfirmedMatchData = await ladderPlayer.findOne({ _id: new ObjectId(req.user.userId) },
-            { matchHistory: 1 });
+        //can search for matchP2 because matchP1 is always the user who reported the match (and the reporter doesn't need to confirm.)
+        const unconfirmedMatchData = await matchResult.find({matchP2: req.user.userId, confirmed: false});
         res.status(200).json(unconfirmedMatchData);
+        return;
     } catch (err) {
         console.error(`error: ${err}`);
         res.status(500).send({ error: "Error fetching ladder data from DB." });
@@ -275,6 +328,7 @@ router.post('/dispute-match', async (req, res) => {
         await matchResult.updateOne({ traceID: req.body.traceID },
             {
                 $set: {
+                    confirmed: true,
                     disputed: true,
                 }
             }
