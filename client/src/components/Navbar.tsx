@@ -20,33 +20,34 @@ export const Navbar = () => {
     const menu = document.querySelector(".navbar-menu");
 
     if (burger && menu) {
-        burger.addEventListener("click", () => {
-          menu.classList.contains('hidden') ? menu.classList.remove("hidden") : menu.classList.add("hidden");
-        });
-      }
+      burger.addEventListener("click", () => {
+        menu.classList.contains("hidden")
+          ? menu.classList.remove("hidden")
+          : menu.classList.add("hidden");
+      });
+    }
 
     // close
     const close = document.querySelector(".navbar-close");
     const backdrop = document.querySelector(".navbar-backdrop");
 
     if (close) {
-        close.addEventListener("click", () => {
-            menu?.classList.toggle("hidden");
-        });
-      }
+      close.addEventListener("click", () => {
+        menu?.classList.toggle("hidden");
+      });
+    }
 
     if (backdrop) {
-        backdrop.addEventListener("click", () => {
-            menu?.classList.add("hidden");
-        });
-      }
+      backdrop.addEventListener("click", () => {
+        menu?.classList.add("hidden");
+      });
+    }
   }, []);
 
   //localstorage needs to remove username if token is expired, otherwise makes it seem like user is logged in still.
   useEffect(() => {
-    if(!token)
-    localStorage.clear();
-  }, [])
+    if (!token) localStorage.clear();
+  }, []);
 
   return (
     <>
@@ -111,7 +112,7 @@ export const Navbar = () => {
                   : "text-sm text-gray-400 hover:text-gray-500"
               }
             >
-              1v1 Ladder
+              1v1 Gem Hunt Ladder
             </NavLink>
           </li>
           <li className="text-pink-500">
@@ -258,7 +259,7 @@ export const Navbar = () => {
                   to={"/ladder"}
                   className="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-white rounded"
                 >
-                  1v1 Ladder
+                  1v1 Gem Hunt Ladder
                 </NavLink>
               </li>
               <li className="mb-1">
@@ -289,14 +290,23 @@ export const Navbar = () => {
           </div>
           <div className="mt-auto">
             <div className="pt-6">
-            <NavLink
+              {token ? (
+                <button
+                  className="block px-4 py-3 mb-3 leading-loose text-xs text-center font-semibold leading-none bg-gray-50 hover:bg-gray-100 rounded-xl"
+                  onClick={() => handleSignoutClick()}
+                >
+                  Sign Out
+                </button>
+              ) : (
+                <NavLink
                   to={"/login"}
-                className="block px-4 py-3 mb-3 leading-loose text-xs text-center font-semibold leading-none bg-gray-50 hover:bg-gray-100 rounded-xl"
-              >
-                Sign in
-              </NavLink>
+                  className="block px-4 py-3 mb-3 leading-loose text-xs text-center font-semibold leading-none bg-gray-50 hover:bg-gray-100 rounded-xl"
+                >
+                  Sign in
+                </NavLink>
+              )}
               <NavLink
-                  to={"/register"}
+                to={"/register"}
                 className="block px-4 py-2 mb-2 leading-loose text-xs text-center text-white font-semibold bg-blue-600 hover:bg-blue-700  rounded-xl"
               >
                 Sign Up
