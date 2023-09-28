@@ -422,6 +422,9 @@ export const SoloLadder = () => {
                     You must use exact names for players/maps in your list!
                     Capitalization does not matter.
                   </span>
+                  <span className="w-full text-red-600 text-md">
+                    If you cannot remember the score, just do your best or write 1-0. Score is not part of the ELO calculation.
+                  </span>
                   <div className="col-span-2 pt-2">
                     <label
                       htmlFor="opponentName"
@@ -503,8 +506,7 @@ export const SoloLadder = () => {
                       </div>
                     </div>
                     <div className="col-span-2 text-emerald-500 text-lg justify-center text-center py-4">
-                      The fields below are optional! Only opponent and match
-                      result are required.
+                      The fields below are optional! Score/map do not affect ELO calculations.
                     </div>
                     <div className="col-span-2">
                       <label

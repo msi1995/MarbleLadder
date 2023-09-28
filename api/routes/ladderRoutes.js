@@ -166,7 +166,7 @@ router.post('/match-results/bulk', auth, async (req, res) => {
 
     //if reported name in each entry matches P1 or P2 && score follows regex && map exists in map array && all 
     // arrs are same length -- this should ensure everything is valid
-    if (namesValid && scoresValid && mapsValid && enteredPlayerNames.length == enteredScores.length && enteredScores.length == enteredMapsProcessed.length) {
+    if(namesValid && scoresValid && mapsValid && enteredPlayerNames.length == enteredScores.length && enteredScores.length == enteredMapsProcessed.length) {
     }
     else {
         res.status(400).send({
@@ -188,6 +188,11 @@ router.post('/match-results/bulk', auth, async (req, res) => {
             const intScores = playerScores.map((score) => parseInt(score, 10));
             const winnerScore = Math.max(...intScores);
             const loserScore = Math.min(...intScores);
+
+            //ties are voided.
+            if(winnerScore === loserScore){
+                continue;
+            }
             const P1Score = matchWinnerName === playerInfo.username.toLowerCase() ? winnerScore : loserScore;
             const P2Score = matchWinnerName === opponentInfo.username.toLowerCase() ? winnerScore : loserScore;
 
