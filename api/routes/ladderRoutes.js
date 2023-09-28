@@ -127,8 +127,8 @@ router.post('/match-results/bulk', auth, async (req, res) => {
         username: req.body.opponentUsername
     })
 
-    const P1Name = playerInfo.username;
-    const P2Name = opponentInfo.username;
+    const P1Name = playerInfo.username.toLowerCase();
+    const P2Name = opponentInfo.username.toLowerCase();
     const maps = ["arcadia", "assault", "brawl", "frostbite", "jumphouse", "nexus", "moshpit", "pythagoras", "stadion", "surfsup"]
 
     if (playerInfo._id === opponentInfo._id) {
@@ -145,7 +145,6 @@ router.post('/match-results/bulk', auth, async (req, res) => {
     const enteredPlayerNames = processedArr.map((result) => result.split(' ')[0].toLowerCase())
     const enteredScores = processedArr.map((result) => result.split(' ')[1])
     const enteredMapsRaw = processedArr.map((result) => result.split(' '))
-
 
     //this might need to be revisited. band aid for now but will break if there is ever a map with 3 words.
     const enteredMapsProcessed = enteredMapsRaw.map((entries) => entries.length === 4 ? entries[2]?.replace(/\W|_/g, '').toLowerCase() + entries[3]?.replace(/\W|_/g, '').toLowerCase() : entries[2]?.replace(/\W|_/g, '').toLowerCase());
@@ -182,15 +181,15 @@ router.post('/match-results/bulk', auth, async (req, res) => {
 
             //get correct username capitalization
             const matchWinnerNameRaw = enteredPlayerNames[i];
-            const matchWinnerName = matchWinnerNameRaw.toLowerCase() === playerInfo.username.toLowerCase() ? playerInfo.username : opponentInfo.username;
+            const matchWinnerName = matchWinnerNameRaw === playerInfo.username.toLowerCase() ? playerInfo.username : opponentInfo.username;
 
             //proecss player scores
             const playerScores = (enteredScores[i].split('-'));
             const intScores = playerScores.map((score) => parseInt(score, 10));
             const winnerScore = Math.max(...intScores);
             const loserScore = Math.min(...intScores);
-            const P1Score = matchWinnerName.toLowerCase() === playerInfo.username.toLowerCase() ? winnerScore : loserScore;
-            const P2Score = matchWinnerName.toLowerCase() === opponentInfo.username.toLowerCase() ? winnerScore : loserScore;
+            const P1Score = matchWinnerName === playerInfo.username.toLowerCase() ? winnerScore : loserScore;
+            const P2Score = matchWinnerName === opponentInfo.username.toLowerCase() ? winnerScore : loserScore;
 
             //grab and process map name
             const map = enteredMapsProcessed[i];
