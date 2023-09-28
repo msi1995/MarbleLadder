@@ -25,7 +25,7 @@ export const Homepage = () => {
           If you are playing 1v1 games, navigate to the 1v1 ladder, login, and
           click Report Match Results. Your opponent will be notified and must
           confirm the result of the matches. You can look for opponents in the
-          MIU Discord.
+          MIU Discord, and then host private matches to play your games.
         </span>
         <br />
         <span className="block w-full sm:px-56 px-4 border-0 border-solid border-red-600 sm:text-xl text-md text-white text-center">
