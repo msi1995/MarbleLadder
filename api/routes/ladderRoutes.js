@@ -4,6 +4,7 @@ const { v4: uuidv4 } = require('uuid');
 const { ObjectId } = require('mongodb');
 const ladderPlayer = require('../models/LadderPlayer');
 const matchResult = require('../models/MatchResult');
+const e = require('express');
 const router = express.Router();
 
 router.get('/ladder-data', async (req, res) => {
@@ -37,7 +38,7 @@ router.post('/match-results', auth, async (req, res) => {
         username: req.body.opponentUsername
     })
 
-    if(playerInfo._id === opponentInfo._id){
+    if (playerInfo._id === opponentInfo._id) {
         res.status(500).send({
             message: "Don't do that."
         })
@@ -101,90 +102,153 @@ router.post('/match-results', auth, async (req, res) => {
 
 });
 
+//endpoint for comma separated bulk match reporting
 router.post('/match-results/bulk', auth, async (req, res) => {
-    //endpoint for comma separated match reporting (to facilitate faster reporting)
-    
 
-    // let matchWinnerID;
-    // let matchWinnerName;
+    const mapMapper = {
+        "arcadia": "Arcadia",
+        "assault": "Assault",
+        "brawl": "Brawl",
+        "frostbite": "Frostbite",
+        "jumphouse": "Jumphouse",
+        "nexus": "Nexus",
+        "moshpit": "Mosh Pit",
+        "pythagoras": "Pythagoras",
+        "stadion": "Stadion",
+        "surfsup": `Surf's Up`
+    }
 
-    // //Grab all player info
-    // const playerInfo = await ladderPlayer.findOne({
-    //     _id: new ObjectId(req.user.userId)
-    // })
-    // //Grab all opponent info
-    // const opponentInfo = await ladderPlayer.findOne({
-    //     username: req.body.opponentUsername
-    // })
+    //Grab all player info
+    const playerInfo = await ladderPlayer.findOne({
+        _id: new ObjectId(req.user.userId)
+    })
+    //Grab all opponent info
+    const opponentInfo = await ladderPlayer.findOne({
+        username: req.body.opponentUsername
+    })
 
-    // if(playerInfo._id === opponentInfo._id){
-    //     res.status(500).send({
-    //         message: "Don't do that."
-    //     })
-    //     return;
-    // }
-    // //Convert objectID to string for opponent UID
-    // const opponentID = opponentInfo._id.toString();
+    const P1Name = playerInfo.username;
+    const P2Name = opponentInfo.username;
+    const maps = ["arcadia", "assault", "brawl", "frostbite", "jumphouse", "nexus", "moshpit", "pythagoras", "stadion", "surfsup"]
 
-    // //Set winner UID
-    // req.body.reporterIsWinner ? matchWinnerID = req.user.userId : matchWinnerID = opponentID;
-    // req.body.reporterIsWinner ? matchWinnerName = playerInfo.username : matchWinnerName = opponentInfo.username
+    if (playerInfo._id === opponentInfo._id) {
+        res.status(500).send({
+            message: "Don't do that."
+        })
+        return;
+    }
+    //Convert objectID to string for opponent UID
+    const opponentID = opponentInfo._id.toString();
 
-    // const traceID = uuidv4();
+    const resultArr = req.body.results.split(",")
+    const processedArr = resultArr.map((entry) => entry = entry.trimStart())
+    const enteredPlayerNames = processedArr.map((result) => result.split(' ')[0].toLowerCase())
+    const enteredScores = processedArr.map((result) => result.split(' ')[1])
+    const enteredMapsRaw = processedArr.map((result) => result.split(' '))
 
-    // try {
-    //     const newMatchResult = new matchResult({
-    //         traceID: traceID,
-    //         matchP1: req.user.userId,
-    //         matchP1Name: playerInfo.username,
-    //         matchP2: opponentID,
-    //         matchP2Name: opponentInfo.username,
-    //         P1Score: req.body.playerScore,
-    //         P2Score: req.body.opponentScore,
-    //         matchWinner: matchWinnerID,
-    //         matchWinnerName: matchWinnerName,
-    //         matchDate: new Date(),
-    //         confirmed: false,
-    //         disputed: false,
-    //         map: req.body.map
-    //     })
-    //     newMatchResult.save()
 
-    //     await ladderPlayer.updateOne({
-    //         _id: new ObjectId(req.user.userId)
-    //     }, {
-    //         $push: {
-    //             matchHistory: {
-    //                 traceID: traceID,
-    //             }
-    //         }
-    //     });
-    //     await ladderPlayer.updateOne({
-    //         _id: new ObjectId(opponentID)
-    //     }, {
-    //         $push: {
-    //             matchHistory: {
-    //                 traceID: traceID,
-    //             }
-    //         }
-    //     });
-    //     res.status(200).send({
-    //         message: `Matches submitted.`,
-    //     })
-    // }
-    // catch (e) {
-    //     console.log(e)
-    //     res.status(500).send({
-    //         message: `Server error -- ${e}`
-    //     })
-    // }
+    //this might need to be revisited. band aid for now but will break if there is ever a map with 3 words.
+    const enteredMapsProcessed = enteredMapsRaw.map((entries) => entries.length === 4 ? entries[2]?.replace(/\W|_/g, '').toLowerCase() + entries[3]?.replace(/\W|_/g, '').toLowerCase() : entries[2]?.replace(/\W|_/g, '').toLowerCase());
+
+
+    //ensure that no names were entered that don't match player 1 or player 2.
+    const namesValid = enteredPlayerNames.every(entry => {
+        return entry === P1Name || entry === P2Name
+    })
+    const scoresValid = enteredScores.every(score => {
+        // regex length 7, numbers only except 1 hyphen
+        const pattern = /^[\d-]{1,7}$/;
+        return pattern.test(score);
+    });
+    const mapsValid = enteredMapsProcessed.every(map => {
+        return maps.includes(map);
+    }
+    )
+
+    //if reported name in each entry matches P1 or P2 && score follows regex && map exists in map array && all 
+    // arrs are same length -- this should ensure everything is valid
+    if (namesValid && scoresValid && mapsValid && enteredPlayerNames.length == enteredScores.length && enteredScores.length == enteredMapsProcessed.length) {
+    }
+    else {
+        res.status(400).send({
+            message: `Entry failed validation. Please double check the example. Make sure you have selected the correct opponent above, no trailing commas, etc.`,
+        })
+        return;
+    }
+    try {
+        for (i = 0; i < processedArr.length; i++) {
+            //match ID
+            const traceID = uuidv4();
+
+            //get correct username capitalization
+            const matchWinnerNameRaw = enteredPlayerNames[i];
+            const matchWinnerName = matchWinnerNameRaw.toLowerCase() === playerInfo.username.toLowerCase() ? playerInfo.username : opponentInfo.username;
+
+            //proecss player scores
+            const playerScores = (enteredScores[i].split('-'));
+            const intScores = playerScores.map((score) => parseInt(score, 10));
+            const winnerScore = Math.max(...intScores);
+            const loserScore = Math.min(...intScores);
+            const P1Score = matchWinnerName.toLowerCase() === playerInfo.username.toLowerCase() ? winnerScore : loserScore;
+            const P2Score = matchWinnerName.toLowerCase() === opponentInfo.username.toLowerCase() ? winnerScore : loserScore;
+
+            //grab and process map name
+            const map = enteredMapsProcessed[i];
+
+            //
+            const matchWinnerID = matchWinnerName === playerInfo.username ? req.user.userId : opponentInfo._id.toString();
+
+            const newMatchResult = new matchResult({
+                traceID: traceID,
+                matchP1: req.user.userId,
+                matchP1Name: playerInfo.username,
+                matchP2: opponentID,
+                matchP2Name: opponentInfo.username,
+                P1Score: P1Score,
+                P2Score: P2Score,
+                matchWinner: matchWinnerID,
+                matchWinnerName: matchWinnerName,
+                matchDate: new Date(),
+                confirmed: false,
+                disputed: false,
+                map: mapMapper[map]
+            })
+            await newMatchResult.save()
+
+            await ladderPlayer.updateOne({
+                _id: new ObjectId(req.user.userId)
+            }, {
+                $push: {
+                    matchHistory: {
+                        traceID: traceID,
+                    }
+                }
+            });
+            await ladderPlayer.updateOne({
+                _id: new ObjectId(opponentID)
+            }, {
+                $push: {
+                    matchHistory: {
+                        traceID: traceID,
+                    }
+                }
+            });
+        }
+        res.status(200).send({
+            message: `Matches submitted.`,
+        })
+    }
+    catch (e) {
+        console.log(e);
+        return;
+    }
 
 });
 
 router.get('/matches-pending-confirmation', auth, async (req, res) => {
     try {
         //can search for matchP2 because matchP1 is always the user who reported the match (and the reporter doesn't need to confirm.)
-        const unconfirmedMatchData = await matchResult.find({matchP2: req.user.userId, confirmed: false});
+        const unconfirmedMatchData = await matchResult.find({ matchP2: req.user.userId, confirmed: false });
         res.status(200).json(unconfirmedMatchData);
         return;
     } catch (err) {

@@ -105,6 +105,9 @@ export const SoloLadder = () => {
     OpponentData[]
   >([]);
   const [unconfirmedMatches, setUnconfirmedMatches] = useState<any>();
+  const [bulkMode, setBulkMode] = useState<boolean>(false);
+  const [bulkModeTextArea, setBulkModeTextArea] = useState<string>("");
+  const [bulkModeError, setBulkModeError] = useState<string>("");
   const [playerOpponent, setPlayerOpponent] = useState<string>("");
   const [reporterIsWinner, setReporterIsWinner] = useState<boolean | null>(
     null
@@ -194,32 +197,66 @@ export const SoloLadder = () => {
   const handleMatchResultsReported = async (event: any) => {
     event.preventDefault();
 
-    if (!Boolean(playerOpponent) || reporterIsWinner === null) {
+    if (!Boolean(playerOpponent) || (reporterIsWinner === null && !bulkMode)) {
       alert("Please complete the required fields.");
       return;
     }
-    setReportMatchModalVisible(false);
 
-    try {
-      const res = await fetch(BASE_ROUTE + "/match-results", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          opponentUsername: playerOpponent,
-          reporterIsWinner: reporterIsWinner,
-          map: reportedMap == "Select" ? "" : reportedMap,
-          playerScore: reporterIsWinner ? winnerScore : loserScore,
-          opponentScore: reporterIsWinner ? loserScore : winnerScore,
-        }),
-      });
-      if (res.status === 403) {
-        handleLogout(navigate, cookies);
+    // bulk mode result reporting
+    if (bulkMode) {
+      try {
+        const res = await fetch(BASE_ROUTE + "/match-results/bulk", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            opponentUsername: playerOpponent,
+            results: bulkModeTextArea,
+          }),
+        });
+        if(res.status === 200){
+          setReportMatchModalVisible(false);
+          setBulkModeTextArea('');
+          setBulkModeError('');
+        }
+        if (res.status === 400) {
+          const data = await res.json();
+          setBulkModeError(data.message);
+        }
+        if (res.status === 403) {
+          handleLogout(navigate, cookies);
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
+    } else {
+      // standard result reporting
+      try {
+        const res = await fetch(BASE_ROUTE + "/match-results", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            opponentUsername: playerOpponent,
+            reporterIsWinner: reporterIsWinner,
+            map: reportedMap == "Select" ? "" : reportedMap,
+            playerScore: reporterIsWinner ? winnerScore : loserScore,
+            opponentScore: reporterIsWinner ? loserScore : winnerScore,
+          }),
+        });
+        if (res.status === 200){
+          setReportMatchModalVisible(false);
+        }
+        if (res.status === 403) {
+          handleLogout(navigate, cookies);
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -339,137 +376,206 @@ export const SoloLadder = () => {
               <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
                 Report Match Results
               </h2>
-              <p className="mt-4 sm:text-lg text-md leading-8 text-white">
-                Pick who you played, who won, and optionally include score or
-                map info.
-              </p>
-              <p className="mt-2 sm:text-lg text-md leading-8 text-white">
-                Your opponent will be able to confirm or deny the match result.
-              </p>
+              {!bulkMode && (
+                <>
+                  <p className="mt-4 sm:text-lg text-md leading-8 text-white">
+                    Pick who you played, who won, and optionally include score
+                    or map info.
+                  </p>
+                  <p className="mt-2 sm:text-lg text-md leading-8 text-white">
+                    Your opponent will be able to confirm or deny the match
+                    result.
+                  </p>
+                </>
+              )}
             </div>
             <form
               onSubmit={handleMatchResultsReported}
               className="mx-auto z-20 mt-12 max-w-2xl"
               autoComplete="off"
             >
-              <ToggleButton inactiveLabel={"off"} activeLabel={"on"} />
-              <div className="grid grid-cols-1 gap-x-8 gap-y-4 sm:grid-cols-2">
-                <div className="col-span-2">
-                  <label
-                    htmlFor="opponentName"
-                    className="block text-sm font-semibold leading-6 text-white"
-                  >
-                    Opponent username<span className="text-red-600"> *</span>
-                  </label>
-                  <div className="mt-2.5">
-                    <SelectSearch
-                      defaultValue={playerOpponent}
-                      options={opponentDropdownData}
-                      search={true}
-                      onChange={handleOpponentSelectChange}
-                      placeholder="Search opponent"
-                    />
-                  </div>
-                </div>
-                <div className="col-span-2">
-                  <label
-                    htmlFor="reporterIsWinner"
-                    className="block text-sm font-semibold leading-6 text-white"
-                  >
-                    Who won?
-                    <span className="text-red-600"> *</span>
-                  </label>
-                  <div className="mt-2.5 flex flex-col w-full gap-y-2 block text-sm font-semibold leading-6 text-white">
-                    <div className="flex align-center">
-                      <input
-                        type="radio"
-                        value="Yes"
-                        name="reporterIsWinner"
-                        className="custom-radio"
-                        onClick={() => setReporterIsWinner(true)}
-                      />{" "}
-                      Me ({username})
-                    </div>
-                    <div className="flex align-center">
-                      <input
-                        type="radio"
-                        value="No"
-                        name="reporterIsWinner"
-                        className="custom-radio"
-                        onClick={() => setReporterIsWinner(false)}
-                      />{" "}
-                      Opponent {playerOpponent ? `(${playerOpponent})` : ""}
-                    </div>
-                  </div>
-                </div>
-                <div className="col-span-2 text-emerald-500 text-lg justify-center text-center py-4">
-                  The fields below are optional! Only opponent and match result
-                  are required.
-                </div>
-                <div className="col-span-2">
-                  <label
-                    htmlFor="password"
-                    className="block text-sm font-semibold leading-6 text-white"
-                  >
-                    Map
-                  </label>
-                  <div className="mt-2.5">
-                    <select
-                      className="block w-2/3 sm:border-0 border-solid border-2 border-slate-500 rounded-md border-0 px-3.5 py-2 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      value={reportedMap}
-                      onChange={(e) => setReportedMap(e.target.value)}
-                    >
-                      <option value="Select">Select</option>
-                      <option value="Arcadia">Arcadia</option>
-                      <option value="Assault">Assault</option>
-                      <option value="Brawl">Brawl</option>
-                      <option value="Frostbite">Frostbite</option>
-                      <option value="Jumphouse">Jumphouse</option>
-                      <option value="Nexus">Nexus</option>
-                      <option value="Mosh Pit">Mosh Pit</option>
-                      <option value="Pythagoras">Pythagoras</option>
-                      <option value="Stadion">Stadion</option>
-                      <option value="Surf's Up">Surf's Up</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="sm:col-span-1 col-span-2">
-                  <label
-                    htmlFor="first-name"
-                    className="block text-sm font-semibold leading-6 text-white"
-                  >
-                    Winner score
-                  </label>
-                  <div className="mt-2.5">
-                    <input
-                      type="text"
-                      name="winnerScore"
-                      id="loserScore"
-                      maxLength={3}
-                      onChange={(e) => setWinnerScore(Number(e.target.value))}
-                      className="block w-full sm:border-0 border-solid border-2 border-slate-500 rounded-md border-0 px-3.5 py-2 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    />
-                  </div>
-                </div>
-                <div className="sm:col-span-1 col-span-2">
-                  <label
-                    htmlFor="first-name"
-                    className="block text-sm font-semibold leading-6 text-white"
-                  >
-                    Loser score
-                  </label>
-                  <div className="mt-2.5">
-                    <input
-                      type="text"
-                      name="opponentScore"
-                      id="opponentScore"
-                      maxLength={3}
-                      onChange={(e) => setLoserScore(Number(e.target.value))}
-                      className="block w-full sm:border-0 border-solid border-2 border-slate-500 rounded-md border-0 px-3.5 py-2 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    />
-                  </div>
-                </div>
+              <div className="flex flex-row gap-x-4 justify-center border-0 border-solid border-red-500">
+                <span className="text-white">Bulk Entry Mode</span>
+                <ToggleButton
+                  inactiveLabel={"Off"}
+                  activeLabel={"On"}
+                  value={bulkMode}
+                  onToggle={(bulkMode: boolean) => {
+                    setBulkMode(!bulkMode);
+                  }}
+                  thumbStyle={{ borderRadius: 2 }}
+                  trackStyle={{ borderRadius: 2 }}
+                />
               </div>
+              {bulkMode ? (
+                <div className="flex flex-row flex-wrap border-0 gap-y-4 border-solid border-red-500 text-white text-center justify-center">
+                  <span className="w-full pt-8 pb-8 text-2xl">
+                    Bulk entry mode allows you to paste comma separated results
+                    to report many games at once. Below is an example, if
+                    players were named Dog and Cat:{" "}
+                  </span>
+                  <span className="w-5/6 text-center">
+                    <b>Example:</b> Dog 82-70 frostbite, Cat 90-55 brawl -
+                    denotes Dog wins Frostbite 82-70, Cat wins Brawl 90-55
+                  </span>
+                  <span className="w-full pt-16 text-red-600 text-md">
+                    You must use exact names for players/maps in your list!
+                    Capitalization does not matter.
+                  </span>
+                  <div className="col-span-2 pt-2">
+                    <label
+                      htmlFor="opponentName"
+                      className="block text-sm font-semibold leading-6 text-white"
+                    >
+                      Opponent
+                      <span className="text-red-600"></span>
+                    </label>
+                    <div className="mt-2.5">
+                      <SelectSearch
+                        defaultValue={playerOpponent}
+                        options={opponentDropdownData}
+                        search={true}
+                        onChange={handleOpponentSelectChange}
+                        placeholder="Search opponent"
+                      />
+                    </div>
+                  </div>
+                  <textarea
+                    value={bulkModeTextArea}
+                    maxLength={1000}
+                    onChange={(e: any) => setBulkModeTextArea(e.target.value)}
+                    spellCheck={false}
+                    placeholder="msi 81-74 frostbite, msi 107-77 jumphouse, mazik 89-80 surfs up, etc..."
+                    className="w-5/6 h-32 p-4 text-black text-sm rounded-md"
+                  ></textarea>
+                  <span className="text-red-600">{bulkModeError}</span>
+                </div>
+              ) : (
+                <>
+                  <div className="grid grid-cols-1 gap-x-8 gap-y-4 sm:grid-cols-2">
+                    <div className="col-span-2">
+                      <label
+                        htmlFor="opponentName"
+                        className="block text-sm font-semibold leading-6 text-white"
+                      >
+                        Opponent username
+                        <span className="text-red-600"> *</span>
+                      </label>
+                      <div className="mt-2.5">
+                        <SelectSearch
+                          defaultValue={playerOpponent}
+                          options={opponentDropdownData}
+                          search={true}
+                          onChange={handleOpponentSelectChange}
+                          placeholder="Search opponent"
+                        />
+                      </div>
+                    </div>
+                    <div className="col-span-2">
+                      <label
+                        htmlFor="reporterIsWinner"
+                        className="block text-sm font-semibold leading-6 text-white"
+                      >
+                        Who won?
+                        <span className="text-red-600"> *</span>
+                      </label>
+                      <div className="mt-2.5 flex flex-col w-full gap-y-2 block text-sm font-semibold leading-6 text-white">
+                        <div className="flex align-center">
+                          <input
+                            type="radio"
+                            value="Yes"
+                            name="reporterIsWinner"
+                            className="custom-radio"
+                            onClick={() => setReporterIsWinner(true)}
+                          />{" "}
+                          Me ({username})
+                        </div>
+                        <div className="flex align-center">
+                          <input
+                            type="radio"
+                            value="No"
+                            name="reporterIsWinner"
+                            className="custom-radio"
+                            onClick={() => setReporterIsWinner(false)}
+                          />{" "}
+                          Opponent {playerOpponent ? `(${playerOpponent})` : ""}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-span-2 text-emerald-500 text-lg justify-center text-center py-4">
+                      The fields below are optional! Only opponent and match
+                      result are required.
+                    </div>
+                    <div className="col-span-2">
+                      <label
+                        htmlFor="password"
+                        className="block text-sm font-semibold leading-6 text-white"
+                      >
+                        Map
+                      </label>
+                      <div className="mt-2.5">
+                        <select
+                          className="block w-2/3 sm:border-0 border-solid border-2 border-slate-500 rounded-md border-0 px-3.5 py-2 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          value={reportedMap}
+                          onChange={(e) => setReportedMap(e.target.value)}
+                        >
+                          <option value="Select">Select</option>
+                          <option value="Arcadia">Arcadia</option>
+                          <option value="Assault">Assault</option>
+                          <option value="Brawl">Brawl</option>
+                          <option value="Frostbite">Frostbite</option>
+                          <option value="Jumphouse">Jumphouse</option>
+                          <option value="Nexus">Nexus</option>
+                          <option value="Mosh Pit">Mosh Pit</option>
+                          <option value="Pythagoras">Pythagoras</option>
+                          <option value="Stadion">Stadion</option>
+                          <option value="Surf's Up">Surf's Up</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="sm:col-span-1 col-span-2">
+                      <label
+                        htmlFor="first-name"
+                        className="block text-sm font-semibold leading-6 text-white"
+                      >
+                        Winner score
+                      </label>
+                      <div className="mt-2.5">
+                        <input
+                          type="text"
+                          name="winnerScore"
+                          id="loserScore"
+                          maxLength={3}
+                          onChange={(e) =>
+                            setWinnerScore(Number(e.target.value))
+                          }
+                          className="block w-full sm:border-0 border-solid border-2 border-slate-500 rounded-md border-0 px-3.5 py-2 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        />
+                      </div>
+                    </div>
+                    <div className="sm:col-span-1 col-span-2">
+                      <label
+                        htmlFor="first-name"
+                        className="block text-sm font-semibold leading-6 text-white"
+                      >
+                        Loser score
+                      </label>
+                      <div className="mt-2.5">
+                        <input
+                          type="text"
+                          name="opponentScore"
+                          id="opponentScore"
+                          maxLength={3}
+                          onChange={(e) =>
+                            setLoserScore(Number(e.target.value))
+                          }
+                          className="block w-full sm:border-0 border-solid border-2 border-slate-500 rounded-md border-0 px-3.5 py-2 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
               <div className="mt-12 flex flex-row space-x-12 justify-center">
                 <button
                   type="submit"
@@ -480,8 +586,8 @@ export const SoloLadder = () => {
                 <button
                   onClick={() => {
                     setReportMatchModalVisible(false);
+                    setBulkModeError('');
                   }}
-                  type="submit"
                   className="block w-full rounded-md bg-red-500 hover:bg-red-700 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
                   Nevermind

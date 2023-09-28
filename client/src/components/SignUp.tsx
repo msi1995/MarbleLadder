@@ -128,13 +128,13 @@ export const SignUp = () => {
                   htmlFor="first-name"
                   className="block text-sm font-semibold leading-6 text-white"
                 >
-                  Display Name<span className="text-red-600"> *</span>
+                  Display Name (no spaces)<span className="text-red-600"> *</span>
                 </label>
                 <div className="mt-2.5">
                   <input
                     type="text"
                     value={displayName}
-                    onChange={(e) => setDisplayName(e.target.value)}
+                    onChange={(e) => setDisplayName(e.target.value.replace(/[\s-]/g, ''))}
                     name="displayName"
                     id="displayName"
                     maxLength={18}
