@@ -274,11 +274,6 @@ export const SoloLadder = () => {
     console.log(e);
   }
 
-  // const unconfirmedMatches = matchData?.filter(
-  //   (match: LadderMatch) =>
-  //     !match.confirmed && !match.userIsSubmitter && !match.disputed
-  // );
-
   const handleOpponentSelectChange = (opponent: any) => {
     setPlayerOpponent(opponent);
   };
