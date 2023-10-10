@@ -2,7 +2,6 @@ import "../index.css";
 
 export const Homepage = () => {
   const username = localStorage.getItem("username");
-
   return (
     <div className="sm:pt-16 h-screen w-screen relative overflow-x-hidden">
       <div className="flex flex-col h-3/4 w-screen border-solid border-0 border-blue-600 flex justify-center align-middle items-center">
