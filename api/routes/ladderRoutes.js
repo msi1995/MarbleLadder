@@ -4,7 +4,6 @@ const { v4: uuidv4 } = require('uuid');
 const { ObjectId } = require('mongodb');
 const ladderPlayer = require('../models/LadderPlayer');
 const matchResult = require('../models/MatchResult');
-const e = require('express');
 const router = express.Router();
 
 router.get('/ladder-data', async (req, res) => {
