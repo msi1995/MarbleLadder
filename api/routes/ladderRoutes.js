@@ -6,6 +6,7 @@ const ladderPlayer = require('../models/LadderPlayer');
 const matchResult = require('../models/MatchResult');
 const router = express.Router();
 
+
 router.get('/ladder-data', async (req, res) => {
     try {
         const ladderData = await ladderPlayer.find({});
