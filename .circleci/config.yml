@@ -9,12 +9,9 @@ jobs:
     # See: https://circleci.com/docs/configuration-reference/#steps
     steps:
       - checkout
-      - run:
-          name: "Install react-scripts"
-          command: "npm install react-scripts --legacy-peer-deps"  # Install react-scripts globally or adjust as needed
       - run: 
           name: "install dependencies"
-          command: "npm install"
+          command: "npm install --legacy-peer-deps"
       - run:
           name: "Start the app"
           command: "cd client && npm start"  # Start your React app, adjust the command if needed
