@@ -6,4 +6,4 @@ workflows:
     jobs:
       - cypress/run:
           cypress-command: 'npx wait-on@latest http://localhost:3000 && npx cypress run'
-          start-command: 'cd api && npm install && npm run start & cd ../client && npm install && npm run start'
+          start-command: 'cd api && npm install && npm run start & cd client && npm install && npm run start'
