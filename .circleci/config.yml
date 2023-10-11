@@ -5,5 +5,5 @@ workflows:
   build:
     jobs:
       - cypress/run:
-          start-command: "npm run start"
+          start-command: "cd api && npm install && cd ../client && npm install && cd .. && npm run start"
 
