@@ -14,7 +14,7 @@ jobs:
           command: "rm -rf node_modules && rm -rf package-lock.json"
       - run:
           name: "install deps"
-          command: "npm install && cd client && npm install" 
+          command: "npm install && cd client && npm install && cd ../api && npm install" 
       - run:
           name: "Start the app"
           command: "npm start" # Start your React app, adjust the command if needed
