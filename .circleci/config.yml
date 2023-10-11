@@ -5,6 +5,5 @@ workflows:
   cypress_e2e:
     jobs:
       - cypress/run:
-          install-browsers: true
-          cypress-command: 'npx wait-on@latest http://localhost:3000 && npx cypress run --browser chrome'
-          start-command: 'cd client && npm install && npm run start'
+          cypress-command: 'npx wait-on@latest http://localhost:3000 && npx cypress run'
+          start-command: 'cd api && npm install && npm run start & cd client && npm install && npm run start'

@@ -7,7 +7,7 @@ const path = require('path');
 const app = express();
 app.use(express.json());
 app.use(cors());
-const uri = process.env.MONGODB_URI ?? 'mongodb://localhost:27017/marbleLadder'
+const uri = process.env.MONGODB_URI || process.env.MONGODB_CIRCLECI_URI || 'mongodb://localhost:27017/marbleLadder';
 const port = process.env.PORT ?? 3001;
 mongoose
     .connect(uri, {
@@ -25,7 +25,7 @@ app.use(express.static(path.join(__dirname, '../client/build')));
 
 app.get('*', function (req, res) {
     res.sendFile(path.resolve(__dirname, '../client/build/index.html'));
-  });
+});
 
 
 app.listen(port, () => console.log(`server connected on port ${port}`))
