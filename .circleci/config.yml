@@ -21,6 +21,8 @@ jobs:
       - run:
           name: "try to run cypress tests"
           command: "npx cypress run --browser chrome"
+          environment: 
+            CYPRESS_BASE_URL: http://localhost:3000
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
