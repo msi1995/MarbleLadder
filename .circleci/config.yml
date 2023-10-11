@@ -6,3 +6,4 @@ workflows:
     jobs:
       - cypress/run:
           start-command: "npm run start"
+
