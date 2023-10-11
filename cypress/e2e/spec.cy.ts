@@ -1,5 +1,5 @@
 describe('Homepage responds', () => {
   it('Visits the homepage', () => {
-    cy.visit("/")
+    cy.visit("https://marbleladder.com")
   })
 })
