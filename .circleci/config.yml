@@ -21,7 +21,7 @@ jobs:
       # Serve the built React app
       - run:
           name: Serve React App
-          command: npx serve -s build -l 3000
+          command: npx serve -s build -l 3000 &
       - run:
           name: Wait for App to Start
           command: sleep 10  # Adjust the duration as needed
