@@ -30,6 +30,9 @@ jobs:
           name: "install dependencies"
           command: "npm install"
       - run:
+          name: "Install react-scripts"
+          command: "npm install react-scripts"  # Install react-scripts globally or adjust as needed
+      - run:
           name: "Start the app"
           command: "cd client && npm start"  # Start your React app, adjust the command if needed
       - run:
