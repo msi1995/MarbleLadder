@@ -1,11 +1,10 @@
 version: 2.1
 orbs:
-  cypress: cypress-io/cypress@3
+  cypress: cypress-io/cypress@1
 workflows:
-  test:
+  build:
     jobs:
       - cypress/run:
-          install-browsers: true
-          start-command: 'cd client && npm install && npm run start'
-          wait-on: 'http://localhost:3000'
-          cypress-command: 'npx cypress run --headless'
+          start: cd client && npm install && npm start
+          wait-on: http://localhost:3000
+          command: npx cypress run --headless
