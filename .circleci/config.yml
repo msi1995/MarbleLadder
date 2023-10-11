@@ -14,10 +14,10 @@ jobs:
           command: "rm -rf node_modules && rm -rf package-lock.json"
       - run:
           name: "install deps"
-          command: "npm i --legacy-peer-deps"
+          command: "npm install && cd client && npm install" 
       - run:
           name: "Start the app"
-          command: "cd client && npm start" # Start your React app, adjust the command if needed
+          command: "npm start" # Start your React app, adjust the command if needed
       - run:
           name: "try to run cypress tests"
           command: "npx cypress run --browser chrome"
