@@ -4,11 +4,6 @@ orbs:
 workflows:
   cypress_e2e:
     jobs:
-      - run:
-          name: Start API and Client
-          command: |
-            cd api && npm install && npm run start &
-            cd ../client && npm install && npm run start
-            wait
       - cypress/run:
           cypress-command: 'npx wait-on@latest http://localhost:3000 && npx cypress run'
+          start-command: 'cd api && npm install && npm run start & cd ../client && npm install && npm run start'
