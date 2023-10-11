@@ -31,7 +31,7 @@ jobs:
           command: "npm install"
       - run:
           name: "try to run cypress tests"
-          command: "cypress run"
+          command: "npx cypress run --browser chrome"
           
 
 # Orchestrate jobs using workflows
