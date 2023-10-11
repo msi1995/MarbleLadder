@@ -17,7 +17,7 @@ jobs:
           command: "npm install && cd client && npm install && cd ../api && npm install" 
       - run:
           name: Build React App
-          command: npm run build
+          command: cd client && npm run build
       # Serve the built React app
       - run:
           name: Serve React App
