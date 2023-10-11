@@ -17,7 +17,7 @@ jobs:
           command: "npm install && cd client && npm install && cd ../api && npm install" 
       - run:
           name: "Start the app"
-          command: "npm start" # Start your React app, adjust the command if needed
+          command: "cd ../client && npm start" # Start your React app, adjust the command if needed
       - run:
           name: "try to run cypress tests"
           command: "npx cypress run --browser chrome"
