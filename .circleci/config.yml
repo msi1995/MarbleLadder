@@ -21,7 +21,7 @@ jobs:
     # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/configuration-reference/#executor-job
     docker:
-      - image: cypress/included:3.4.0
+      - image: cypress/browsers:
     # Add steps to the job
     # See: https://circleci.com/docs/configuration-reference/#steps
     steps:
@@ -31,7 +31,7 @@ jobs:
           command: "npm install"
       - run:
           name: "try to run cypress tests"
-          command: "npx cypress run"
+          command: "cypress run"
           
 
 # Orchestrate jobs using workflows
