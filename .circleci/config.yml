@@ -1,9 +1,23 @@
 version: 2.1
-orbs:
-  cypress: cypress-io/cypress@3
-workflows:
+jobs:
   build:
-    jobs:
-      - cypress/run:
-          start-command: "cd api && npm install && cd ../client && npm install && cd .. && npm run start"
-
+    docker:
+      - image: cypress/browsers:chrome67
+    steps:
+      - checkout
+      # Add steps for building your React app
+      # Install dependencies, build the app, etc.
+      - run:
+          name: install dependencies
+          command: npm install && cd client && npm install && cd ../api && npm install
+      - run:
+          name: build the app
+          command: npm run build
+      # Serve the built React app
+      - run:
+          name: Serve React App
+          command: npx serve -s build -l 3000
+      # Add steps for running Cypress tests
+      - run:
+          name: Run Cypress Tests
+          command: npm run cypress:run
