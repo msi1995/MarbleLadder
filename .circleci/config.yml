@@ -11,7 +11,7 @@ jobs:
       - checkout
       - run:
           name: "Install react-scripts"
-          command: "npm install react-scripts"  # Install react-scripts globally or adjust as needed
+          command: "npm install react-scripts --legacy-peer-deps"  # Install react-scripts globally or adjust as needed
       - run: 
           name: "install dependencies"
           command: "npm install"
