@@ -23,8 +23,8 @@ jobs:
           name: Serve React App
           command: npx serve -s build -l 3000 &
       - run:
-        name: Wait for App to Start
-        command: sleep 10  # Adjust the duration as needed
+          name: Wait for App to Start
+          command: sleep 10  # Adjust the duration as needed
       - run:
           name: "try to run cypress tests"
           command: "npx cypress run --browser chrome"
