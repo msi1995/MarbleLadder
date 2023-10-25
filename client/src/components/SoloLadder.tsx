@@ -40,20 +40,20 @@ const smallScreen = () => {
   return window.innerWidth <= 850;
 };
 
-const columns: ColumnsType<PlayerLadderData> = [
+let columns: ColumnsType<PlayerLadderData> = [
   {
     title: "Rank",
     dataIndex: "rank",
     key: "rank",
     align: smallScreen() ? "center" : "justify",
-    width: smallScreen() ? "18%" : "15%",
+    width: smallScreen() ? "auto" : "10%",
   },
   {
     title: "Player",
     dataIndex: "username",
     key: "username",
     align: smallScreen() ? "center" : "justify",
-    width: smallScreen() ? "25%" : "30%",
+    width: smallScreen() ? "auto" : "30%",
     render: (text, record) => (
       <NavLink
         to={{ pathname: `/player/${text}` }}
@@ -68,7 +68,7 @@ const columns: ColumnsType<PlayerLadderData> = [
     dataIndex: "ratingScore",
     key: "ratingScore",
     align: smallScreen() ? "center" : "justify",
-    width: "20%",
+    width: smallScreen() ? "auto" : "15%",
   },
   {
     title: "W/L",
@@ -86,7 +86,7 @@ const columns: ColumnsType<PlayerLadderData> = [
     key: "streak",
     align: smallScreen() ? "center" : "justify",
     dataIndex: "streak",
-    width: "20%",
+    width: smallScreen() ? "auto" : "20%",
     render: (_, { currentStreak }) => (
       <>
         <Tag
@@ -102,7 +102,28 @@ const columns: ColumnsType<PlayerLadderData> = [
       </>
     ),
   },
+  {
+    title: "Action",
+    dataIndex: "action",
+    key: "action",
+    align: "center",
+    width: smallScreen() ? "auto" : "10%",
+    render: (text, record) => (
+      <>
+      <NavLink
+      className='bg-blue-600 text-white px-2 py-1 rounded-md hover:bg-blue-800 hover:text-white'
+        to={{ pathname: `/player/${record.username}` }}
+        state={{ rank: record.rank}}
+      >View Player
+      </NavLink>
+      </>
+    ),
+  },
 ];
+
+if (smallScreen()) {
+  columns = columns.filter((item) => item.key !== "action");
+}
 
 export const SoloLadder = () => {
   const navigate = useNavigate();
