@@ -8,6 +8,7 @@ import { handleLogout } from "../utils/utils";
 import { useNavigate, useLocation, NavLink } from "react-router-dom";
 import moment from "moment";
 
+
 export const PlayerInfo = () => {
   const navigate = useNavigate();
   const cookies = new Cookies();
@@ -16,10 +17,58 @@ export const PlayerInfo = () => {
   const { state } = location;
   const [playerData, setPlayerData] = useState<any>();
   const [playerMatchData, setPlayerMatchData] = useState<any>();
+  const [averagePointDifferential, setAveragePointDifferential] =
+    useState<number>(0);
   const { name: player_name } = useParams();
+
+  useEffect(() => {
+    getPlayerPageData(player_name);
+  }, [player_name]);
+
+  useEffect(() => {
+    calculatePointDifferential(playerMatchData);
+  }, [playerMatchData]);
 
   const smallScreen = () => {
     return window.innerWidth <= 850;
+  };
+
+  const calculatePointDifferential = (matches: any[]) => {
+    let diff = 0;
+    for (let i = 0; i < matches?.length; i++) {
+      if (matches[i].P1Score !== 0 || matches[i].P2Score !== 0) {
+        matches[i].matchWinnerName === player_name
+          ? (diff += Math.abs(matches[i].P1Score - matches[i].P2Score))
+          : (diff -= Math.abs(matches[i].P1Score - matches[i].P2Score));
+      }
+    }
+    diff = Math.round(diff / matches?.length);
+    setAveragePointDifferential(diff);
+  };
+
+  const getPlayerPageData = async (playerName: string | undefined) => {
+    try {
+      const res: Response = await fetch(
+        BASE_ROUTE + `/player-page-data/${playerName}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (res.status === 200) {
+        const data = await res.json();
+        setPlayerData(data.playerData);
+        setPlayerMatchData(data.matchData);
+      }
+      if (res.status === 403) {
+        handleLogout(navigate, cookies);
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   interface PlayerMatchHistory {
@@ -61,7 +110,7 @@ export const PlayerInfo = () => {
         <>
           <img
             className="sm:w-32 sm:h-24 w-16 rounded-md"
-            src={`/Level_Images/${map || 'NoMap'}.png`}
+            src={`/Level_Images/${map || "NoMap"}.png`}
           ></img>
         </>
       ),
@@ -117,37 +166,6 @@ export const PlayerInfo = () => {
     columns = columns.filter((item) => item.key !== "traceID");
   }
 
-  const getPlayerPageData = async (playerName: string | undefined) => {
-    try {
-      const res: Response = await fetch(
-        BASE_ROUTE + `/player-page-data/${playerName}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      if (res.status === 200) {
-        const data = await res.json();
-        setPlayerData(data.playerData);
-        setPlayerMatchData(data.matchData);
-      }
-      if (res.status === 403) {
-        handleLogout(navigate, cookies);
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  useEffect(() => {
-    getPlayerPageData(player_name);
-  }, [player_name]);
-
-  useEffect(() => {}, [playerData, playerMatchData]);
-
   return (
     <div className="sm:pt-24 pt-24 h-screen w-screen overflow-x-hidden border-0 border-solid border-red-600">
       <div className="mx-auto rounded-lg bg-black/90 w-5/6 sm:w-2/3">
@@ -178,6 +196,16 @@ export const PlayerInfo = () => {
             )}
             %
           </span>
+          <div>
+            <span>Average Margin: {" "}</span>
+            <span
+              className={
+                averagePointDifferential > 0 ? "text-green-600" : "text-red-600"
+              }
+            >
+              {averagePointDifferential} pts
+            </span>
+          </div>
           <div>
             <span>Rating: </span>
             <span
