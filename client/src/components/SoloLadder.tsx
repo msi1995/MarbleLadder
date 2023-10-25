@@ -53,7 +53,7 @@ let columns: ColumnsType<PlayerLadderData> = [
     dataIndex: "username",
     key: "username",
     align: smallScreen() ? "center" : "justify",
-    width: smallScreen() ? "auto" : "30%",
+    width: smallScreen() ? "auto" : "25%",
     render: (text, record) => (
       <NavLink
         to={{ pathname: `/player/${text}` }}
@@ -86,7 +86,7 @@ let columns: ColumnsType<PlayerLadderData> = [
     key: "streak",
     align: smallScreen() ? "center" : "justify",
     dataIndex: "streak",
-    width: smallScreen() ? "auto" : "20%",
+    width: smallScreen() ? "auto" : "15%",
     render: (_, { currentStreak }) => (
       <>
         <Tag
@@ -107,7 +107,7 @@ let columns: ColumnsType<PlayerLadderData> = [
     dataIndex: "action",
     key: "action",
     align: "center",
-    width: smallScreen() ? "auto" : "10%",
+    width: smallScreen() ? "auto" : "20%",
     render: (text, record) => (
       <>
       <NavLink
