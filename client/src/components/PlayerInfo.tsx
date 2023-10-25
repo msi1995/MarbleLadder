@@ -203,7 +203,7 @@ export const PlayerInfo = () => {
           <span>Nemesis: work in progress</span>
         </div>
       </div>
-      <div className="sm:pt-24 pt-16 flex flex-col items-center border-0 border-solid border-green-600">
+      <div className="sm:pt-12 pt-12 flex flex-col items-center border-0 border-solid border-green-600">
         <div className="pb-8">
           <span className="bg-black/50 py-2 px-4 text-white text-3xl rounded-md">
             Match History
@@ -214,7 +214,7 @@ export const PlayerInfo = () => {
           columns={columns}
           dataSource={playerMatchData}
           showHeader={true}
-          scroll={{ y: 825 }}
+          scroll={{ y: 650 }}
           pagination={{
             showSizeChanger: true,
             defaultPageSize: smallScreen() ? 5 : 25,
