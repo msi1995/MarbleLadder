@@ -36,7 +36,6 @@ export const PlayerInfo = () => {
   const calculatePointDifferential = (matches: any[]) => {
     let diff = 0;
     for (let i = 0; i < matches?.length; i++) {
-      console.log(matches[i]);
       if (matches[i].P1Score !== 0 || matches[i].P2Score !== 0) {
         matches[i].matchWinnerName === player_name
           ? (diff += Math.abs(matches[i].P1Score - matches[i].P2Score))
