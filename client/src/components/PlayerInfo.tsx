@@ -61,7 +61,7 @@ export const PlayerInfo = () => {
         <>
           <img
             className="sm:w-32 sm:h-24 w-16 rounded-md"
-            src={`/Level_Images/${map}.png`}
+            src={`/Level_Images/${map || 'NoMap'}.png`}
           ></img>
         </>
       ),
