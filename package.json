@@ -10,6 +10,7 @@
         "cypress:o": "cypress open"
     },
     "dependencies": {
+        "moment": "^2.29.4",
         "react-toggle-button": "^2.2.0"
     },
     "devDependencies": {

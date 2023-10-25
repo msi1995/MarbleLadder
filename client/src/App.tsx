@@ -9,6 +9,7 @@ import { SignIn } from "./components/SignIn";
 import { SignUp } from "./components/SignUp";
 import { PageNotFound } from "./components/PageNotFound";
 import {useState } from 'react';
+import { PlayerInfo } from "./components/PlayerInfo";
 
 
 
@@ -28,6 +29,7 @@ function App() {
         <Route path="/gem-hunt-records" element={<GemHuntRecords/>} />
         <Route path="/about" element={<About/>} />
         <Route path="/contact" element={<Contact/>} />
+        <Route path="/player/:name" element={<PlayerInfo/>}/>
         <Route path="/404" element={<PageNotFound/>} />
         <Route path="*" element={<Navigate to="/404"/>}/>
       </Routes>

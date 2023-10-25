@@ -25,6 +25,28 @@ router.get('/ladder-data', async (req, res) => {
     }
 });
 
+router.get('/player-page-data/:player', async (req, res) => {
+
+    const playerName = req.params.player
+
+    try {
+        const playerData = await ladderPlayer.findOne({
+            username: playerName
+        })
+        if (playerData) {
+            playerData.password = undefined;
+        }
+        
+        const matchData = await matchResult.find({
+            $or: [{ matchP1Name: playerName }, { matchP2Name: playerName }]
+        });
+        res.status(200).json({ playerData, matchData });
+    } catch (err) {
+        console.error(`error: ${err}`);
+        res.status(500).send({ error: "Error fetching player data from DB." });
+    }
+});
+
 router.post('/match-results', auth, async (req, res) => {
     let matchWinnerID;
     let matchWinnerName;
@@ -166,7 +188,7 @@ router.post('/match-results/bulk', auth, async (req, res) => {
 
     //if reported name in each entry matches P1 or P2 && score follows regex && map exists in map array && all 
     // arrs are same length -- this should ensure everything is valid
-    if(namesValid && scoresValid && mapsValid && enteredPlayerNames.length == enteredScores.length && enteredScores.length == enteredMapsProcessed.length) {
+    if (namesValid && scoresValid && mapsValid && enteredPlayerNames.length == enteredScores.length && enteredScores.length == enteredMapsProcessed.length) {
     }
     else {
         res.status(400).send({
@@ -190,7 +212,7 @@ router.post('/match-results/bulk', auth, async (req, res) => {
             const loserScore = Math.min(...intScores);
 
             //ties are voided.
-            if(winnerScore === loserScore){
+            if (winnerScore === loserScore) {
                 continue;
             }
             const P1Score = matchWinnerName === playerInfo.username.toLowerCase() ? winnerScore : loserScore;
