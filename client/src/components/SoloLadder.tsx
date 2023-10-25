@@ -7,6 +7,7 @@ import SelectSearch from "react-select-search";
 import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
 import { handleLogout } from "../utils/utils";
+import { NavLink } from "react-router-dom";
 import ToggleButton from "react-toggle-button";
 import "react-select-search/style.css";
 
@@ -36,7 +37,7 @@ interface OpponentData {
 }
 
 const smallScreen = () => {
-  return window.innerWidth <= 768;
+  return window.innerWidth <= 850;
 };
 
 const columns: ColumnsType<PlayerLadderData> = [
@@ -53,7 +54,14 @@ const columns: ColumnsType<PlayerLadderData> = [
     key: "username",
     align: smallScreen() ? "center" : "justify",
     width: smallScreen() ? "25%" : "30%",
-    render: (text) => <a>{text}</a>,
+    render: (text, record) => (
+      <NavLink
+        to={{ pathname: `/player/${text}` }}
+        state={{ rank: record.rank}}
+      >
+        {text}
+      </NavLink>
+    ),
   },
   {
     title: "Rating",
@@ -216,10 +224,10 @@ export const SoloLadder = () => {
             results: bulkModeTextArea,
           }),
         });
-        if(res.status === 200){
+        if (res.status === 200) {
           setReportMatchModalVisible(false);
-          setBulkModeTextArea('');
-          setBulkModeError('');
+          setBulkModeTextArea("");
+          setBulkModeError("");
         }
         if (res.status === 400) {
           const data = await res.json();
@@ -248,7 +256,7 @@ export const SoloLadder = () => {
             opponentScore: reporterIsWinner ? loserScore : winnerScore,
           }),
         });
-        if (res.status === 200){
+        if (res.status === 200) {
           setReportMatchModalVisible(false);
         }
         if (res.status === 403) {
@@ -410,20 +418,25 @@ export const SoloLadder = () => {
               {bulkMode ? (
                 <div className="flex flex-row flex-wrap border-0 gap-y-4 border-solid border-red-500 text-white text-center justify-center">
                   <span className="w-full pt-8 pb-8 text-xl">
-                    Bulk entry allows you to paste comma separated results
-                    to report many games at once. Below is an example if
-                    players were named Dog & Cat:{" "}
+                    Bulk entry allows you to paste comma separated results to
+                    report many games at once. Below is an example if players
+                    were named Dog & Cat:{" "}
                   </span>
                   <span className="w-full text-center text-md">
-                    <b>Example:</b> Dog 82-70 frostbite, Cat 90-55 brawl, Cat 70-68 mosh pit
+                    <b>Example:</b> Dog 82-70 frostbite, Cat 90-55 brawl, Cat
+                    70-68 mosh pit
                   </span>
-                  <span className="sm:w-1/2 w-4/6 text-center text-sm">This would mean that Dog won Frostbite 82-70, Cat won Brawl 90-55, and Cat won Mosh Pit 70-68.</span>
+                  <span className="sm:w-1/2 w-4/6 text-center text-sm">
+                    This would mean that Dog won Frostbite 82-70, Cat won Brawl
+                    90-55, and Cat won Mosh Pit 70-68.
+                  </span>
                   <span className="w-full pt-16 text-red-600 text-md">
                     You must use exact names for players/maps in your list!
                     Capitalization does not matter.
                   </span>
                   <span className="w-full text-red-600 text-md">
-                    If you cannot remember the score, just do your best or write 1-0. Score is not part of the ELO calculation.
+                    If you cannot remember the score, just do your best or write
+                    1-0. Score is not part of the ELO calculation.
                   </span>
                   <div className="col-span-2 pt-2">
                     <label
@@ -506,7 +519,8 @@ export const SoloLadder = () => {
                       </div>
                     </div>
                     <div className="col-span-2 text-emerald-500 text-lg justify-center text-center py-4">
-                      The fields below are optional! Score/map do not affect ELO calculations.
+                      The fields below are optional! Score/map do not affect ELO
+                      calculations.
                     </div>
                     <div className="col-span-2">
                       <label
@@ -588,7 +602,7 @@ export const SoloLadder = () => {
                 <button
                   onClick={() => {
                     setReportMatchModalVisible(false);
-                    setBulkModeError('');
+                    setBulkModeError("");
                   }}
                   className="block w-full rounded-md bg-red-500 hover:bg-red-700 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
