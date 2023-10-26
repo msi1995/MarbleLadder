@@ -8,7 +8,6 @@ import { handleLogout } from "../utils/utils";
 import { useNavigate, useLocation, NavLink } from "react-router-dom";
 import moment from "moment";
 
-
 export const PlayerInfo = () => {
   const navigate = useNavigate();
   const cookies = new Cookies();
@@ -75,10 +74,14 @@ export const PlayerInfo = () => {
     traceID: string;
     matchDate: Date;
     matchP1Name: string;
+    matchP1Rating: number;
     matchP2Name: string;
+    matchP2Rating: number;
     P1Score: number;
     P2Score: number;
     matchWinnerName: string;
+    matchWinnerELOChange: number;
+    matchLoserELOChange: number;
     map: string;
   }
 
@@ -159,6 +162,46 @@ export const PlayerInfo = () => {
         </div>
       ),
     },
+    {
+      title: "New ELO",
+      key: "ELO_change",
+      align: "left",
+      width: smallScreen() ? "auto" : "20%",
+      render: (
+        _,
+        {
+          matchWinnerName,
+          matchP1Name,
+          matchP1Rating,
+          matchP2Rating,
+          matchWinnerELOChange,
+          matchLoserELOChange,
+        }
+      ) => {
+        let ELO_string;
+
+        if (matchWinnerELOChange === null || matchLoserELOChange === null) {
+          ELO_string = "No data";
+        } else {
+          const isWinner = player_name === matchWinnerName;
+          const isP1 = player_name === matchP1Name;
+          const baseRating = isP1 ? matchP1Rating : matchP2Rating;
+          const eloChange = isWinner ? matchWinnerELOChange : matchLoserELOChange;
+          const eloChangeString = isWinner ? `[+${eloChange}]` : `[${eloChange}]`;
+        
+          ELO_string = `${baseRating + eloChange} ${eloChangeString}`;
+        }
+        return (
+          <div
+            className={
+              matchWinnerName === player_name
+                ? "text-green-600"
+                : "text-red-600"
+            }
+          >{ELO_string}</div>
+        );
+      },
+    },
   ];
 
   //don't show match ID on mobile. too long, doesn't matter.
@@ -197,7 +240,7 @@ export const PlayerInfo = () => {
             %
           </span>
           <div>
-            <span>Average Margin: {" "}</span>
+            <span>Average Margin: </span>
             <span
               className={
                 averagePointDifferential > 0 ? "text-green-600" : "text-red-600"

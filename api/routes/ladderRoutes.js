@@ -37,8 +37,11 @@ router.get('/player-page-data/:player', async (req, res) => {
             playerData.password = undefined;
         }
         
+
+        // only grab confirmed matches for the match history area.
         const matchData = await matchResult.find({
-            $or: [{ matchP1Name: playerName }, { matchP2Name: playerName }]
+            $or: [{ matchP1Name: playerName }, { matchP2Name: playerName }],
+            confirmed: true
         });
         res.status(200).json({ playerData, matchData });
     } catch (err) {
@@ -357,6 +360,10 @@ router.post('/confirm-match', auth, async (req, res) => {
         await matchResult.updateOne({ traceID: req.body.traceID },
             {
                 $set: {
+                    matchP1Rating: matchWinner === unconfirmedMatch.matchP1 ? matchWinnerRatingScore : matchLoserRatingScore,
+                    matchP2Rating: matchWinner === unconfirmedMatch.matchP2 ? matchWinnerRatingScore : matchLoserRatingScore,
+                    matchWinnerELOChange: updatedWinnerRating - matchWinnerRatingScore,
+                    matchLoserELOChange: updatedLoserRating - matchLoserRatingScore,
                     confirmed: true
                 }
             }

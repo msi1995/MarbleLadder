@@ -14,6 +14,9 @@ var matchResultModel = {
     matchP1Name: {
         type: String,
     },
+    matchP1Rating: {
+        type: Number,
+    },
     matchP2: {
         type: String,
         required: true,
@@ -21,6 +24,9 @@ var matchResultModel = {
     matchP2Name: {
         type: String,
         required: true,
+    },
+    matchP2Rating: {
+        type: Number
     },
     P1Score: {
         type: Number,
@@ -37,6 +43,14 @@ var matchResultModel = {
     matchWinnerName: {
         type: String,
         required: true,
+    },
+    matchWinnerELOChange: {
+        type: Number,
+        required: false,
+    },
+    matchLoserELOChange: {
+        type: Number,
+        required: false,
     },
     matchDate: {
         type: Date,
