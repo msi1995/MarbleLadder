@@ -180,7 +180,7 @@ export const PlayerInfo = () => {
       ) => {
         let ELO_string;
 
-        if (matchWinnerELOChange === null || matchLoserELOChange === null) {
+        if (!matchWinnerELOChange|| !matchLoserELOChange) {
           ELO_string = "No data";
         } else {
           const isWinner = player_name === matchWinnerName;
