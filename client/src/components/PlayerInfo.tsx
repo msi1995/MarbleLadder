@@ -173,7 +173,6 @@ export const PlayerInfo = () => {
         {
           matchWinnerName,
           matchP1Name,
-          matchP2Name,
           matchP1Rating,
           matchP2Rating,
           matchWinnerELOChange,
