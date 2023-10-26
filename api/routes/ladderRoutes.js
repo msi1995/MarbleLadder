@@ -35,6 +35,7 @@ router.get('/player-page-data/:player', async (req, res) => {
         })
         if (playerData) {
             playerData.password = undefined;
+            playerData.email = undefined;
         }
         
 
