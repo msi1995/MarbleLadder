@@ -357,6 +357,10 @@ router.post('/confirm-match', auth, async (req, res) => {
         await matchResult.updateOne({ traceID: req.body.traceID },
             {
                 $set: {
+                    matchP1Rating: matchWinner === unconfirmedMatch.matchP1 ? matchWinnerRatingScore : matchLoserRatingScore,
+                    matchP2Rating: matchWinner === unconfirmedMatch.matchP2 ? matchWinnerRatingScore : matchLoserRatingScore,
+                    matchWinnerELOChange: updatedWinnerRating - matchWinnerRatingScore,
+                    matchLoserELOChange: updatedLoserRating - matchLoserRatingScore,
                     confirmed: true
                 }
             }
