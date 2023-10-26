@@ -26,7 +26,6 @@ export const PlayerInfo = () => {
 
   useEffect(() => {
     calculatePointDifferential(playerMatchData);
-    console.log(playerMatchData);
   }, [playerMatchData]);
 
   const smallScreen = () => {
