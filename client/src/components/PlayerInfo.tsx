@@ -16,8 +16,11 @@ export const PlayerInfo = () => {
   const { state } = location;
   const [playerData, setPlayerData] = useState<any>();
   const [playerMatchData, setPlayerMatchData] = useState<any>();
-  const [averagePointDifferential, setAveragePointDifferential] =
-    useState<number>(0);
+  const [rival, setRival] = useState<string | null>(null);
+  const [rivalWins, setRivalWins] = useState<number | null>(null);
+  const [averagePointDifferential, setAveragePointDifferential] = useState<
+    number | null
+  >(null);
   const { name: player_name } = useParams();
 
   useEffect(() => {
@@ -26,6 +29,7 @@ export const PlayerInfo = () => {
 
   useEffect(() => {
     calculatePointDifferential(playerMatchData);
+    calculateRival(playerMatchData);
   }, [playerMatchData]);
 
   const smallScreen = () => {
@@ -33,6 +37,9 @@ export const PlayerInfo = () => {
   };
 
   const calculatePointDifferential = (matches: any[]) => {
+    if (!matches) {
+      setAveragePointDifferential(null);
+    }
     let diff = 0;
     for (let i = 0; i < matches?.length; i++) {
       if (matches[i].P1Score !== 0 || matches[i].P2Score !== 0) {
@@ -43,6 +50,32 @@ export const PlayerInfo = () => {
     }
     diff = Math.round(diff / matches?.length);
     setAveragePointDifferential(diff);
+  };
+
+  const calculateRival = (matches: any) => {
+    const dict: any = {};
+    for (let i = 0; i < matches?.length; i++) {
+      if (matches[i].matchWinnerName != player_name) {
+        dict[matches[i].matchWinnerName]
+          ? (dict[matches[i].matchWinnerName] += 1)
+          : (dict[matches[i].matchWinnerName] = 1);
+      }
+    }
+    let rivalName = null;
+    let maxValue = 0;
+    for (const key in dict) {
+      if (dict[key] > maxValue) {
+        rivalName = key;
+        maxValue = dict[key];
+      }
+    }
+    if (maxValue > 0 && rivalName) {
+      setRival(rivalName);
+      setRivalWins(maxValue);
+    } else {
+      setRival(null);
+      setRivalWins(null);
+    }
   };
 
   const getPlayerPageData = async (playerName: string | undefined) => {
@@ -124,7 +157,16 @@ export const PlayerInfo = () => {
       align: "left",
       dataIndex: "result",
       width: smallScreen() ? "auto" : "20%",
-      render: (_, { matchWinnerName, matchP1Name, matchP2Name, matchP1Rating, matchP2Rating }) => (
+      render: (
+        _,
+        {
+          matchWinnerName,
+          matchP1Name,
+          matchP2Name,
+          matchP1Rating,
+          matchP2Rating,
+        }
+      ) => (
         <>
           <Tag color={matchWinnerName === player_name ? "green" : "volcano"}>
             {matchWinnerName === player_name ? "Victory" : "Defeat"}
@@ -132,9 +174,13 @@ export const PlayerInfo = () => {
           against{" "}
           <b>
             {matchP1Name === player_name ? (
-              <NavLink to={`/player/${matchP2Name}`}>{`${matchP2Name} [${matchP2Rating ?? '?'}]`}</NavLink>
+              <NavLink to={`/player/${matchP2Name}`}>{`${matchP2Name} [${
+                matchP2Rating ?? "?"
+              }]`}</NavLink>
             ) : (
-              <NavLink to={`/player/${matchP1Name}`}>{`${matchP1Name} [${matchP1Rating ?? '?'}]`}</NavLink>
+              <NavLink to={`/player/${matchP1Name}`}>{`${matchP1Name} [${
+                matchP1Rating ?? "?"
+              }]`}</NavLink>
             )}
           </b>
         </>
@@ -180,15 +226,19 @@ export const PlayerInfo = () => {
       ) => {
         let ELO_string;
 
-        if (!matchWinnerELOChange|| !matchLoserELOChange) {
+        if (!matchWinnerELOChange || !matchLoserELOChange) {
           ELO_string = "No data";
         } else {
           const isWinner = player_name === matchWinnerName;
           const isP1 = player_name === matchP1Name;
           const baseRating = isP1 ? matchP1Rating : matchP2Rating;
-          const eloChange = isWinner ? matchWinnerELOChange : matchLoserELOChange;
-          const eloChangeString = isWinner ? `[+${eloChange}]` : `[${eloChange}]`;
-        
+          const eloChange = isWinner
+            ? matchWinnerELOChange
+            : matchLoserELOChange;
+          const eloChangeString = isWinner
+            ? `[+${eloChange}]`
+            : `[${eloChange}]`;
+
           ELO_string = `${baseRating + eloChange} ${eloChangeString}`;
         }
         return (
@@ -198,7 +248,9 @@ export const PlayerInfo = () => {
                 ? "text-green-600"
                 : "text-red-600"
             }
-          >{ELO_string}</div>
+          >
+            {ELO_string}
+          </div>
         );
       },
     },
@@ -234,20 +286,28 @@ export const PlayerInfo = () => {
           </div>
           <span>
             Winrate:{" "}
-            {Math.round(
-              (playerData?.wins / (playerData?.wins + playerData?.losses)) * 100
-            )}
-            %
+            {playerData?.wins || playerData?.losses
+              ? `${Math.round(
+                  (playerData?.wins / (playerData?.wins + playerData?.losses)) *
+                    100
+                )}%`
+              : "None"}
           </span>
           <div>
             <span>Average Margin: </span>
-            <span
-              className={
-                averagePointDifferential > 0 ? "text-green-600" : "text-red-600"
-              }
-            >
-              {averagePointDifferential} pts
-            </span>
+            {averagePointDifferential ? (
+              <span
+                className={
+                  averagePointDifferential > 0
+                    ? "text-green-600"
+                    : "text-red-600"
+                }
+              >
+                {averagePointDifferential} pts
+              </span>
+            ) : (
+              <span>None</span>
+            )}
           </div>
           <div>
             <span>Rating: </span>
@@ -270,8 +330,15 @@ export const PlayerInfo = () => {
               : `${Math.abs(playerData?.currentStreak)} Losses`}
           </span>
         </div>
-        <div className="flex mx-auto py-6 flex-wrap justify-evenly flex-row text-white sm:text-xl text-md border-1 border-solid border-red-600">
-          <span>Nemesis: work in progress</span>
+        <div className="flex sm:mx-auto mx-4 py-6 flex-wrap text-center justify-center flex-row text-white sm:text-xl text-md border-1 border-solid border-red-600">
+          <span className="text-red-600 sm:pr-2 text-xl">Rival:</span>
+          {rivalWins ? (
+            <span>
+              {rival} has beaten this player {rivalWins} times.{" "}
+            </span>
+          ) : (
+            <span>No rival yet.</span>
+          )}
         </div>
       </div>
       <div className="sm:pt-12 pt-12 flex flex-col items-center border-0 border-solid border-green-600">
