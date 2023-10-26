@@ -333,9 +333,12 @@ export const PlayerInfo = () => {
         <div className="flex sm:mx-auto mx-4 py-6 flex-wrap text-center justify-center flex-row text-white sm:text-xl text-md border-1 border-solid border-red-600">
           <span className="text-red-600 sm:pr-2 text-xl">Rival:</span>
           {rivalWins ? (
+            <div>
+              <NavLink className='text-violet-300 hover:text-violet-400' to={`/player/${rival}`}>{rival} {' '}</NavLink>
             <span>
-              {rival} has beaten this player {rivalWins} times.{" "}
+              has beaten this player {rivalWins} times.
             </span>
+            </div>
           ) : (
             <span>No rival yet.</span>
           )}
