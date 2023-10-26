@@ -124,7 +124,7 @@ export const PlayerInfo = () => {
       align: "left",
       dataIndex: "result",
       width: smallScreen() ? "auto" : "20%",
-      render: (_, { matchWinnerName, matchP1Name, matchP2Name }) => (
+      render: (_, { matchWinnerName, matchP1Name, matchP2Name, matchP1Rating, matchP2Rating }) => (
         <>
           <Tag color={matchWinnerName === player_name ? "green" : "volcano"}>
             {matchWinnerName === player_name ? "Victory" : "Defeat"}
@@ -132,9 +132,9 @@ export const PlayerInfo = () => {
           against{" "}
           <b>
             {matchP1Name === player_name ? (
-              <NavLink to={`/player/${matchP2Name}`}>{matchP2Name}</NavLink>
+              <NavLink to={`/player/${matchP2Name}`}>{`${matchP2Name} [${matchP2Rating ?? '?'}]`}</NavLink>
             ) : (
-              <NavLink to={`/player/${matchP1Name}`}>{matchP1Name}</NavLink>
+              <NavLink to={`/player/${matchP1Name}`}>{`${matchP1Name} [${matchP1Rating ?? '?'}]`}</NavLink>
             )}
           </b>
         </>
