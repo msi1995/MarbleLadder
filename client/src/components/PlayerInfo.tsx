@@ -6,6 +6,7 @@ import type { ColumnsType } from "antd/es/table";
 import Cookies from "universal-cookie";
 import { handleLogout } from "../utils/utils";
 import { useNavigate, useLocation, NavLink } from "react-router-dom";
+import { round } from "../utils/utils";
 import moment from "moment";
 
 export const PlayerInfo = () => {
@@ -287,9 +288,10 @@ export const PlayerInfo = () => {
           <span>
             Winrate:{" "}
             {playerData?.wins || playerData?.losses
-              ? `${Math.round(
+              ? `${round(
                   (playerData?.wins / (playerData?.wins + playerData?.losses)) *
-                    100
+                    100,
+                  1
                 )}%`
               : "None"}
           </span>
@@ -334,10 +336,13 @@ export const PlayerInfo = () => {
           <span className="text-red-600 sm:pr-2 text-xl">Rival:</span>
           {rivalWins ? (
             <div>
-              <NavLink className='text-violet-300 hover:text-violet-400' to={`/player/${rival}`}>{rival} {' '}</NavLink>
-            <span>
-              has beaten this player {rivalWins} times.
-            </span>
+              <NavLink
+                className="text-violet-300 hover:text-violet-400"
+                to={`/player/${rival}`}
+              >
+                {rival}{" "}
+              </NavLink>
+              <span>has beaten this player {rivalWins} times.</span>
             </div>
           ) : (
             <span>No rival yet.</span>
