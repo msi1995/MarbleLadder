@@ -666,8 +666,8 @@ export const SoloLadder = () => {
           scroll={{ y: 825 }}
           pagination={{
             showSizeChanger: true,
-            defaultPageSize: smallScreen() ? 5 : 10,
-            pageSizeOptions: [5, 10, 20, 50],
+            defaultPageSize: smallScreen() ? 5 : 15,
+            pageSizeOptions: [5, 15, 20, 50],
           }}
         />
       </div>
