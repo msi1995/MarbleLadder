@@ -1,17 +1,17 @@
 import React from "react";
-import { Table, Tag } from "antd";
-import type { ColumnsType } from "antd/es/table";
-import { useState, useEffect } from "react";
+import { Table} from "antd";
+import { useState, useEffect, useContext } from "react";
 import { BASE_ROUTE } from "../App";
 import SelectSearch from "react-select-search";
 import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
 import { handleLogout } from "../utils/utils";
-import { NavLink } from "react-router-dom";
 import ToggleButton from "react-toggle-button";
+import { LadderData } from "../App";
+import { ladderColumns, smallScreen } from "../antd/ladderColumns";
 import "react-select-search/style.css";
 
-interface PlayerLadderData {
+export interface PlayerLadderData {
   rank: number;
   key: string;
   username: string;
@@ -21,115 +21,16 @@ interface PlayerLadderData {
   currentStreak: number;
 }
 
-interface LadderMatch {
-  matchP1: string;
-  matchP2: string;
-  matchWinner: string;
-  matchDate: Date;
-  confirmed: boolean;
-  disputed: boolean;
-  userIsSubmitter: boolean;
-}
-
 interface OpponentData {
   name: string;
   value: string;
-}
-
-const smallScreen = () => {
-  return window.innerWidth <= 850;
-};
-
-let columns: ColumnsType<PlayerLadderData> = [
-  {
-    title: "Rank",
-    dataIndex: "rank",
-    key: "rank",
-    align: smallScreen() ? "center" : "justify",
-    width: smallScreen() ? "auto" : "10%",
-  },
-  {
-    title: "Player",
-    dataIndex: "username",
-    key: "username",
-    align: smallScreen() ? "center" : "justify",
-    width: smallScreen() ? "auto" : "25%",
-    render: (text, record) => (
-      <NavLink
-        to={{ pathname: `/player/${text}` }}
-        state={{ rank: record.rank}}
-      >
-        {text}
-      </NavLink>
-    ),
-  },
-  {
-    title: "Rating",
-    dataIndex: "ratingScore",
-    key: "ratingScore",
-    align: smallScreen() ? "center" : "justify",
-    width: smallScreen() ? "auto" : "15%",
-  },
-  {
-    title: "W/L",
-    dataIndex: "winloss",
-    align: smallScreen() ? "center" : "justify",
-    width: smallScreen() ? "20%" : "15%",
-    render: (_, record) => (
-      <span>
-        {record.wins}-{record.losses}
-      </span>
-    ),
-  },
-  {
-    title: "Streak",
-    key: "streak",
-    align: smallScreen() ? "center" : "justify",
-    dataIndex: "streak",
-    width: smallScreen() ? "auto" : "15%",
-    render: (_, { currentStreak }) => (
-      <>
-        <Tag
-          color={currentStreak >= 0 ? "green" : "volcano"}
-          key={currentStreak}
-        >
-          {currentStreak == 0
-            ? ""
-            : currentStreak > 0
-            ? `${currentStreak}W`
-            : `${Math.abs(currentStreak)}L`}
-        </Tag>
-      </>
-    ),
-  },
-  {
-    title: "Action",
-    dataIndex: "action",
-    key: "action",
-    align: "center",
-    width: smallScreen() ? "auto" : "20%",
-    render: (text, record) => (
-      <>
-      <NavLink
-      className='bg-blue-600 text-white px-2 py-1 rounded-md hover:bg-blue-800 hover:text-white'
-        to={{ pathname: `/player/${record.username}` }}
-        state={{ rank: record.rank}}
-      >View Player
-      </NavLink>
-      </>
-    ),
-  },
-];
-
-if (smallScreen()) {
-  columns = columns.filter((item) => item.key !== "action");
 }
 
 export const SoloLadder = () => {
   const navigate = useNavigate();
   const cookies = new Cookies();
   const token = cookies.get("MarbleToken");
-  const [ladderData, setLadderData] = useState<PlayerLadderData[]>([]);
+  const ladderData = useContext(LadderData);
   const [opponentDropdownData, setOpponentDropdownData] = useState<
     OpponentData[]
   >([]);
@@ -152,7 +53,6 @@ export const SoloLadder = () => {
   const username = localStorage.getItem("username");
 
   useEffect(() => {
-    getLadderData();
     if (token) {
       checkUnconfirmedMatches();
     }
@@ -180,16 +80,6 @@ export const SoloLadder = () => {
     sortedOpponentData.sort((p1: any, p2: any) => (p1.name > p2.name ? 1 : -1));
     if (sortedOpponentData.length) {
       setOpponentDropdownData(sortedOpponentData);
-    }
-  };
-
-  const getLadderData = async () => {
-    try {
-      const res: Response = await fetch(BASE_ROUTE + "/ladder-data");
-      const data: PlayerLadderData[] = await res.json();
-      setLadderData(data);
-    } catch (error) {
-      console.log(error);
     }
   };
 
@@ -661,7 +551,7 @@ export const SoloLadder = () => {
 
         <Table
           className="sm:w-3/5 w-full sm:px-0 px-2"
-          columns={columns}
+          columns={ladderColumns}
           dataSource={sortedData}
           scroll={{ y: 825 }}
           pagination={{

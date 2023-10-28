@@ -1,21 +1,23 @@
 import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { BASE_ROUTE } from "../App";
 import { Table, Tag } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import Cookies from "universal-cookie";
 import { handleLogout } from "../utils/utils";
-import { useNavigate, useLocation, NavLink } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import { round } from "../utils/utils";
+import { LadderData } from "../App";
 import moment from "moment";
+import { PlayerLadderData } from "./SoloLadder";
 
 export const PlayerInfo = () => {
   const navigate = useNavigate();
   const cookies = new Cookies();
   const token = cookies.get("MarbleToken");
-  const location = useLocation();
-  const { state } = location;
+  const ladderData: PlayerLadderData[] = useContext(LadderData);
   const [playerData, setPlayerData] = useState<any>();
+  const [playerLadderRank, setPlayerLadderRank] = useState<number | null>(null);
   const [playerMatchData, setPlayerMatchData] = useState<any>();
   const [rival, setRival] = useState<string | null>(null);
   const [rivalWins, setRivalWins] = useState<number | null>(null);
@@ -26,6 +28,7 @@ export const PlayerInfo = () => {
 
   useEffect(() => {
     getPlayerPageData(player_name);
+    getLadderPositionFromLadderData(ladderData);
   }, [player_name]);
 
   useEffect(() => {
@@ -36,6 +39,18 @@ export const PlayerInfo = () => {
   const smallScreen = () => {
     return window.innerWidth <= 850;
   };
+
+  const getLadderPositionFromLadderData = (ladderData: PlayerLadderData[]) => {
+    let sortedData;
+    sortedData = [...ladderData]?.sort((a, b) => b.ratingScore - a.ratingScore);
+    sortedData.forEach((item, index) => {
+      item.rank = index + 1;
+      item.key = `${index + 1}`;
+    });
+    const player = sortedData.find((entry) => entry.username === player_name);
+    const ladderPosition = player?.rank || null;
+    setPlayerLadderRank(ladderPosition);
+  }
 
   const calculatePointDifferential = (matches: any[]) => {
     if (!matches) {
@@ -272,11 +287,9 @@ export const PlayerInfo = () => {
           </span>
         </div>
         <div className="flex mx-auto flex-wrap justify-evenly flex-row text-white sm:text-xl text-md border-1 border-solid border-red-600">
-          {state && (
             <span className="flex items-center text-yellow-400 sm:text-lg">
-              Ladder Position: #{state?.rank}
+              Ladder Position: #{playerLadderRank}
             </span>
-          )}
         </div>
         <div className="flex mx-auto py-6 flex-wrap justify-around flex-row text-white sm:text-xl text-md border-1 border-solid border-red-600">
           <div>
