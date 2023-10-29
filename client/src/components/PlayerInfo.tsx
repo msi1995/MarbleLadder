@@ -148,9 +148,19 @@ export const PlayerInfo = () => {
       key: "matchDate",
       align: "center",
       width: smallScreen() ? "25%" : "20%",
-      render: (_, { matchDate }) => <>{matchDate}</>,
+      render: (_, { matchDate }) => <>{matchDate.toString().split("T")[0]}</>,
       defaultSortOrder: "descend",
-      sorter: (a, b) => moment(a.matchDate).unix() - moment(b.matchDate).unix(),
+      sorter: (a, b) => {
+        const dateA = moment(a.matchDate);
+        const dateB = moment(b.matchDate);
+        if (dateA.isBefore(dateB)) {
+          return -1;
+        }
+        if (dateA.isAfter(dateB)) {
+          return 1;
+        }
+        return 0;
+      },
     },
     {
       title: "Map",
