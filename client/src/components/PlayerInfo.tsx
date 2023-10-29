@@ -148,7 +148,7 @@ export const PlayerInfo = () => {
       key: "matchDate",
       align: "center",
       width: smallScreen() ? "25%" : "20%",
-      render: (_, { matchDate }) => <>{matchDate.toString().split("T")[0]}</>,
+      render: (_, { matchDate }) => <>{matchDate}</>,
       defaultSortOrder: "descend",
       sorter: (a, b) => moment(a.matchDate).unix() - moment(b.matchDate).unix(),
     },
