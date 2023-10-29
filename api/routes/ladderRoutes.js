@@ -220,8 +220,8 @@ router.post('/match-results/bulk', auth, async (req, res) => {
             if (winnerScore === loserScore) {
                 continue;
             }
-            const P1Score = matchWinnerName === playerInfo.username.toLowerCase() ? winnerScore : loserScore;
-            const P2Score = matchWinnerName === opponentInfo.username.toLowerCase() ? winnerScore : loserScore;
+            const P1Score = matchWinnerName.toLowerCase() === playerInfo.username.toLowerCase() ? winnerScore : loserScore;
+            const P2Score = matchWinnerName.toLowerCase() === opponentInfo.username.toLowerCase() ? winnerScore : loserScore;
 
             //grab and process map name
             const map = enteredMapsProcessed[i];
