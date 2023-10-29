@@ -42,7 +42,8 @@ router.get('/player-page-data/:player', async (req, res) => {
         // only grab confirmed matches for the match history area.
         const matchData = await matchResult.find({
             $or: [{ matchP1Name: playerName }, { matchP2Name: playerName }],
-            confirmed: true
+            confirmed: true,
+            disputed: false,
         });
         res.status(200).json({ playerData, matchData });
     } catch (err) {

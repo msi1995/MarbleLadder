@@ -29,7 +29,7 @@ export const PlayerInfo = () => {
   useEffect(() => {
     getPlayerPageData(player_name);
     getLadderPositionFromLadderData(ladderData);
-  }, [player_name]);
+  }, [player_name, ladderData]);
 
   useEffect(() => {
     calculatePointDifferential(playerMatchData);
