@@ -1,5 +1,5 @@
 import React from "react";
-import { Table} from "antd";
+import { Table } from "antd";
 import { useState, useEffect, useContext } from "react";
 import { BASE_ROUTE } from "../App";
 import SelectSearch from "react-select-search";
@@ -77,7 +77,14 @@ export const SoloLadder = () => {
         });
       }
     });
-    sortedOpponentData.sort((p1: any, p2: any) => (p1.name > p2.name ? 1 : -1));
+    sortedOpponentData.sort((p1: any, p2: any) => {
+      const name1 = p1.name.toLowerCase();
+      const name2 = p2.name.toLowerCase();
+      if (name1 > name2) return 1;
+      if (name1 < name2) return -1;
+      return 0;
+    });
+
     if (sortedOpponentData.length) {
       setOpponentDropdownData(sortedOpponentData);
     }
