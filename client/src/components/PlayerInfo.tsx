@@ -290,7 +290,7 @@ export const PlayerInfo = () => {
   }
 
   return (
-    <div className="sm:pt-24 pt-24 h-screen w-screen overflow-x-hidden border-0 border-solid border-red-600">
+    <div className="sm:pt-28 pt-28 h-screen w-screen overflow-x-hidden border-0 border-solid border-red-600">
       <div className="mx-auto rounded-lg bg-black/90 w-5/6 sm:w-2/3">
         <div className="flex mx-auto py-6 gap-x-2 flex-wrap justify-center items-center flex-row text-white sm:text-5xl text-2xl border-1 border-solid border-red-600">
           <span className="flex items-center">{player_name}</span>
