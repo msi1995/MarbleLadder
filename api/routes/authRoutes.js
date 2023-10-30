@@ -141,7 +141,7 @@ router.post('/forgot-password', async (req, res) => {
     const mailOptions = {
         from: {
             name: 'MarbleLadder',
-            address: 'marbleladder0@gmail.com'
+            address: emailAddress
         },
         to: email,
         subject: 'Password Reset Request',
