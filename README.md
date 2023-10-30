@@ -1,5 +1,9 @@
 # MarbleLadder
-![image](https://github.com/msi1995/MarbleLadder/assets/63132397/0a7c08c1-3039-4118-817d-bb46b379f1ed)
+<img src="https://github.com/msi1995/MarbleLadder/assets/63132397/822d7d83-85fe-4206-81fa-d939539d75e9">
+
+<p align="center">
+  <img width="300" height="300" src="https://github.com/msi1995/MarbleLadder/assets/63132397/5c86f2fa-e019-4c13-8861-c5a1ac6ef9e5">
+</p>
 
 
 MarbleLadder facilitates reporting of 1v1 games for 'Marble It Up!' and uses reported results to calculate ELO rankings. Users create an account and can then report their match results against other players.
