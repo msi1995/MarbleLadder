@@ -8,7 +8,7 @@ export const Navbar = () => {
   const cookies = new Cookies();
   const token = cookies.get("MarbleToken");
   const navigate = useNavigate();
-  const username = localStorage.getItem("username");
+  // const username = localStorage.getItem("username");
 
   const handleSignoutClick = () => {
     handleLogout(navigate, cookies);
@@ -52,16 +52,6 @@ export const Navbar = () => {
   return (
     <>
       <nav className="fixed w-full z-50 select-none px-4 py-4 flex justify-between items-center bg-black opacity-90">
-        <NavLink
-          to={"/"}
-          className={({ isActive }) =>
-            isActive
-              ? "text-2xl text-white font-bold"
-              : "text-2xl text-pink-500 hover:text-pink-300"
-          }
-        >
-          Welcome{username && `, ${username}!`}
-        </NavLink>
         <div className="xl:hidden">
           <button className="navbar-burger flex items-center text-white p-3">
             <svg
