@@ -120,7 +120,7 @@ router.post("/login", async (req, res) => {
 });
 
 router.post('/forgot-password', async (req, res) => {
-    const email = req.body.email
+    const { email } = req.body;
     const token = jwt.sign(
         {
             email: email
@@ -132,7 +132,7 @@ router.post('/forgot-password', async (req, res) => {
     //delete any existing tokens tied to the email address
     await passwordResetRequest.deleteMany({ email: email })
     const newPasswordResetRequest = new passwordResetRequest({
-        email: req.body.email,
+        email: email,
         token: token,
         expiry: expiryTime,
     })

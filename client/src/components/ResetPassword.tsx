@@ -27,7 +27,7 @@ export const ResetPassword = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: email,
+        email: email?.toLowerCase(),
         token: token,
         password: newPassword,
         confirmedPassword: confirmedNewPassword
@@ -47,7 +47,7 @@ export const ResetPassword = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: email,
+        email: email?.toLowerCase(),
         token: token,
       }),
     });
