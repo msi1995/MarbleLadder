@@ -52,9 +52,12 @@ export const Navbar = () => {
   return (
     <>
       <nav className="fixed w-full z-50 select-none px-4 py-4 flex justify-between items-center bg-black opacity-90">
-      <img className='h-16 sm:px-4'
+        <NavLink to={"/"}>
+          <img
+            className="h-16 sm:px-4 hover:scale-105 hover:cursor-pointer"
             src={`/marbleladder01tsp.png`}
           ></img>
+        </NavLink>
         <div className="xl:hidden">
           <button className="navbar-burger flex items-center text-white p-3">
             <svg
