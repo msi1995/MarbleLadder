@@ -5,8 +5,11 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
 const app = express();
+const bodyParser = require('body-parser');
 app.use(express.json());
 app.use(cors());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 const uri = process.env.MONGODB_URI || process.env.MONGODB_CIRCLECI_URI || 'mongodb://localhost:27017/marbleLadder';
 const port = process.env.PORT ?? 3001;
 mongoose
