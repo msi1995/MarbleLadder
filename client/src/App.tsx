@@ -11,6 +11,8 @@ import { PageNotFound } from "./components/PageNotFound";
 import {useEffect, useState, createContext } from 'react';
 import { PlayerInfo } from "./components/PlayerInfo";
 import { getLadderData } from "./utils/utils";
+import { ForgotPassword } from "./components/ForgotPassword";
+import { ResetPassword } from "./components/ResetPassword";
 export const BASE_ROUTE = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3001'
 export const LadderData = createContext<PlayerLadderData[]>([]);
 
@@ -29,6 +31,8 @@ function App() {
         <Route path="/" element={<Homepage/>} />
         <Route path="/register" element={<SignUp/>} />
         <Route path="/login" element={<SignIn/>} />
+        <Route path="/forgot-password" element={<ForgotPassword/>} />
+        <Route path="/reset-password" element={<ResetPassword/>} />
         <Route path="/ladder" element={<SoloLadder/>} />
         <Route path="/gem-hunt-records" element={<GemHuntRecords/>} />
         <Route path="/about" element={<About/>} />

@@ -100,13 +100,14 @@ export const SignIn = () => {
                 </div>
               </div>
             </div>
-            <div className="mt-12 flex flex-row space-x-12 justify-center">
+            <div className="mt-12 flex flex-col items-center justify-center">
               <button
                 type="submit"
-                className="block w-3/4 rounded-md bg-pink-400 hover:bg-pink-500 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="block w-3/4 mb-4 rounded-md bg-pink-400 hover:bg-pink-500 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Log In
               </button>
+              <a className="text-white/80 hover:text-white" href="/forgot-password">I forgot my password.</a>
             </div>
           </form>
         </>
