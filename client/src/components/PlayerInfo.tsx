@@ -392,16 +392,16 @@ export const PlayerInfo = () => {
             pageSizeOptions: [5, 25, 50, 100],
           }}
         />
-        <ReactTooltip id="Arcadia" place="left" content="Arcadia" />
-        <ReactTooltip id="Assault" place="left" content="Assault" />
-        <ReactTooltip id="Brawl" place="left" content="Brawl" />
-        <ReactTooltip id="Frostbite" place="left" content="Frostbite" />
-        <ReactTooltip id="Jumphouse" place="left" content="Jumphouse" />
-        <ReactTooltip id="Nexus" place="left" content="Nexus" />
-        <ReactTooltip id="Mosh Pit" place="left" content="Mosh Pit" />
-        <ReactTooltip id="Pythagoras" place="left" content="Pythagoras" />
-        <ReactTooltip id="Stadion" place="left" content="Stadion" />
-        <ReactTooltip id="Surfs Up" place="left" content="Surf's Up" />
+        <ReactTooltip id="Arcadia" place="top" content="Arcadia" />
+        <ReactTooltip id="Assault" place="top" content="Assault" />
+        <ReactTooltip id="Brawl" place="top" content="Brawl" />
+        <ReactTooltip id="Frostbite" place="top" content="Frostbite" />
+        <ReactTooltip id="Jumphouse" place="top" content="Jumphouse" />
+        <ReactTooltip id="Nexus" place="top" content="Nexus" />
+        <ReactTooltip id="Mosh Pit" place="top" content="Mosh Pit" />
+        <ReactTooltip id="Pythagoras" place="top" content="Pythagoras" />
+        <ReactTooltip id="Stadion" place="top" content="Stadion" />
+        <ReactTooltip id="Surfs Up" place="top" content="Surf's Up" />
       </div>
     </div>
   );
