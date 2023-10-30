@@ -18,7 +18,7 @@ export const ForgotPassword = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: email,
+        email: email.toLowerCase(),
       }),
     });
 
