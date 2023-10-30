@@ -80,9 +80,7 @@ export const SoloLadder = () => {
     sortedOpponentData.sort((p1: any, p2: any) => {
       const name1 = p1.name.toLowerCase();
       const name2 = p2.name.toLowerCase();
-      if (name1 > name2) return 1;
-      if (name1 < name2) return -1;
-      return 0;
+      name1 > name2 ? 1 : -1
     });
 
     if (sortedOpponentData.length) {
