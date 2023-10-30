@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 import { BASE_ROUTE } from "../App";
 import { Table, Tag } from "antd";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 import type { ColumnsType } from "antd/es/table";
 import Cookies from "universal-cookie";
 import { handleLogout } from "../utils/utils";
@@ -50,7 +51,7 @@ export const PlayerInfo = () => {
     const player = sortedData.find((entry) => entry.username === player_name);
     const ladderPosition = player?.rank || null;
     setPlayerLadderRank(ladderPosition);
-  }
+  };
 
   const calculatePointDifferential = (matches: any[]) => {
     if (!matches) {
@@ -162,12 +163,13 @@ export const PlayerInfo = () => {
       align: "center",
       width: smallScreen() ? "auto" : "10%",
       render: (_, { map }) => (
-        <div className='flex justify-center'>
+        <div className="flex justify-center">
           <img
+            data-tooltip-id={map.replace(/'/g, '')}
             className="sm:w-28 sm:h-20 w-20 rounded-md"
             src={`/Level_Images/${map || "NoMap"}.png`}
           ></img>
-          </div>
+        </div>
       ),
     },
     {
@@ -297,9 +299,9 @@ export const PlayerInfo = () => {
           </span>
         </div>
         <div className="flex mx-auto flex-wrap justify-evenly flex-row text-white sm:text-xl text-md border-1 border-solid border-red-600">
-            <span className="flex items-center text-yellow-400 sm:text-lg">
-              Ladder Position: #{playerLadderRank}
-            </span>
+          <span className="flex items-center text-yellow-400 sm:text-lg">
+            Ladder Position: #{playerLadderRank}
+          </span>
         </div>
         <div className="flex mx-auto py-6 flex-wrap justify-around flex-row text-white sm:text-xl text-md border-1 border-solid border-red-600">
           <div>
@@ -390,6 +392,16 @@ export const PlayerInfo = () => {
             pageSizeOptions: [5, 25, 50, 100],
           }}
         />
+        <ReactTooltip id="Arcadia" place="left" content="Arcadia" />
+        <ReactTooltip id="Assault" place="left" content="Assault" />
+        <ReactTooltip id="Brawl" place="left" content="Brawl" />
+        <ReactTooltip id="Frostbite" place="left" content="Frostbite" />
+        <ReactTooltip id="Jumphouse" place="left" content="Jumphouse" />
+        <ReactTooltip id="Nexus" place="left" content="Nexus" />
+        <ReactTooltip id="Mosh Pit" place="left" content="Mosh Pit" />
+        <ReactTooltip id="Pythagoras" place="left" content="Pythagoras" />
+        <ReactTooltip id="Stadion" place="left" content="Stadion" />
+        <ReactTooltip id="Surfs Up" place="left" content="Surf's Up" />
       </div>
     </div>
   );
