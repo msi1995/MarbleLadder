@@ -136,18 +136,11 @@ export const PlayerInfo = () => {
 
   let columns: ColumnsType<PlayerMatchHistory> = [
     {
-      title: "Match ID",
-      dataIndex: "traceID",
-      key: "traceID",
-      align: "center",
-      width: smallScreen() ? "15%" : "15%",
-    },
-    {
       title: "Match Date",
       dataIndex: "matchDate",
       key: "matchDate",
       align: "center",
-      width: smallScreen() ? "25%" : "20%",
+      width: smallScreen() ? "20%" : "10%",
       render: (_, { matchDate }) => <>{matchDate.toString().split("T")[0]}</>,
       defaultSortOrder: "descend",
       sorter: (a, b) => {
@@ -166,15 +159,15 @@ export const PlayerInfo = () => {
       title: "Map",
       dataIndex: "map",
       key: "map",
-      align: "left",
-      width: smallScreen() ? "auto" : "15%",
+      align: "center",
+      width: smallScreen() ? "auto" : "10%",
       render: (_, { map }) => (
-        <>
+        <div className='flex justify-center'>
           <img
-            className="sm:w-32 sm:h-24 w-16 rounded-md"
+            className="sm:w-28 sm:h-20 w-20 rounded-md"
             src={`/Level_Images/${map || "NoMap"}.png`}
           ></img>
-        </>
+          </div>
       ),
     },
     {
@@ -217,7 +210,7 @@ export const PlayerInfo = () => {
       dataIndex: "score",
       key: "score",
       align: "left",
-      width: smallScreen() ? "auto" : "20%",
+      width: smallScreen() ? "auto" : "10%",
       render: (_, { matchWinnerName, P1Score, P2Score }) => (
         <div
           className={
@@ -279,6 +272,13 @@ export const PlayerInfo = () => {
           </div>
         );
       },
+    },
+    {
+      title: "ID",
+      dataIndex: "traceID",
+      key: "traceID",
+      align: "center",
+      width: smallScreen() ? "15%" : "9%",
     },
   ];
 
@@ -379,7 +379,7 @@ export const PlayerInfo = () => {
           </span>
         </div>
         <Table
-          className="sm:w-3/5 w-full sm:px-0 px-2"
+          className="sm:w-1/2 w-full sm:px-0 px-2"
           columns={columns}
           dataSource={playerMatchData}
           showHeader={true}
