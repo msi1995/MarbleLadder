@@ -384,6 +384,7 @@ router.post('/confirm-match', auth, async (req, res) => {
                 $set: {
                     ratingScore: updatedWinnerRating,
                     currentStreak: matchWinnerNewStreak,
+                    peakRatingScore: updatedWinnerRating > matchWinnerRatingScore ? updatedWinnerRating : matchWinnerRatingScore,
                     "matchHistory.$.confirmed": true
                 }
             }
