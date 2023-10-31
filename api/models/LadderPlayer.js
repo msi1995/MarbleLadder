@@ -27,6 +27,11 @@ var ladderPlayerModel = {
         required: false,
         default: 1500,
     },
+    peakRatingScore: {
+        type: Number,
+        required: false,
+        default: 1500
+    },
     wins: {
         type: Number,
         required: false,

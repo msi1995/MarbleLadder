@@ -337,15 +337,11 @@ export const PlayerInfo = () => {
             )}
           </div>
           <div>
-            <span>Rating: </span>
+            <span>Peak Rating: </span>
             <span
-              className={
-                playerData?.ratingScore < 1500
-                  ? "text-red-300"
-                  : "text-green-400"
-              }
+              className=''
             >
-              {playerData?.ratingScore}
+              {playerData?.peakRatingScore}
             </span>
           </div>
           <span>
