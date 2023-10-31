@@ -37,7 +37,7 @@ router.get('/player-page-data/:player', async (req, res) => {
             playerData.password = undefined;
             playerData.email = undefined;
         }
-        
+
 
         // only grab confirmed matches for the match history area.
         const matchData = await matchResult.find({
@@ -332,13 +332,15 @@ router.post('/confirm-match', auth, async (req, res) => {
         //ELO calculation (glicko)
         const matchWinnerRatingScore = winningPlayer.ratingScore;
         const matchLoserRatingScore = losingPlayer.ratingScore;
-        let updatedWinnerRating, updatedLoserRating;
+        let updatedWinnerRating, updatedLoserRating, newPeakRating;
 
         function winProbability(rating1, rating2) {
             return (
                 (1.0 * 1.0) / (1 + 1.0 * Math.pow(10, (1.0 * (rating1 - rating2)) / 400))
             );
         }
+
+        //Calculate elo change and cheak if winner gets new peak rating
         function EloRating(ratingMatchWinner, ratingMatchLoser, K) {
 
             // To calculate the Winning
@@ -354,9 +356,11 @@ router.post('/confirm-match', auth, async (req, res) => {
 
             updatedWinnerRating = Math.round(ratingMatchWinner);
             updatedLoserRating = Math.round(ratingMatchLoser);
+            newPeakRating = Math.max(winningPlayer.peakRatingScore, updatedWinnerRating)
         }
 
         EloRating(matchWinnerRatingScore, matchLoserRatingScore, 30);
+         //new peak rating check for winning player
 
         //confirm match in matchresults
         await matchResult.updateOne({ traceID: req.body.traceID },
@@ -372,6 +376,7 @@ router.post('/confirm-match', auth, async (req, res) => {
         )
 
         //update the winning player accordingly (W/L, ELO, streak, confirm match)
+
         await ladderPlayer.updateOne(
             {
                 _id: new ObjectId(matchWinner),
@@ -384,7 +389,7 @@ router.post('/confirm-match', auth, async (req, res) => {
                 $set: {
                     ratingScore: updatedWinnerRating,
                     currentStreak: matchWinnerNewStreak,
-                    peakRatingScore: updatedWinnerRating > matchWinnerRatingScore ? updatedWinnerRating : matchWinnerRatingScore,
+                    peakRatingScore: newPeakRating,
                     "matchHistory.$.confirmed": true
                 }
             }
