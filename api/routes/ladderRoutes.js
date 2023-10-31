@@ -38,7 +38,6 @@ router.get('/player-page-data/:player', async (req, res) => {
             playerData.email = undefined;
         }
 
-
         // only grab confirmed matches for the match history area.
         const matchData = await matchResult.find({
             $or: [{ matchP1Name: playerName }, { matchP2Name: playerName }],
@@ -375,7 +374,6 @@ router.post('/confirm-match', auth, async (req, res) => {
         )
 
         //update the winning player accordingly (W/L, ELO, streak, confirm match)
-
         await ladderPlayer.updateOne(
             {
                 _id: new ObjectId(matchWinner),
