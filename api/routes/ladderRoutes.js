@@ -360,7 +360,6 @@ router.post('/confirm-match', auth, async (req, res) => {
         }
 
         EloRating(matchWinnerRatingScore, matchLoserRatingScore, 30);
-         //new peak rating check for winning player
 
         //confirm match in matchresults
         await matchResult.updateOne({ traceID: req.body.traceID },
