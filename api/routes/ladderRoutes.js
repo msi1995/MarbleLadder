@@ -418,8 +418,70 @@ router.post('/confirm-match', auth, async (req, res) => {
     }
 });
 
+router.post('/add-replay/:matchTraceID', auth, async (req, res) => {
+    const matchTraceID = req.params.matchTraceID
+    try {
+        const { username } = await ladderPlayer.findOne({
+            _id: new ObjectId(req.user.userId)
+        })
+        const { matchP1Name, matchP2Name } = await matchResult.findOne({
+            traceID: matchTraceID
+        })
+        if (username.toLowerCase() !== matchP1Name.toLowerCase() && username.toLowerCase() !== matchP2Name.toLowerCase()) {
+            res.status(403).send({ message: `You don't have permission to do that.` })
+            return;
+        }
+
+        const existingReplay = await matchResult.findOne({
+            traceID: matchTraceID,
+            "replays.submitter": username
+        });
+        const YT_URL = req.body.replayURL;
+        const youtubeURLPattern = /^https?:\/\/(?:www\.)?youtube\.com\/watch\?v=[A-Za-z0-9_-]{11}$/;
+        if (youtubeURLPattern.test(YT_URL)) {
+            if (existingReplay) {
+                // patch URL if replay already exists
+                await matchResult.updateOne(
+                    {
+                        traceID: matchTraceID,
+                        "replays.submitter": username
+                    },
+                    {
+                        $set: {
+                            "replays.$.URL": YT_URL
+                        }
+                    }
+                );
+            } else {
+                // no replay exists by this user on this match
+                await matchResult.updateOne(
+                    { traceID: matchTraceID },
+                    {
+                        $push: {
+                            replays: {
+                                submitter: username,
+                                URL: YT_URL
+                            }
+                        }
+                    }
+                );
+            }
+            res.status(200).send({ message: "Replay added." })
+        }
+        else {
+            res.status(400).send({ message: "Please provide a YouTube link." })
+        }
+    }
+    catch (e) {
+        console.log(e)
+        res.status(500).send({
+            message: `some error happened -- ${e}`
+        })
+    }
+});
+
 //player 2 disputes match result. do nothing, maybe add a dispute int on the users involved? probably don't wipe match, just keep unconfirmed
-router.post('/dispute-match', async (req, res) => {
+router.post('/dispute-match', auth, async (req, res) => {
     try {
         const unconfirmedMatch = await matchResult.findOne({
             traceID: req.body.traceID

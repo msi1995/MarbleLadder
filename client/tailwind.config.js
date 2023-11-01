@@ -10,6 +10,11 @@ module.exports = {
         '160': '40rem',
         '192': '48rem',
       },
+      width: {
+        '128': '32rem',
+        '160': '40rem',
+        '192': '48rem',
+      },
     },
   },
   plugins: [],
