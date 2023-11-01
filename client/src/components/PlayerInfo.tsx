@@ -393,7 +393,7 @@ export const PlayerInfo = () => {
                   map
                 )
               }
-              className="mt-2 py-0.5 px-1 bg-blue-500 hover:bg-blue-600 text-sm text-white font-bold rounded transition duration-200"
+              className="mt-2 py-1 px-1 bg-blue-500 hover:bg-blue-600 text-xs text-white sm:font-bold rounded transition duration-200"
             >
               add replay
             </button>
