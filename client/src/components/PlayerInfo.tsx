@@ -218,7 +218,7 @@ export const PlayerInfo = () => {
       dataIndex: "matchDate",
       key: "matchDate",
       align: "center",
-      width: smallScreen() ? "20%" : "10%",
+      width: smallScreen() ? "auto" : "10%",
       render: (_, { matchDate }) => <>{matchDate.toString().split("T")[0]}</>,
       defaultSortOrder: "descend",
       sorter: (a, b) => {
@@ -254,7 +254,7 @@ export const PlayerInfo = () => {
       key: "result",
       align: "left",
       dataIndex: "result",
-      width: smallScreen() ? "auto" : "15%",
+      width: smallScreen() ? "20%" : "15%",
       render: (
         _,
         {
@@ -356,7 +356,7 @@ export const PlayerInfo = () => {
       title: "Replay",
       dataIndex: "replay",
       align: "center",
-      width: smallScreen() ? "15%" : "15%",
+      width: smallScreen() ? "18%" : "15%",
       render: (
         _,
         {
@@ -406,7 +406,7 @@ export const PlayerInfo = () => {
       dataIndex: "traceID",
       key: "traceID",
       align: "center",
-      width: smallScreen() ? "15%" : "9%",
+      width: smallScreen() ? "auto" : "9%",
     },
   ];
 
@@ -529,7 +529,7 @@ export const PlayerInfo = () => {
           </span>
         </div>
         <Table
-          className="sm:w-1/2 w-full sm:px-0 px-2"
+          className="sm:w-1/2 w-full sm:px-0 px-1"
           columns={columns}
           dataSource={playerMatchData}
           showHeader={true}
