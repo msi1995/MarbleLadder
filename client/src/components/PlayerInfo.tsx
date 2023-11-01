@@ -11,8 +11,10 @@ import { round } from "../utils/utils";
 import { LadderData } from "../App";
 import moment from "moment";
 import { PlayerLadderData } from "./SoloLadder";
+import { ReplayModal } from "./ReplayModal";
 
 export const PlayerInfo = () => {
+  const username = localStorage.getItem("username");
   const navigate = useNavigate();
   const cookies = new Cookies();
   const token = cookies.get("MarbleToken");
@@ -20,6 +22,15 @@ export const PlayerInfo = () => {
   const [playerData, setPlayerData] = useState<any>();
   const [playerLadderRank, setPlayerLadderRank] = useState<number | null>(null);
   const [playerMatchData, setPlayerMatchData] = useState<any>();
+  const [replayModalOpen, setReplayModalOpen] = useState(false);
+  const [matchWinner, setMatchWinner] = useState<string>("");
+  const [matchLoser, setMatchLoser] = useState<string>("");
+  const [matchWinnerScore, setMatchWinnerScore] = useState<number>();
+  const [matchLoserScore, setMatchLoserScore] = useState<number>();
+  const [matchMap, setMatchMap] = useState<string>("");
+  const [MatchTraceIDToAddReplayTo, setMatchTraceIDToAddReplayTo] =
+    useState<string>("");
+  const [replayURL, setReplayURL] = useState<string>("");
   const [rival, setRival] = useState<string | null>(null);
   const [rivalWins, setRivalWins] = useState<number | null>(null);
   const [averagePointDifferential, setAveragePointDifferential] = useState<
@@ -39,6 +50,66 @@ export const PlayerInfo = () => {
 
   const smallScreen = () => {
     return window.innerWidth <= 850;
+  };
+
+  const handleAddReplayToMatch = (
+    traceID: string,
+    matchP1Name: string,
+    matchP2Name: string,
+    matchWinnerName: string,
+    P1Score: number,
+    P2Score: number,
+    map: string
+  ) => {
+    setMatchWinner(matchWinnerName);
+    setMatchMap(map);
+    if(matchWinnerName.toLowerCase() === matchP1Name.toLowerCase()){
+      setMatchWinnerScore(P1Score);
+      setMatchLoser(matchP2Name);
+      setMatchLoserScore(P2Score);
+    }
+    else{
+      setMatchWinnerScore(P2Score);
+      setMatchLoser(matchP1Name);
+      setMatchLoserScore(P1Score);
+    }
+    openReplayModal();
+    setMatchTraceIDToAddReplayTo(traceID);
+  };
+  const openReplayModal = () => {
+    setReplayModalOpen(true);
+  };
+
+  const closeReplayModal = () => {
+    setReplayModalOpen(false);
+  };
+
+  const handleURLModalSubmit = async (event: any) => {
+    event.preventDefault();
+
+    try {
+      const res = await fetch(
+        BASE_ROUTE + `/add-replay/${MatchTraceIDToAddReplayTo}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            replayURL: replayURL,
+          }),
+        }
+      );
+      if (res.status === 200) {
+        setReplayModalOpen(false);
+      }
+      if (res.status === 403) {
+        //do something
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const getLadderPositionFromLadderData = (ladderData: PlayerLadderData[]) => {
@@ -120,6 +191,11 @@ export const PlayerInfo = () => {
     }
   };
 
+  interface Replay {
+    submitter: string;
+    URL: string;
+  }
+
   interface PlayerMatchHistory {
     traceID: string;
     matchDate: Date;
@@ -133,6 +209,7 @@ export const PlayerInfo = () => {
     matchWinnerELOChange: number;
     matchLoserELOChange: number;
     map: string;
+    replays: Replay[];
   }
 
   let columns: ColumnsType<PlayerMatchHistory> = [
@@ -165,7 +242,7 @@ export const PlayerInfo = () => {
       render: (_, { map }) => (
         <div className="flex justify-center">
           <img
-            data-tooltip-id={map.replace(/'/g, '')}
+            data-tooltip-id={map.replace(/'/g, "")}
             className="sm:w-28 sm:h-20 w-20 rounded-md"
             src={`/Level_Images/${map || "NoMap"}.png`}
           ></img>
@@ -177,7 +254,7 @@ export const PlayerInfo = () => {
       key: "result",
       align: "left",
       dataIndex: "result",
-      width: smallScreen() ? "auto" : "20%",
+      width: smallScreen() ? "auto" : "15%",
       render: (
         _,
         {
@@ -233,7 +310,7 @@ export const PlayerInfo = () => {
       title: "New ELO",
       key: "ELO_change",
       align: "left",
-      width: smallScreen() ? "auto" : "20%",
+      width: smallScreen() ? "auto" : "10%",
       render: (
         _,
         {
@@ -276,6 +353,55 @@ export const PlayerInfo = () => {
       },
     },
     {
+      title: "Replay",
+      dataIndex: "replay",
+      align: "center",
+      width: smallScreen() ? "15%" : "15%",
+      render: (
+        _,
+        {
+          replays,
+          traceID,
+          matchP1Name,
+          matchP2Name,
+          matchWinnerName,
+          P1Score,
+          P2Score,
+          map,
+        }
+      ) => (
+        <div className="flex flex-col items-center">
+          {replays?.length > 0 ? (
+            replays.map((replay) => (
+              <a className="text-blue-600" href={replay.URL} target="_blank">
+                {replay.submitter} pov
+              </a>
+            ))
+          ) : (
+            <span>N/A</span>
+          )}
+          {(matchP1Name === username || matchP2Name === username) && (
+            <button
+              onClick={() =>
+                handleAddReplayToMatch(
+                  traceID,
+                  matchP1Name,
+                  matchP2Name,
+                  matchWinnerName,
+                  P1Score,
+                  P2Score,
+                  map
+                )
+              }
+              className="mt-2 py-0.5 px-1 bg-blue-500 hover:bg-blue-600 text-sm text-white font-bold rounded transition duration-200"
+            >
+              add replay
+            </button>
+          )}
+        </div>
+      ),
+    },
+    {
       title: "ID",
       dataIndex: "traceID",
       key: "traceID",
@@ -291,6 +417,36 @@ export const PlayerInfo = () => {
 
   return (
     <div className="sm:pt-28 pt-28 h-screen w-screen overflow-x-hidden border-0 border-solid border-red-600">
+      <ReplayModal isOpen={replayModalOpen} onClose={closeReplayModal}>
+        <div className="flex flex-col items-center sm:px-16 py-4 gap-y-4">
+          <span className="sm:text-4xl text-2xl font-bold">
+            Submit Match Replay
+          </span>
+          <span className='text-green-600 text-lg'>{matchWinner} defeats {matchLoser} | {matchWinnerScore} - {matchLoserScore} on {matchMap}</span>
+          <span className="sm:w-128 w-64 text-center text-md">
+            To submit a match replay, provide a YouTube link to the match below.
+            You can also replace a replay by submitting this form again if you
+            made a mistake.
+          </span>
+          <form
+            onSubmit={handleURLModalSubmit}
+            className="block w-full flex flex-col items-center gap-y-4"
+          >
+            <input
+              type="text"
+              onChange={(e) => setReplayURL(e.target.value)}
+              placeholder="Example: youtube.com/watch?v=dQw4w9WgXcQ"
+              className="block w-full border-solid border-2 border-slate-500 rounded-md border-0 px-3.5 py-2 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            ></input>
+            <button
+              type="submit"
+              className="w-1/3 mt-2 py-1 px-1 bg-blue-500 hover:bg-blue-600 text-sm text-white font-bold rounded transition duration-200"
+            >
+              Submit Replay
+            </button>
+          </form>
+        </div>
+      </ReplayModal>
       <div className="mx-auto rounded-lg bg-black/90 w-5/6 sm:w-2/3">
         <div className="flex mx-auto py-6 gap-x-2 flex-wrap justify-center items-center flex-row text-white sm:text-5xl text-2xl border-1 border-solid border-red-600">
           <span className="flex items-center">{player_name}</span>
@@ -338,11 +494,7 @@ export const PlayerInfo = () => {
           </div>
           <div>
             <span>Peak Rating: </span>
-            <span
-              className=''
-            >
-              {playerData?.peakRatingScore}
-            </span>
+            <span className="">{playerData?.peakRatingScore}</span>
           </div>
           <span>
             Streak:{" "}

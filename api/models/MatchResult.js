@@ -68,6 +68,12 @@ var matchResultModel = {
         type: String,
         required: false,
     },
+    replays: [
+        {
+            submitter: String,
+            URL: String,
+        },
+    ],
 }
 
 const matchResultSchema = new Schema(matchResultModel)
