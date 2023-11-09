@@ -437,7 +437,7 @@ router.post('/add-replay/:matchTraceID', auth, async (req, res) => {
             "replays.submitter": username
         });
         const YT_URL = req.body.replayURL;
-        const youtubeURLPattern = /^https?:\/\/(?:www\.)?youtube\.com\/watch\?v=[A-Za-z0-9_-]{11}$/;
+        const youtubeURLPattern = /^https?:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)[A-Za-z0-9_-]{11}$/;
         if (youtubeURLPattern.test(YT_URL)) {
             if (existingReplay) {
                 // patch URL if replay already exists
