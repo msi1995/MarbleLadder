@@ -26,7 +26,7 @@ export let gemHuntColumns: ColumnsType<GemHuntLadderData["scores"][0]> = [
     width: smallScreen() ? "auto" : "15%",
     render: (_) => (
             <img
-            className="w-36 h-16"
+            className="w-4/5 h-2/5"
             src={'ultra_image.png'}
           ></img>
     ),
