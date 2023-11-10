@@ -1,5 +1,5 @@
 import { BASE_ROUTE } from "../App";
-import { PlayerLadderData } from "../components/SoloLadder";
+import { PlayerLadderData } from "../antd/ladderColumns";
 
 export const handleLogout = (navigate: any, cookies: any) => {
   cookies.remove("MarbleToken", { path: "/" });

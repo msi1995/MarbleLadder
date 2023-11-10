@@ -1,5 +1,6 @@
 const authRoutes = require('./routes/authRoutes')
 const ladderRoutes = require('./routes/ladderRoutes')
+const gemHuntRoutes = require('./routes/gemHuntRoutes')
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -22,6 +23,8 @@ mongoose
 
 app.use('/', authRoutes);
 app.use('/', ladderRoutes);
+app.use('/', gemHuntRoutes);
+
 
 //static file serving below seems very touchy. don't mess with it
 app.use(express.static(path.join(__dirname, '../client/build')));

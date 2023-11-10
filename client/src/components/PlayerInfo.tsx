@@ -10,8 +10,8 @@ import { useNavigate, NavLink } from "react-router-dom";
 import { round } from "../utils/utils";
 import { LadderData } from "../App";
 import moment from "moment";
-import { PlayerLadderData } from "./SoloLadder";
-import { ReplayModal } from "./ReplayModal";
+import { PlayerLadderData } from "../antd/ladderColumns";
+import { Modal } from "./Modal";
 
 export const PlayerInfo = () => {
   const username = localStorage.getItem("username");
@@ -417,7 +417,7 @@ export const PlayerInfo = () => {
 
   return (
     <div className="sm:pt-28 pt-28 h-screen w-screen overflow-x-hidden border-0 border-solid border-red-600">
-      <ReplayModal isOpen={replayModalOpen} onClose={closeReplayModal}>
+      <Modal isOpen={replayModalOpen} onClose={closeReplayModal}>
         <div className="flex flex-col items-center sm:px-16 py-4 gap-y-4">
           <span className="sm:text-4xl text-2xl font-bold">
             Submit Match Replay
@@ -446,7 +446,7 @@ export const PlayerInfo = () => {
             </button>
           </form>
         </div>
-      </ReplayModal>
+      </Modal>
       <div className="mx-auto rounded-lg bg-black/90 w-5/6 sm:w-2/3">
         <div className="flex mx-auto py-6 gap-x-2 flex-wrap justify-center items-center flex-row text-white sm:text-5xl text-2xl border-1 border-solid border-red-600">
           <span className="flex items-center">{player_name}</span>

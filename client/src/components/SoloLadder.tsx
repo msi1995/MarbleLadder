@@ -8,23 +8,9 @@ import { useNavigate } from "react-router-dom";
 import { handleLogout } from "../utils/utils";
 import ToggleButton from "react-toggle-button";
 import { LadderData } from "../App";
-import { ladderColumns, smallScreen } from "../antd/ladderColumns";
+import { ladderColumns, smallScreen, OpponentData, PlayerLadderData } from "../antd/ladderColumns";
 import "react-select-search/style.css";
 
-export interface PlayerLadderData {
-  rank: number;
-  key: string;
-  username: string;
-  ratingScore: number;
-  wins: number;
-  losses: number;
-  currentStreak: number;
-}
-
-interface OpponentData {
-  name: string;
-  value: string;
-}
 
 export const SoloLadder = () => {
   const navigate = useNavigate();
@@ -530,7 +516,7 @@ export const SoloLadder = () => {
         </div>
       )}
       <div className="pt-24 flex flex-row flex-wrap relative overflow-x-hidden justify-center opacity-95">
-        <div className="border-0 border-solid border-red-600 flex sm:w-3/5 w-full justify-end px-2">
+        <div className="flex sm:w-3/5 w-full justify-end px-2">
           {Boolean(unconfirmedMatches?.length) && (
             <button
               onClick={(e) => setConfirmMatchModalVisible(true)}
