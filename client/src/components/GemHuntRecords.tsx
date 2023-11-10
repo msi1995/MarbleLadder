@@ -53,30 +53,28 @@ export const GemHuntRecords = () => {
     const selectedMapData = allMapData.find(
       (item: any) => item.mapName === maps[mapIndex]
     );
+    console.log('index changed. new data: ', selectedMapData);
 
     setRawMapRecordData(selectedMapData?.scores ?? null);
   }, [mapIndex, allMapData]);
 
-   useEffect(() => {
-    let sortedMapRecords;
+  useEffect(() => {
     try {
-      if (rawMapRecordData?.length) {
-        sortedMapRecords = [...rawMapRecordData]?.sort(
-          (a, b) => b.score - a.score
-        );
-        sortedMapRecords = sortedMapRecords.filter(
-          (entry) => entry.verified !== false
-        );
-        if (sortedMapRecords?.length) {
-          //Do not display unverified entries to the user
-          sortedMapRecords?.forEach((item, index) => {
-            item.rank = index + 1;
-            item.key = `${index + 1}`;
-          });
-          setSortedMapRecordData(sortedMapRecords?.slice(0, 5));
-          setMapWorldRecordHolder(sortedMapRecords[0].player);
-          setMapWorldRecord(sortedMapRecords[0].score);
-        }
+      if (!rawMapRecordData?.length) {
+        setSortedMapRecordData([]);
+        setMapWorldRecord(0);
+        return;
+      }
+  
+      const filteredRecords = rawMapRecordData
+        .filter((entry: any) => entry.verified !== false)
+        .sort((a: any, b: any) => b.score - a.score)
+        .map((item: any, index: number) => ({ ...item, rank: index + 1, key: `${index + 1}` }));
+  
+      if (filteredRecords.length) {
+        setSortedMapRecordData(filteredRecords.slice(0, 5));
+        setMapWorldRecordHolder(filteredRecords[0].player);
+        setMapWorldRecord(filteredRecords[0].score);
       } else {
         setSortedMapRecordData([]);
         setMapWorldRecord(0);
