@@ -17,6 +17,24 @@ router.get('/gem-hunt-map-records/', async (req, res) => {
     }
 });
 
+router.get('/gem-hunt-map-records/unverified', async (req, res) => {
+    try {
+        const mapsWithUnverifiedScores = await gemHuntMapRecord.find({ 'scores.verified': false })
+        const allUnverifiedScores = [];
+        mapsWithUnverifiedScores.forEach((map) => {
+            const unverifiedScoresSingleMap = map.scores.filter((score) => !score.verified);
+            allUnverifiedScores.push(...unverifiedScoresSingleMap);
+          });
+          
+
+        res.status(200).json(allUnverifiedScores)
+    } catch (err) {
+        console.error(`error: ${err}`);
+        res.status(500).send({ error: "Error fetching ladder data from DB." });
+    }
+});
+
+
 router.post('/submit-gem-hunt-record/', auth, async (req, res) => {
     let mediaType;
     const score = req.body.score;
@@ -77,7 +95,7 @@ router.post('/submit-gem-hunt-record/', auth, async (req, res) => {
                     }
                 }
             });
-            res.status(201).send({message: "Record created."})
+            res.status(201).send({ message: "Record created." })
             return;
         }
 
@@ -95,10 +113,11 @@ router.post('/submit-gem-hunt-record/', auth, async (req, res) => {
                     'gemHuntRecords.$.verified': false,
                 }
             });
-            res.status(201).send({message: "Record updated with new best."});
+            res.status(201).send({ message: "Record updated with new best." });
         }
-        else{
-            res.status(200).send({message: 'Received, but existing record was higher.'})
+        else {
+            res.status(200).send({ message: 'Received, but existing record was higher.' })
+
         }
     } catch (err) {
         console.error(`error: ${err}`);

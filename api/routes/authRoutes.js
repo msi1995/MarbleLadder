@@ -1,8 +1,10 @@
 const express = require('express');
+const auth = require("../auth");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const ladderPlayer = require('../models/LadderPlayer');
 const passwordResetRequest = require('../models/PasswordReset');
+const { ObjectId } = require('mongodb');
 const router = express.Router();
 const nodemailer = require('nodemailer');
 
@@ -160,6 +162,21 @@ router.post('/forgot-password', async (req, res) => {
         }
     });
 });
+
+router.get('/check-admin', auth, async (req, res) => {
+    const {admin} = await ladderPlayer.findOne({ _id: new ObjectId(req.user.userId) })
+    if(admin){
+        res.status(200).send({admin: true})
+    }
+    else{
+        res.status(200).send({admin: false})
+    }
+    try {
+    }
+    catch (e) {
+        console.log(e)
+    }
+})
 
 router.post('/check-reset-token', async (req, res) => {
     const { email, token } = req.body;

@@ -22,3 +22,22 @@ export const getLadderData = async (setLadderData: React.Dispatch<React.SetState
     console.log(error);
   }
 };
+
+export const userIsAdmin = async (token: any) => {
+  try {
+    const res: Response = await fetch(
+      BASE_ROUTE + `/check-admin`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await res.json();
+    return data.admin;
+  } catch (error) {
+    console.log(error);
+  }
+};
