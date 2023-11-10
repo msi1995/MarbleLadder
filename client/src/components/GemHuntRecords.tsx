@@ -256,7 +256,7 @@ export const GemHuntRecords = () => {
         </div>
         {mapWorldRecord !== 0 ? (
           <span className="bg-black/50 sm:text-3xl text-xl py-1 px-2 rounded-md">
-            <span className="text-yellow-400">👑 World Record :</span>{" "}
+            <span className="text-yellow-400">👑 World Record:</span>{" "}
             {mapWorldRecord} points by{" "}
             <NavLink
               className=""
