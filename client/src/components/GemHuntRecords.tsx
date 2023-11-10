@@ -173,7 +173,7 @@ export const GemHuntRecords = () => {
   };
 
   return (
-    <div className="pt-48 h-screen w-screen relative overflow-x-hidden">
+    <div className="pt-40 h-screen w-screen relative overflow-x-hidden">
       <Modal
         isOpen={submissionModalOpen}
         onClose={() => setSubmissionModalOpen(false)}
