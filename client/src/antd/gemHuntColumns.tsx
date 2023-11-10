@@ -19,6 +19,18 @@ export interface GemHuntLadderData {
 }
 
 export let gemHuntColumns: ColumnsType<GemHuntLadderData["scores"][0]> = [
+    {
+    title: "Game",
+    dataIndex: "game",
+    key: "game",
+    width: smallScreen() ? "auto" : "15%",
+    render: (_) => (
+            <img
+            className="w-36 h-16"
+            src={'ultra_image.png'}
+          ></img>
+    ),
+  },
   {
     title: "Rank",
     dataIndex: "rank",
