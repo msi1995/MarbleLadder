@@ -529,7 +529,7 @@ export const PlayerInfo = () => {
           </span>
         </div>
         <Table
-          className="sm:w-1/2 w-full sm:px-0 px-1"
+          className="sm:w-3/5 w-full sm:px-0 px-1"
           columns={columns}
           dataSource={playerMatchData}
           showHeader={true}

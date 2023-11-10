@@ -34,6 +34,7 @@ router.get('/gem-hunt-map-records/unverified', async (req, res) => {
     }
 });
 
+
 router.post('/submit-gem-hunt-record/', auth, async (req, res) => {
     let mediaType;
     const score = req.body.score;
@@ -116,6 +117,7 @@ router.post('/submit-gem-hunt-record/', auth, async (req, res) => {
         }
         else {
             res.status(200).send({ message: 'Received, but existing record was higher.' })
+
         }
     } catch (err) {
         console.error(`error: ${err}`);

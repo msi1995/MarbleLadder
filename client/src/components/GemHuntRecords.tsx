@@ -27,6 +27,7 @@ export const GemHuntRecords = () => {
     "Stadion",
     "Surf's Up",
   ];
+
   const [admin, setAdmin] = useState<boolean>(false);
   const [mapIndex, setMapIndex] = useState<number>(0);
   const [selectedMap, setSelectedMap] = useState<string>(maps[0]);
@@ -44,6 +45,7 @@ export const GemHuntRecords = () => {
     fetchGemHuntRecordData();
     fetchUnverifiedGemHuntRecords();
     checkAdmin()
+
   }, []);
 
   useEffect(() => {
@@ -51,10 +53,11 @@ export const GemHuntRecords = () => {
     const selectedMapData = allMapData.find(
       (item: any) => item.mapName === maps[mapIndex]
     );
+
     setRawMapRecordData(selectedMapData?.scores ?? null);
   }, [mapIndex, allMapData]);
 
-  useEffect(() => {
+   useEffect(() => {
     let sortedMapRecords;
     try {
       if (rawMapRecordData?.length) {
@@ -82,7 +85,7 @@ export const GemHuntRecords = () => {
       console.log(e);
     }
   }, [rawMapRecordData]);
-
+  
   const mapForward = () => {
     setMapIndex((mapIndex + 1) % maps.length);
   };
