@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Navbar } from "./components/Navbar";
 import { Homepage } from "./components/Homepage";
-import { PlayerLadderData, SoloLadder } from "./components/SoloLadder";
+import { SoloLadder } from "./components/SoloLadder";
 import { GemHuntRecords } from "./components/GemHuntRecords";
 import { About } from "./components/About";
 import { Contact } from "./components/Contact";
@@ -13,6 +13,7 @@ import { PlayerInfo } from "./components/PlayerInfo";
 import { getLadderData } from "./utils/utils";
 import { ForgotPassword } from "./components/ForgotPassword";
 import { ResetPassword } from "./components/ResetPassword";
+import { PlayerLadderData } from "./antd/ladderColumns";
 export const BASE_ROUTE = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3001'
 export const LadderData = createContext<PlayerLadderData[]>([]);
 

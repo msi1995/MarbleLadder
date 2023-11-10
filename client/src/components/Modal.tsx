@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const ReplayModal = ({ isOpen, onClose, children }: any) => {
+export const Modal = ({ isOpen, onClose, children }: any) => {
   if (!isOpen) {
     return null;
   }

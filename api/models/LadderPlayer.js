@@ -54,8 +54,12 @@ var ladderPlayerModel = {
     ],
     gemHuntRecords: [
         {
+            runID: String,
             map: String,
             score: Number,
+            mediaLink: String,
+            date: Date,
+            verified: Boolean,
         },
     ],
     matchCount: {

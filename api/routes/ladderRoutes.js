@@ -287,8 +287,6 @@ router.get('/matches-pending-confirmation', auth, async (req, res) => {
     }
 });
 
-module.exports = router;
-
 //set match confirmed. Distribute win or loss to each user. Update streak. Update elo. 
 router.post('/confirm-match', auth, async (req, res) => {
 
@@ -538,3 +536,5 @@ router.post('/dispute-match', auth, async (req, res) => {
         })
     }
 });
+
+module.exports = router;
