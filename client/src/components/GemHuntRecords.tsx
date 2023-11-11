@@ -68,9 +68,20 @@ export const GemHuntRecords = () => {
         return;
       }
 
+      console.log(rawMapRecordData);
+
       const filteredRecords = rawMapRecordData
         .filter((entry: any) => entry.verified !== false)
-        .sort((a: any, b: any) => b.score - a.score)
+        .sort((a: any, b: any) => {
+          if (b.score !== a.score) {
+            return b.score - a.score;
+          } else {
+            const dateA = new Date(a.date).getTime(); 
+            const dateB = new Date(b.date).getTime(); 
+
+            return dateA - dateB; // Sort by date if the scores are equal. Earliest instance of score should keep WR
+          }
+        })
         .map((item: any, index: number) => ({
           ...item,
           rank: index + 1,
@@ -221,7 +232,6 @@ export const GemHuntRecords = () => {
     handleVerifyAction("deny");
   };
 
-  console.log(unverifiedRuns);
   return (
     <div className="pt-28 h-screen w-screen relative overflow-x-hidden">
       <Modal
@@ -398,7 +408,7 @@ export const GemHuntRecords = () => {
         <Table
           className="sm:w-1/2 w-full sm:px-0 px-2"
           columns={gemHuntColumns}
-          scroll={above1080() ? {} : {y: 340}}
+          scroll={above1080() ? {} : { y: 340 }}
           dataSource={sortedMapRecordData}
           pagination={false}
         />
