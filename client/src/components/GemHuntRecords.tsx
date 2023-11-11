@@ -355,7 +355,7 @@ export const GemHuntRecords = () => {
         <div className="self-end flex flex-row gap-x-4">
           {Boolean(admin) && (
             <button
-              onClick={() => setVerifyRunsModalOpen(true)}
+              onClick={() => unverifiedRuns?.length > 0 ? setVerifyRunsModalOpen(true) : setVerifyRunsModalOpen(false)}
               className="block self-end sm:w-48 w-32 px-2 py-2 mt-2 mr-2 sm:mr-0  text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 rounded-md hover:bg-blue-500 bg-green-600"
             >
               Awaiting Approval ({unverifiedRuns?.length})
