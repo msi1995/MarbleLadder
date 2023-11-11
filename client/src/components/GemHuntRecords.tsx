@@ -68,8 +68,6 @@ export const GemHuntRecords = () => {
         return;
       }
 
-      console.log(rawMapRecordData);
-
       const filteredRecords = rawMapRecordData
         .filter((entry: any) => entry.verified !== false)
         .sort((a: any, b: any) => {
