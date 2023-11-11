@@ -162,52 +162,6 @@ router.post('/submit-gem-hunt-record/', auth, async (req, res) => {
 
         res.status(201).send({ message: "Record created." })
 
-        // //UPDATES TO LADDERPLAYER COLLECTION
-        // const { gemHuntRecords } = await ladderPlayer.findOne({
-        //     _id: new ObjectId(req.user.userId)
-        // })
-        // const mapRecord = gemHuntRecords.find((entry) => entry.map === map)
-
-        // //if user has no reported score on this map, add an entry
-        // if (mapRecord === undefined) {
-        //     await ladderPlayer.updateOne({
-        //         _id: new ObjectId(req.user.userId)
-        //     }, {
-        //         $push: {
-        //             gemHuntRecords: {
-        //                 runID: runID,
-        //                 map: map,
-        //                 score: score,
-        //                 mediaLink: mediaLink,
-        //                 date: new Date(),
-        //                 verified: false,
-        //             }
-        //         }
-        //     });
-        //     res.status(201).send({ message: "Record created." })
-        //     return;
-        // }
-
-        // //only update player's best if the new score is better than previous
-        // if (score > mapRecord.score) {
-        //     await ladderPlayer.updateOne({
-        //         _id: new ObjectId(req.user.userId),
-        //         'gemHuntRecords.map': map
-        //     }, {
-        //         $set: {
-        //             'gemHuntRecords.$.runID': runID,
-        //             'gemHuntRecords.$.score': score,
-        //             'gemHuntRecords.$.mediaLink': mediaLink,
-        //             'gemHuntRecords.$.date': new Date(),
-        //             'gemHuntRecords.$.verified': false,
-        //         }
-        //     });
-        //     res.status(201).send({ message: "Record updated with new best." });
-        // }
-        // else {
-        //     res.status(200).send({ message: 'Received, but existing record was higher.' })
-
-        // }
     } catch (err) {
         console.error(`error: ${err}`);
         res.status(500).send({ error: "Error fetching ladder data from DB." });
