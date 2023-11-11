@@ -37,15 +37,16 @@ export const GemHuntRecords = () => {
   const [mapWorldRecord, setMapWorldRecord] = useState<number>(0);
   const [mapWorldRecordHolder, setMapWorldRecordHolder] = useState<string>("");
   const [submissionModalOpen, setSubmissionModalOpen] = useState(false);
+  const [verifyRunsModalOpen, setVerifyRunsModalOpen] = useState(false);
   const [reportedScore, setReportedScore] = useState<number>();
   const [mediaLink, setMediaLink] = useState<string | null>(null);
-  const [unverifiedRuns, setUnverifiedRuns] = useState<number>(0);
+  const [unverifiedRuns, setUnverifiedRuns] = useState<any>([]);
+  const [runConfirmationIdx, setRunConfirmationIdx] = useState<number>(0);
 
   useEffect(() => {
     fetchGemHuntRecordData();
     fetchUnverifiedGemHuntRecords();
-    checkAdmin()
-
+    checkAdmin();
   }, []);
 
   useEffect(() => {
@@ -53,7 +54,6 @@ export const GemHuntRecords = () => {
     const selectedMapData = allMapData.find(
       (item: any) => item.mapName === maps[mapIndex]
     );
-    console.log('index changed. new data: ', selectedMapData);
 
     setRawMapRecordData(selectedMapData?.scores ?? null);
   }, [mapIndex, allMapData]);
@@ -65,12 +65,16 @@ export const GemHuntRecords = () => {
         setMapWorldRecord(0);
         return;
       }
-  
+
       const filteredRecords = rawMapRecordData
         .filter((entry: any) => entry.verified !== false)
         .sort((a: any, b: any) => b.score - a.score)
-        .map((item: any, index: number) => ({ ...item, rank: index + 1, key: `${index + 1}` }));
-  
+        .map((item: any, index: number) => ({
+          ...item,
+          rank: index + 1,
+          key: `${index + 1}`,
+        }));
+
       if (filteredRecords.length) {
         setSortedMapRecordData(filteredRecords.slice(0, 5));
         setMapWorldRecordHolder(filteredRecords[0].player);
@@ -83,7 +87,7 @@ export const GemHuntRecords = () => {
       console.log(e);
     }
   }, [rawMapRecordData]);
-  
+
   const mapForward = () => {
     setMapIndex((mapIndex + 1) % maps.length);
   };
@@ -94,7 +98,7 @@ export const GemHuntRecords = () => {
 
   const checkAdmin = async () => {
     setAdmin(await userIsAdmin(token));
-  }
+  };
 
   const fetchUnverifiedGemHuntRecords = async () => {
     try {
@@ -108,8 +112,8 @@ export const GemHuntRecords = () => {
           },
         }
       );
-      const unverifiedRuns = await res.json();
-      setUnverifiedRuns(unverifiedRuns.length);
+      const unverifiedRunsData = await res.json();
+      setUnverifiedRuns(unverifiedRunsData);
       if (res.status === 403) {
         handleLogout(navigate, cookies);
       }
@@ -172,6 +176,47 @@ export const GemHuntRecords = () => {
     }
   };
 
+  const handleVerifyAction = async (actionType: string) => {
+    try {
+      const endpoint =
+        actionType === "approve"
+          ? BASE_ROUTE + "/approve-gem-hunt-record"
+          : BASE_ROUTE + "/deny-gem-hunt-record";
+
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          runID: unverifiedRuns[runConfirmationIdx].runID,
+          map: selectedMap,
+        }),
+      });
+
+      setRunConfirmationIdx(runConfirmationIdx + 1);
+      if (runConfirmationIdx >= unverifiedRuns.length - 1) {
+        setVerifyRunsModalOpen(false);
+        window.location.reload();
+      }
+      // if (res.status === 403) {
+      //   handleLogout(navigate, cookies);
+      // }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleConfirmRun = () => {
+    handleVerifyAction("approve");
+  };
+
+  const handleDenyRun = () => {
+    handleVerifyAction("deny");
+  };
+
+  console.log(unverifiedRuns);
   return (
     <div className="pt-40 h-screen w-screen relative overflow-x-hidden">
       <Modal
@@ -234,6 +279,45 @@ export const GemHuntRecords = () => {
           </form>
         </div>
       </Modal>
+      <Modal
+        isOpen={verifyRunsModalOpen}
+        onClose={() => setVerifyRunsModalOpen(false)}
+      >
+        <div className="flex flex-col items-center sm:px-16 py-4 gap-y-4">
+          <span className="sm:text-4xl text-2xl font-bold">
+            Verify Gem Hunt Record
+          </span>
+          <span className="text-green-600 text-2xl">
+            {unverifiedRuns[runConfirmationIdx]?.player} -{" "}
+            {unverifiedRuns[runConfirmationIdx]?.score} points on{" "}
+            {unverifiedRuns[runConfirmationIdx]?.map}
+          </span>
+          <span className="sm:w-128 w-64 text-center text-md font-semibold">
+            Please check the attached media and either approve or deny the run.
+          </span>
+          <a
+            className="text-blue-500"
+            href={unverifiedRuns[runConfirmationIdx]?.media}
+            target="_blank"
+          >
+            {unverifiedRuns[runConfirmationIdx]?.media}
+          </a>
+          <div className="flex flex-row border-0 border-red-600 border-solid w-full justify-center gap-x-8">
+            <button
+              onClick={handleConfirmRun}
+              className="w-36 h-8 mt-2 py-1 px-1 bg-blue-600 hover:bg-blue-700 text-sm text-white font-semibold rounded transition duration-200"
+            >
+              Approve Run
+            </button>
+            <button
+              onClick={handleDenyRun}
+              className="w-36 h-8 mt-2 py-1 px-1 bg-red-600 hover:bg-red-700 text-sm text-white font-semibold rounded transition duration-200"
+            >
+              Deny Run
+            </button>
+          </div>
+        </div>
+      </Modal>
       <div className="sm:w-1/2 w-full flex flex-col mx-auto justify-center items-center md:text-2xl text-md text-white text-center pb-2">
         <div className="sm:text-6xl text-4xl sm:mb-8 mb-2">
           <button
@@ -271,10 +355,10 @@ export const GemHuntRecords = () => {
         <div className="self-end flex flex-row gap-x-4">
           {Boolean(admin) && (
             <button
-              onClick={() => console.log("nothing yet")}
+              onClick={() => setVerifyRunsModalOpen(true)}
               className="block self-end sm:w-48 w-32 px-2 py-2 mt-2 mr-2 sm:mr-0  text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 rounded-md hover:bg-blue-500 bg-green-600"
             >
-              Unverified runs ({unverifiedRuns})
+              Awaiting Approval ({unverifiedRuns?.length})
             </button>
           )}
           {Boolean(token) && (
