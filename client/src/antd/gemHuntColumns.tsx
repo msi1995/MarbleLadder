@@ -6,6 +6,10 @@ export const smallScreen = () => {
   return window.innerWidth <= 850;
 };
 
+export const above1080 = () => {
+  return window.innerWidth > 1980;
+}
+
 export interface GemHuntLadderData {
   mapName: string;
   scores: [
@@ -26,7 +30,7 @@ export let gemHuntColumns: ColumnsType<GemHuntLadderData["scores"][0]> = [
     width: smallScreen() ? "auto" : "15%",
     render: (_) => (
             <img
-            className="w-4/5 h-2/5"
+            className="w-3/4"
             src={'ultra_image.png'}
           ></img>
     ),
@@ -57,6 +61,7 @@ export let gemHuntColumns: ColumnsType<GemHuntLadderData["scores"][0]> = [
     title: "Screenshot/Video",
     dataIndex: "media",
     key: "mediaLink",
+    width: "auto",
     render: (_, { media }) => (
       <a className='text-blue-600' href={media} target="_blank">
         Link
