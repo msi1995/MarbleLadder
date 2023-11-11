@@ -40,6 +40,7 @@ export const GemHuntRecords = () => {
   const [verifyRunsModalOpen, setVerifyRunsModalOpen] = useState(false);
   const [reportedScore, setReportedScore] = useState<number>();
   const [mediaLink, setMediaLink] = useState<string | null>(null);
+  const [description, setDescription] = useState<string>("");
   const [unverifiedRuns, setUnverifiedRuns] = useState<any>([]);
   const [runConfirmationIdx, setRunConfirmationIdx] = useState<number>(0);
 
@@ -164,10 +165,13 @@ export const GemHuntRecords = () => {
             map: selectedMap,
             score: reportedScore,
             mediaLink: mediaLink,
+            // description: description,
           }),
         }
       );
-      setSubmissionModalOpen(false);
+      if (res.status === 201) {
+        setSubmissionModalOpen(false);
+      }
       if (res.status === 403) {
         handleLogout(navigate, cookies);
       }
@@ -261,7 +265,8 @@ export const GemHuntRecords = () => {
               htmlFor="text"
               className="block text-sm font-semibold w-full"
             >
-              Imgur or Youtube Link: <span className="text-red-600"> *</span>
+              Screenshot or Youtube Link:{" "}
+              <span className="text-red-600"> *</span>
             </label>
             <input
               type="text"
@@ -270,6 +275,19 @@ export const GemHuntRecords = () => {
               placeholder="Example: https://i.imgur.com/BB7F6Oa.jpg"
               className="block w-full border-solid border-2 border-slate-500 rounded-md border-0 px-3.5 py-2 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             ></input>
+            {/* <label
+              htmlFor="text"
+              className="block text-sm font-semibold w-full"
+            >
+              Description (optional)
+            </label>
+            <input
+              type="textarea"
+              onChange={(e) => setMediaLink(e.target.value)}
+              value={mediaLink ?? ""}
+              placeholder="Notes, timestamps if needed, etc..."
+              className="block w-full border-solid border-2 border-slate-500 rounded-md border-0 px-3.5 py-2 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            ></input> */}
             <button
               type="submit"
               className="w-1/3 mt-2 py-1 px-1 bg-blue-500 hover:bg-blue-600 text-sm text-white font-bold rounded transition duration-200"
@@ -355,7 +373,11 @@ export const GemHuntRecords = () => {
         <div className="self-end flex flex-row gap-x-4">
           {Boolean(admin) && (
             <button
-              onClick={() => unverifiedRuns?.length > 0 ? setVerifyRunsModalOpen(true) : setVerifyRunsModalOpen(false)}
+              onClick={() =>
+                unverifiedRuns?.length > 0
+                  ? setVerifyRunsModalOpen(true)
+                  : setVerifyRunsModalOpen(false)
+              }
               className="block self-end sm:w-48 w-32 px-2 py-2 mt-2 mr-2 sm:mr-0  text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 rounded-md hover:bg-blue-500 bg-green-600"
             >
               Awaiting Approval ({unverifiedRuns?.length})

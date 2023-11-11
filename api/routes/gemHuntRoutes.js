@@ -126,22 +126,23 @@ router.post('/deny-gem-hunt-record/', auth, async (req, res) => {
 });
 
 router.post('/submit-gem-hunt-record/', auth, async (req, res) => {
-    let mediaType;
+    try {
+    // let mediaType;
     const score = req.body.score;
     const map = req.body.map;
     const mediaLink = req.body.mediaLink;
-    const youtubeURLPattern = /^https?:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)[A-Za-z0-9_-]{11}$/;
-    const imgurURLPattern = /^https?:\/\/(?:www\.)?(?:i\.imgur\.com\/|imgur\.com\/)([a-zA-Z0-9]{7})\.(?:jpg|jpeg|png|gif|bmp)$/;
-    if (youtubeURLPattern.test(mediaLink)) {
-        mediaType = 'YouTube'
-    }
-    if (imgurURLPattern.test(mediaLink)) {
-        mediaType = 'Imgur'
-    }
-    if (mediaType === undefined) {
-        res.status(400).send({ error: "Bad media URL. Please provide an Imgur or Youtube URL." });
-    }
-    try {
+    // const youtubeURLPattern = /^https?:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)[A-Za-z0-9_-]{11}$/;
+    // const imgurURLPattern = /^https?:\/\/(?:www\.)?(?:i\.imgur\.com\/|imgur\.com\/)([a-zA-Z0-9]{7})\.(?:jpg|jpeg|png|gif|bmp)$/;
+    // if (youtubeURLPattern.test(mediaLink)) {
+    //     mediaType = 'YouTube'
+    // }
+    // if (imgurURLPattern.test(mediaLink)) {
+    //     mediaType = 'Imgur'
+    // }
+    // if (mediaType === undefined) {
+    //     res.status(400).send({ error: "Bad media URL. Please provide an Imgur or Youtube URL." });
+    //     return;
+    // }
         const runID = uuidv4();
         //UPDATES TO MAP RECORD COLLECTION
         await gemHuntMapRecord.updateOne({
