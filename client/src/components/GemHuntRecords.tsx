@@ -1,7 +1,6 @@
 import {
   GemHuntLadderData,
   gemHuntColumns,
-  smallScreen,
   above1080,
 } from "../antd/gemHuntColumns";
 import { Table } from "antd";
@@ -11,6 +10,7 @@ import { handleLogout, userIsAdmin } from "../utils/utils";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Modal } from "./Modal";
+import ToggleButton from "react-toggle-button";
 
 export const GemHuntRecords = () => {
   const cookies = new Cookies();
@@ -34,7 +34,10 @@ export const GemHuntRecords = () => {
   const [selectedMap, setSelectedMap] = useState<string>(maps[0]);
   const [allMapData, setAllMapData] = useState<any>([]);
   const [rawMapRecordData, setRawMapRecordData] = useState<any>([]);
-  const [sortedMapRecordData, setSortedMapRecordData] = useState<any>([]);
+  const [allRuns, setAllRuns] = useState<boolean>(false);
+  const [sortedMapRecordAllData, setSortedMapRecordAllData] = useState<any>([]);
+  const [sortedMapRecordUniqueData, setSortedMapRecordUniqueData] =
+    useState<any>([]);
   const [mapWorldRecord, setMapWorldRecord] = useState<number>(0);
   const [mapWorldRecordHolder, setMapWorldRecordHolder] = useState<string>("");
   const [submissionModalOpen, setSubmissionModalOpen] = useState(false);
@@ -63,19 +66,64 @@ export const GemHuntRecords = () => {
   useEffect(() => {
     try {
       if (!rawMapRecordData?.length) {
-        setSortedMapRecordData([]);
+        setSortedMapRecordAllData([]);
+        setSortedMapRecordUniqueData([]);
         setMapWorldRecord(0);
         return;
       }
 
-      const filteredRecords = rawMapRecordData
+      const filteredUniqueRecords = rawMapRecordData
+        .filter((entry: any) => entry.verified !== false)
+        .reduce((accumulator: any, current: any) => {
+          const existingPlayerIndex = accumulator.findIndex(
+            (item: any) => item.player === current.player
+          );
+
+          if (existingPlayerIndex !== -1) {
+            // Player already exists in accumulator
+            if (current.score > accumulator[existingPlayerIndex].score) {
+              // Replace if the current score is higher
+              accumulator[existingPlayerIndex] = current;
+            }
+          } else {
+            // Player doesn't exist in accumulator, add them
+            accumulator.push(current);
+          }
+
+          return accumulator;
+        }, [])
+        .sort((a: any, b: any) => {
+          if (b.score !== a.score) {
+            return b.score - a.score;
+          } else {
+            const dateA = new Date(a.date).getTime();
+            const dateB = new Date(b.date).getTime();
+            return dateA - dateB;
+          }
+        })
+        .map((item: any, index: number) => ({
+          ...item,
+          rank: index + 1,
+          key: `${index + 1}`,
+        }));
+
+      if (filteredUniqueRecords.length) {
+        setSortedMapRecordUniqueData(filteredUniqueRecords.slice(0, 10));
+        setMapWorldRecordHolder(filteredUniqueRecords[0].player);
+        setMapWorldRecord(filteredUniqueRecords[0].score);
+      } else {
+        setSortedMapRecordUniqueData([]);
+        setMapWorldRecord(0);
+      }
+
+      const filteredAllRecords = rawMapRecordData
         .filter((entry: any) => entry.verified !== false)
         .sort((a: any, b: any) => {
           if (b.score !== a.score) {
             return b.score - a.score;
           } else {
-            const dateA = new Date(a.date).getTime(); 
-            const dateB = new Date(b.date).getTime(); 
+            const dateA = new Date(a.date).getTime();
+            const dateB = new Date(b.date).getTime();
 
             return dateA - dateB; // Sort by date if the scores are equal. Earliest instance of score should keep WR
           }
@@ -86,13 +134,10 @@ export const GemHuntRecords = () => {
           key: `${index + 1}`,
         }));
 
-      if (filteredRecords.length) {
-        setSortedMapRecordData(filteredRecords.slice(0, 10));
-        setMapWorldRecordHolder(filteredRecords[0].player);
-        setMapWorldRecord(filteredRecords[0].score);
+      if (filteredAllRecords.length) {
+        setSortedMapRecordAllData(filteredAllRecords.slice(0, 10));
       } else {
-        setSortedMapRecordData([]);
-        setMapWorldRecord(0);
+        setSortedMapRecordAllData([]);
       }
     } catch (e) {
       console.log(e);
@@ -379,27 +424,42 @@ export const GemHuntRecords = () => {
             No records for this map yet.
           </span>
         )}
-        <div className="self-end flex flex-row gap-x-4 mt-8">
-          {Boolean(admin) && (
-            <button
-              onClick={() =>
-                unverifiedRuns?.length > 0
-                  ? setVerifyRunsModalOpen(true)
-                  : setVerifyRunsModalOpen(false)
-              }
-              className="block self-end sm:w-48 w-36 px-2 py-2 mt-2 mr-2 sm:mr-0 sm:text-sm text-xs font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 rounded-md hover:bg-blue-500 bg-green-600"
-            >
-              Awaiting Approval ({unverifiedRuns?.length})
-            </button>
-          )}
-          {Boolean(token) && (
-            <button
-              onClick={() => setSubmissionModalOpen(true)}
-              className="block self-end sm:w-48 w-36 px-2 py-2 mt-2 mr-2 sm:mr-0 sm:text-sm text-xs font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 rounded-md hover:bg-blue-500 bg-black"
-            >
-              Report a run
-            </button>
-          )}
+        <div className="flex flex-row w-full">
+          <div className="flex flex-row self-end h-12 items-center bg-black/40 rounded-md px-2">
+            <span className='pb-2 px-2 text-md whitespace-nowrap'>Display All Runs</span>
+            <ToggleButton
+              inactiveLabel={"Off"}
+              activeLabel={"On"}
+              value={allRuns}
+              onToggle={(uniqueOnly: boolean) => {
+                setAllRuns(!uniqueOnly);
+              }}
+              thumbStyle={{ borderRadius: 2 }}
+              trackStyle={{ borderRadius: 2 }}
+            />
+          </div>
+          <div className="basis-full justify-end flex flex-row gap-x-4 mt-8">
+            {Boolean(admin) && (
+              <button
+                onClick={() =>
+                  unverifiedRuns?.length > 0
+                    ? setVerifyRunsModalOpen(true)
+                    : setVerifyRunsModalOpen(false)
+                }
+                className="block self-end sm:w-48 w-36 px-2 py-2 mt-2 mr-2 sm:mr-0 sm:text-sm text-xs font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 rounded-md hover:bg-blue-500 bg-green-600"
+              >
+                Awaiting Approval ({unverifiedRuns?.length})
+              </button>
+            )}
+            {Boolean(token) && (
+              <button
+                onClick={() => setSubmissionModalOpen(true)}
+                className="block self-end sm:w-48 w-36 px-2 py-2 mt-2 mr-2 sm:mr-0 sm:text-sm text-xs font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 rounded-md hover:bg-blue-500 bg-black"
+              >
+                Report a run
+              </button>
+            )}
+          </div>
         </div>
       </div>
       <div className="flex flex-row flex-wrap relative overflow-x-hidden justify-center opacity-95">
@@ -407,7 +467,9 @@ export const GemHuntRecords = () => {
           className="sm:w-1/2 w-full sm:px-0 px-2"
           columns={gemHuntColumns}
           scroll={above1080() ? {} : { y: 340 }}
-          dataSource={sortedMapRecordData}
+          dataSource={
+            !allRuns ? sortedMapRecordUniqueData : sortedMapRecordAllData
+          }
           pagination={false}
         />
       </div>
