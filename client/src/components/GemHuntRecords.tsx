@@ -2,6 +2,7 @@ import {
   GemHuntLadderData,
   gemHuntColumns,
   smallScreen,
+  above1080,
 } from "../antd/gemHuntColumns";
 import { Table } from "antd";
 import Cookies from "universal-cookie";
@@ -77,7 +78,7 @@ export const GemHuntRecords = () => {
         }));
 
       if (filteredRecords.length) {
-        setSortedMapRecordData(filteredRecords.slice(0, 5));
+        setSortedMapRecordData(filteredRecords.slice(0, 10));
         setMapWorldRecordHolder(filteredRecords[0].player);
         setMapWorldRecord(filteredRecords[0].score);
       } else {
@@ -222,7 +223,7 @@ export const GemHuntRecords = () => {
 
   console.log(unverifiedRuns);
   return (
-    <div className="pt-40 h-screen w-screen relative overflow-x-hidden">
+    <div className="pt-28 h-screen w-screen relative overflow-x-hidden">
       <Modal
         isOpen={submissionModalOpen}
         onClose={() => setSubmissionModalOpen(false)}
@@ -370,7 +371,7 @@ export const GemHuntRecords = () => {
             No records for this map yet.
           </span>
         )}
-        <div className="self-end flex flex-row gap-x-4">
+        <div className="self-end flex flex-row gap-x-4 mt-8">
           {Boolean(admin) && (
             <button
               onClick={() =>
@@ -378,7 +379,7 @@ export const GemHuntRecords = () => {
                   ? setVerifyRunsModalOpen(true)
                   : setVerifyRunsModalOpen(false)
               }
-              className="block self-end sm:w-48 w-32 px-2 py-2 mt-2 mr-2 sm:mr-0  text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 rounded-md hover:bg-blue-500 bg-green-600"
+              className="block self-end sm:w-48 w-36 px-2 py-2 mt-2 mr-2 sm:mr-0 sm:text-sm text-xs font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 rounded-md hover:bg-blue-500 bg-green-600"
             >
               Awaiting Approval ({unverifiedRuns?.length})
             </button>
@@ -386,7 +387,7 @@ export const GemHuntRecords = () => {
           {Boolean(token) && (
             <button
               onClick={() => setSubmissionModalOpen(true)}
-              className="block self-end sm:w-48 w-32 px-2 py-2 mt-2 mr-2 sm:mr-0  text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 rounded-md hover:bg-blue-500 bg-black"
+              className="block self-end sm:w-48 w-36 px-2 py-2 mt-2 mr-2 sm:mr-0 sm:text-sm text-xs font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 rounded-md hover:bg-blue-500 bg-black"
             >
               Report a run
             </button>
@@ -397,12 +398,9 @@ export const GemHuntRecords = () => {
         <Table
           className="sm:w-1/2 w-full sm:px-0 px-2"
           columns={gemHuntColumns}
+          scroll={above1080() ? {} : {y: 340}}
           dataSource={sortedMapRecordData}
-          pagination={{
-            showSizeChanger: true,
-            defaultPageSize: smallScreen() ? 5 : 15,
-            pageSizeOptions: [5, 15, 25, 50],
-          }}
+          pagination={false}
         />
       </div>
     </div>
