@@ -12,6 +12,7 @@ var gemHuntMapRecordModel = {
             score: Number,
             media: String,
             verified: Boolean,
+            verifiedBy: String,
             denied: Boolean,
             date: Date,
         },
