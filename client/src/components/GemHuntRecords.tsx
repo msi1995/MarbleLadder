@@ -51,7 +51,9 @@ export const GemHuntRecords = () => {
   useEffect(() => {
     fetchGemHuntRecordData();
     fetchUnverifiedGemHuntRecords();
-    checkAdmin();
+    if (token) {
+      checkAdmin();
+    }
   }, []);
 
   useEffect(() => {
@@ -153,7 +155,7 @@ export const GemHuntRecords = () => {
   };
 
   const checkAdmin = async () => {
-    setAdmin(await userIsAdmin(token));
+    setAdmin(await userIsAdmin(navigate, cookies, token));
   };
 
   const fetchUnverifiedGemHuntRecords = async () => {
@@ -259,9 +261,9 @@ export const GemHuntRecords = () => {
         setVerifyRunsModalOpen(false);
         window.location.reload();
       }
-      // if (res.status === 403) {
-      //   handleLogout(navigate, cookies);
-      // }
+      if (res.status === 403) {
+        handleLogout(navigate, cookies);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -391,19 +393,19 @@ export const GemHuntRecords = () => {
         </div>
       </Modal>
       <div className="sm:w-1/2 w-full flex flex-col mx-auto justify-center items-center md:text-2xl text-md text-white text-center pb-2">
-        <div className="sm:text-6xl text-4xl sm:mb-8 mb-2">
+        <div className="flex items-center justify-center sm:text-6xl text-4xl pb-1 sm:mb-8 mb-4 sm:bg-inherit bg-black/50 px-2 rounded-md">
           <button
             onClick={mapBackward}
-            className="sm:text-7xl text-4xl mr-8 neon-text"
+            className="sm:text-7xl mr-8 sm:pb-0 pb-1 neon-text"
           >
             {"<"}
           </button>
-          <div className="sm:text-6xl italic sm:w-72 text-4xl w-42 inline-block border-0 border-red-600">
+          <div className="sm:text-6xl text-3xl italic sm:w-72 w-40 inline-block">
             <span>{selectedMap}</span>
           </div>
           <button
             onClick={mapForward}
-            className="sm:text-7xl text-4xl ml-8 neon-text"
+            className="sm:text-7xl ml-8 sm:pb-0 pb-1 neon-text"
           >
             {">"}
           </button>
@@ -425,8 +427,10 @@ export const GemHuntRecords = () => {
           </span>
         )}
         <div className="flex flex-row w-full">
-          <div className="flex flex-row self-end h-12 items-center bg-black/40 rounded-md px-2">
-            <span className='pb-2 px-2 text-md whitespace-nowrap'>Display All Runs</span>
+          <div className="flex flex-row self-end h-10 px-2 gap-x-2 sm:ml-0 ml-2 items-center bg-black/80 rounded-md">
+            <span className="sm:pb-1 px-2 sm:text-base text-sm whitespace-nowrap text-left">
+              Display All Runs
+            </span>
             <ToggleButton
               inactiveLabel={"Off"}
               activeLabel={"On"}
@@ -438,7 +442,7 @@ export const GemHuntRecords = () => {
               trackStyle={{ borderRadius: 2 }}
             />
           </div>
-          <div className="basis-full justify-end flex flex-row gap-x-4 mt-8">
+          <div className="basis-full justify-end flex sm:flex-row flex-col gap-x-4 mt-8">
             {Boolean(admin) && (
               <button
                 onClick={() =>

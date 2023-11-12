@@ -76,3 +76,7 @@ export let gemHuntColumns: ColumnsType<GemHuntLadderData["scores"][0]> = [
     defaultSortOrder: "descend",
   },
 ];
+
+if (smallScreen()) {
+  gemHuntColumns = gemHuntColumns.filter((item) => item.key !== "game");
+}

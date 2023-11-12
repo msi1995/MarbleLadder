@@ -4,20 +4,20 @@
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
-.neon-text {
-  animation: neon .5s infinite alternate;
+.neon-text-allsize {
+  animation: neon 0.5s infinite alternate;
 }
 
 @keyframes neon {
@@ -29,21 +29,36 @@ code {
   }
 }
 
-.ant-table-row{
+.ant-table-row {
   padding: 0;
   margin: 0;
 }
 
 .bg-black-opacity-50 {
-  background-color: rgba(0, 0, 0, 0.5); /* Use rgba to control background opacity */
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.5
+  ); /* Use rgba to control background opacity */
 }
 
 .bg-black-opacity-70 {
-  background-color: rgba(0, 0, 0, 0.7); /* Use rgba to control background opacity */
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.7
+  ); /* Use rgba to control background opacity */
 }
 
 .bg-black-opacity-90 {
-  background-color: rgba(0, 0, 0, 0.9); /* Use rgba to control background opacity */
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.9
+  ); /* Use rgba to control background opacity */
 }
 
 /* Set the text inside bg div to 100% opacity */
@@ -68,16 +83,23 @@ code {
 }
 
 .select-search-select {
-
   height: 14em;
 }
-.select-search-container{
+.select-search-container {
   width: 100% !important;
 }
 @media screen and (max-width: 640px) {
-  .ant-table table { font-size: 10px; }
+  .ant-table table {
+    font-size: 10px;
+  }
   .ant-tag {
     font-size: 10px;
+  }
+}
+
+@media screen and (min-width: 850px) {
+  .neon-text {
+    animation: neon 0.5s infinite alternate;
   }
 }
 
@@ -88,6 +110,6 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
