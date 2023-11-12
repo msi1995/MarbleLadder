@@ -2,24 +2,24 @@ import "../index.css";
 
 export const About = () => {
   return (
-    <div className="flex h-screen relative justify-center items-center">
-      <div className="sm:w-2/5 w-4/5 sm:px-16 sm:pb-8 pt-8 pb-4 bg-black-opacity-90 rounded-md text-center">
+    <div className="flex w-full h-screen sm:px-0 px-4 items-center overflow-y-hidden">
+      <div className="sm:w-3/5 w-full sm:p-8 p-4 mx-auto bg-black/90 rounded-md text-center">
         <span className="block sm:text-4xl text-2xl text-white pb-4">
           What is MarbleLadder?
         </span>
-        <span className="block sm:text-xl text-md p-4 text-white">
-          MarbleLadder is geared towards 1v1 gem hunt play with leaderboard
-          tracking and ELO distribution. To participate in the 1v1 Gem Hunt
-          Ladder, sign up for an account and look for opponents in the
-          multiplayer channel of the MIU Discord. One of the participants will
-          need to report the results from the ladder page when finished playing.
-          PC, Xbox, and Switch currently have crossplay capabilities within Marble It Up.
+        <span className="block sm:text-lg text-sm p-4 text-white">
+          MarbleLadder implements a ranked ladder with a functional ELO system
+          and persistent multiplayer stat tracking. It also maintains a verified
+          leaderboard of solo Gem Hunt records. To participate, sign up for an
+          account and you will be able to post runs or find ranked games against
+          players in the MIU discord. PC, Xbox, Switch, and PlayStation all
+          currently have crossplay functionality, so you can find opponents on
+          any of these platforms.
         </span>
-        <span className="block sm:text-xl text-md p-4 text-white">
-          MarbleLadder is a site I built in my spare time to try and support
-          competitive multiplayer play. MarbleLadder is not affiliated with
-          Marble Collective in any capacity. There are likely bugs, and certain
-          features are not yet complete. If you find major bugs, feel free to
+        <span className="block sm:text-lg text-sm p-4 text-white">
+          MarbleLadder is a passion project built to try and support competitive
+          multiplayer play. MarbleLadder is not affiliated with Marble
+          Collective in any capacity. If you find major bugs, feel free to
           contact me on Discord at msi#8029.
         </span>
       </div>
