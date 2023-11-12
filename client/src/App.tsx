@@ -26,7 +26,7 @@ function App() {
   return (
     <BrowserRouter>
     <Navbar/>
-    <div className="fixed -z-10 w-screen h-screen bg-cover bg-fixed bg-[url('/public/MIU_1.jpg')] overflow-y-hidden" />
+    <div className="fixed -z-10 w-screen h-screen bg-cover bg-fixed bg-[url('/public/MIU_1.jpg')]" />
     <LadderData.Provider value={ladderData}>
       <Routes>
         <Route path="/" element={<Homepage/>} />

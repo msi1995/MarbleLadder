@@ -8,7 +8,6 @@ export const Navbar = () => {
   const cookies = new Cookies();
   const token = cookies.get("MarbleToken");
   const navigate = useNavigate();
-  // const username = localStorage.getItem("username");
 
   const handleSignoutClick = () => {
     handleLogout(navigate, cookies);
