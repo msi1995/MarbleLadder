@@ -53,7 +53,10 @@ router.post('/approve-gem-hunt-record/', auth, async (req, res) => {
     try {
         await gemHuntMapRecord.updateOne(
             { "scores.runID": runID },
-            { $set: { "scores.$.verified": true } }
+            { $set: { 
+                "scores.$.verified": true,
+                "scores.$.verifiedBy": req.user.username
+            }  }
         );
 
         const unverifiedMatch = await gemHuntMapRecord.findOne({ "scores.runID": runID }, { "scores.$": 1 })
