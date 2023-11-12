@@ -42,17 +42,16 @@ export const SignUp = () => {
   };
 
   return (
-    <div className="flex pt-16 h-screen w-screen relative overflow-x-hidden justify-center items-center">
-      <div className="text-yellow-400 bg-black opacity-90 sm:px-24 sm:py-16 px-8 py-6 rounded-md bg-black-opacity-90">
-        <>
+    <div className="flex sm:pt-0 pt-28 px-4 h-screen justify-center items-center">
+      <div className="max-h-full text-white bg-black opacity-90 sm:px-24 sm:pb-16 px-8 py-6 rounded-md bg-black-opacity-90 overflow-y-auto">
           <div className="mx-auto max-w-4xl text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
               Register
             </h2>
-            <p className="mt-2 sm:text-lg text-md leading-8 text-white">
+            <p className="mt-2 sm:text-lg text-md leading-8">
               Email, password, and a username!
             </p>
-            <p className="mt-2 sm:text-lg text-md leading-8 text-white">
+            <p className="mt-2 sm:text-lg text-md leading-8">
               Only your display name will be publicly visible.
             </p>
             {errorMessage !== "" && (
@@ -63,13 +62,13 @@ export const SignUp = () => {
           </div>
           <form
             onSubmit={handleRegisterSubmit}
-            className="mx-auto z-20 mt-12 max-w-2xl"
+            className="mx-auto z-20 mt-8 max-w-2xl"
           >
             <div className="grid grid-cols-1 gap-x-8 gap-y-4 sm:grid-cols-1">
               <div>
                 <label
                   htmlFor="email"
-                  className="block text-sm font-semibold leading-6 text-white "
+                  className="block text-sm font-semibold leading-6 "
                 >
                   Email address<span className="text-red-600"> *</span>
                 </label>
@@ -88,7 +87,7 @@ export const SignUp = () => {
               <div>
                 <label
                   htmlFor="password"
-                  className="block text-sm font-semibold leading-6 text-white"
+                  className="block text-sm font-semibold leading-6"
                 >
                   Password<span className="text-red-600"> *</span>
                 </label>
@@ -107,7 +106,7 @@ export const SignUp = () => {
               <div>
                 <label
                   htmlFor="password"
-                  className="block text-sm font-semibold leading-6 text-white"
+                  className="block text-sm font-semibold leading-6"
                 >
                   Confirm Password<span className="text-red-600"> *</span>
                 </label>
@@ -126,7 +125,7 @@ export const SignUp = () => {
               <div>
                 <label
                   htmlFor="first-name"
-                  className="block text-sm font-semibold leading-6 text-white"
+                  className="block text-sm font-semibold leading-6"
                 >
                   Display Name (no spaces)<span className="text-red-600"> *</span>
                 </label>
@@ -146,13 +145,12 @@ export const SignUp = () => {
             <div className="mt-12 flex flex-row space-x-12 justify-center">
               <button
                 type="submit"
-                className="block w-4/5 rounded-md bg-pink-400 hover:bg-pink-500 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="block w-4/5 rounded-md bg-pink-400 hover:bg-pink-500 px-3.5 py-2.5 text-center text-sm font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Register
               </button>
             </div>
           </form>
-        </>
       </div>
     </div>
   );
