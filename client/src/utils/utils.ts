@@ -23,7 +23,7 @@ export const getLadderData = async (setLadderData: React.Dispatch<React.SetState
   }
 };
 
-export const userIsAdmin = async (navigate: any, cookies: any, token: any) => {
+export const userIsAdmin = async (token: any) => {
   try {
     const res: Response = await fetch(
       BASE_ROUTE + `/check-admin`,
