@@ -155,7 +155,7 @@ export const GemHuntRecords = () => {
   };
 
   const checkAdmin = async () => {
-    setAdmin(await userIsAdmin(navigate, cookies, token));
+    setAdmin(await userIsAdmin(token));
   };
 
   const fetchUnverifiedGemHuntRecords = async () => {
