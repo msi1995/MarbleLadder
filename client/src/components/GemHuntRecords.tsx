@@ -411,7 +411,7 @@ export const GemHuntRecords = () => {
           </button>
         </div>
         {mapWorldRecord !== 0 ? (
-          <span className="bg-black/50 sm:text-3xl text-xl py-1 px-2 rounded-md">
+          <span className="bg-black/50 sm:text-3xl text-xl py-1 px-2 rounded-md mb-8">
             <span className="text-yellow-400">👑 World Record:</span>{" "}
             {mapWorldRecord} points by{" "}
             <NavLink
@@ -442,7 +442,7 @@ export const GemHuntRecords = () => {
               trackStyle={{ borderRadius: 2 }}
             />
           </div>
-          <div className="basis-full justify-end flex sm:flex-row flex-col gap-x-4 mt-8">
+          <div className="basis-full justify-end flex sm:flex-row flex-col gap-x-4">
             {Boolean(admin) && (
               <button
                 onClick={() =>
