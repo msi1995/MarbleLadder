@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.get('/ladder-data', async (req, res) => {
     try {
-        const ladderData = await ladderPlayer.find({});
+        const ladderData = await ladderPlayer.find({}, '-matchHistory');
         const sanitizedLadderData = ladderData.map((player) => ({
             _id: player._id,
             username: player.username,
