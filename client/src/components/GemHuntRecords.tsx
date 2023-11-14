@@ -17,6 +17,7 @@ export const GemHuntRecords = () => {
   const token = cookies.get("MarbleToken");
   const navigate = useNavigate();
   const maps = [
+    "OVERALL",
     "Arcadia",
     "Assault",
     "Brawl",
@@ -29,15 +30,36 @@ export const GemHuntRecords = () => {
     "Surf's Up",
   ];
 
+  interface MapScoreEntry {
+    runID: string;
+    player: string;
+    score: number;
+    media: string;
+    verified: boolean;
+    denied?: boolean;
+    date: string;
+    _id: string;
+    mapName?: string;
+  }
+
+  interface PlayerTotalScoreObject {
+    player: string;
+    totalScore: number;
+    bestScoresByMap: Record<string, number>;
+  }
+
   const [admin, setAdmin] = useState<boolean>(false);
   const [mapIndex, setMapIndex] = useState<number>(0);
-  const [selectedMap, setSelectedMap] = useState<string>(maps[0]);
+  const [selectedMap, setSelectedMap] = useState<string>(maps[1]);
   const [allMapData, setAllMapData] = useState<any>([]);
-  const [rawMapRecordData, setRawMapRecordData] = useState<any>([]);
   const [allRuns, setAllRuns] = useState<boolean>(false);
+  const [rawMapRecordData, setRawMapRecordData] = useState<any>([]);
   const [sortedMapRecordAllData, setSortedMapRecordAllData] = useState<any>([]);
   const [sortedMapRecordUniqueData, setSortedMapRecordUniqueData] =
     useState<any>([]);
+  const [playerTotalScoreData, setPlayerTotalScoreData] = useState<
+    PlayerTotalScoreObject[]
+  >([]);
   const [mapWorldRecord, setMapWorldRecord] = useState<number>(0);
   const [mapWorldRecordHolder, setMapWorldRecordHolder] = useState<string>("");
   const [submissionModalOpen, setSubmissionModalOpen] = useState(false);
@@ -57,12 +79,77 @@ export const GemHuntRecords = () => {
   }, []);
 
   useEffect(() => {
-    setSelectedMap(maps[mapIndex]);
-    const selectedMapData = allMapData.find(
-      (item: any) => item.mapName === maps[mapIndex]
-    );
+    if (mapIndex !== 0) {
+      setSelectedMap(maps[mapIndex]);
+      const selectedMapData = allMapData.find(
+        (item: any) => item.mapName === maps[mapIndex]
+      );
+      setRawMapRecordData(selectedMapData?.scores ?? null);
+    } else {
+      const allScoresWithMapName: MapScoreEntry[] = allMapData
+        .flatMap((mapEntry: any) =>
+          mapEntry.scores.map((score: any) => ({
+            ...score,
+            mapName: mapEntry.mapName,
+          }))
+        )
+        .filter((score: any) => score.verified !== false);
+      // dict to store the total scores for each player
+      const playerTotalScoreObjects: Record<string, PlayerTotalScoreObject> =
+        {};
 
-    setRawMapRecordData(selectedMapData?.scores ?? null);
+      allScoresWithMapName.forEach((score) => {
+        const { player, score: currentScore, mapName } = score;
+
+        // create player entry if player isn't in dict already
+        if (!playerTotalScoreObjects[player]) {
+          playerTotalScoreObjects[player] = {
+            player: player,
+            totalScore: 0,
+            bestScoresByMap: {},
+          };
+        }
+
+        // if no score for map, or score being evaluated is > best score on map
+        if (
+          !playerTotalScoreObjects[player].bestScoresByMap[mapName!] ||
+          currentScore >
+            playerTotalScoreObjects[player].bestScoresByMap[mapName!]
+        ) {
+          // set best score
+          playerTotalScoreObjects[player].bestScoresByMap[mapName!] =
+            currentScore;
+        }
+      });
+
+      // sum the best scores for each map
+      Object.values(playerTotalScoreObjects).forEach((playerObject) => {
+        const { bestScoresByMap } = playerObject;
+
+        // for each value in bestScoresByMap, sum += score. sum initialized to 0.
+        // set playerObject.totalScore to the return value of the reduce fn (sum of all map scores)
+        playerObject.totalScore = Object.values(bestScoresByMap).reduce(
+          (sum, score) => sum + score,
+          0
+        );
+      });
+
+      const playerBestTotalScores: PlayerTotalScoreObject[] = Object.values(
+        playerTotalScoreObjects
+      );
+      const sortedPlayerBestTotalScores = playerBestTotalScores
+        .sort((a: any, b: any) => {
+          return b.totalScore - a.totalScore;
+        })
+        .map((item: any, index: number) => ({
+          ...item,
+          rank: index + 1,
+          key: `${index + 1}`,
+        }));
+      setPlayerTotalScoreData(sortedPlayerBestTotalScores);
+      setMapWorldRecordHolder(sortedPlayerBestTotalScores[0]?.player);
+      setMapWorldRecord(sortedPlayerBestTotalScores[0]?.totalScore);
+    }
   }, [mapIndex, allMapData]);
 
   useEffect(() => {
@@ -401,7 +488,7 @@ export const GemHuntRecords = () => {
             {"<"}
           </button>
           <div className="sm:text-6xl text-3xl italic sm:w-72 w-40 inline-block">
-            <span>{selectedMap}</span>
+            <span>{maps[mapIndex]}</span>
           </div>
           <button
             onClick={mapForward}
@@ -471,9 +558,17 @@ export const GemHuntRecords = () => {
           className="sm:w-1/2 w-full sm:px-0 px-2"
           columns={gemHuntColumns}
           scroll={above1080() ? {} : { y: 340 }}
-          dataSource={
-            !allRuns ? sortedMapRecordUniqueData : sortedMapRecordAllData
-          }
+          dataSource={(() => {
+            if (mapIndex === 0) {
+              return playerTotalScoreData;
+            } else {
+              if (!allRuns) {
+                return sortedMapRecordUniqueData;
+              } else {
+                return sortedMapRecordAllData;
+              }
+            }
+          })()}
           pagination={false}
         />
       </div>
