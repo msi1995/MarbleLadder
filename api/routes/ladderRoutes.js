@@ -16,7 +16,7 @@ router.get('/ladder-data', async (req, res) => {
             ratingScore: player.ratingScore,
             wins: player.wins,
             losses: player.losses,
-            currentStreak: player.currentStreak,
+            currentStreak: player.currentStreak
         }))
         res.status(200).json(sanitizedLadderData);
     } catch (err) {
