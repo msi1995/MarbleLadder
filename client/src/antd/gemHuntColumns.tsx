@@ -16,6 +16,7 @@ export interface GemHuntLadderData {
     {
       player: string;
       score: number;
+      totalScore?: number,
       media: string;
       date: Date;
     }
@@ -56,6 +57,11 @@ export let gemHuntColumns: ColumnsType<GemHuntLadderData["scores"][0]> = [
     title: "Score",
     dataIndex: "score",
     key: "score",
+    render: (_, { score, totalScore }) => (
+      //render score if available, otherwise render totalScore (for overall tab)
+      <p>{score || totalScore}
+      </p>
+    ),
   },
   {
     title: "Screenshot/Video",
@@ -63,16 +69,17 @@ export let gemHuntColumns: ColumnsType<GemHuntLadderData["scores"][0]> = [
     key: "mediaLink",
     width: "auto",
     render: (_, { media }) => (
+      media ? 
       <a className='text-blue-600' href={media} target="_blank">
         Link
-      </a>
+      </a> : <>See individual maps</>
     ),
   },
   {
     title: "Date of run",
     dataIndex: "date",
     key: "date",
-    render: (_, { date }) => <>{date.toString().split("T")[0]}</>,
+    render: (_, { date }) => date ? <>{date.toString().split("T")[0]}</> : <>N/A</>,
     defaultSortOrder: "descend",
   },
 ];
