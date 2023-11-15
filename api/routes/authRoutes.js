@@ -7,6 +7,7 @@ const passwordResetRequest = require('../models/PasswordReset');
 const { ObjectId } = require('mongodb');
 const router = express.Router();
 const nodemailer = require('nodemailer');
+const tokenKey = process.env.JWT_KEY || "RANDOM-TOKEN"
 
 const emailAddress = process.env.EMAIL
 const emailPassword = process.env.EMAIL_PASSWORD
@@ -95,7 +96,7 @@ router.post("/login", async (req, res) => {
                             userEmail: user.email,
                             username: user.username,
                         },
-                        "RANDOM-TOKEN",
+                        tokenKey,
                         { expiresIn: "28d" }
                     );
 
