@@ -29,9 +29,12 @@ export const SignIn = () => {
     });
 
     if (res.status === 200) {
+      const fourWeeksFromNow = new Date();
+      fourWeeksFromNow.setDate(fourWeeksFromNow.getDate() + 28);
       const data = await res.json();
       cookies.set("MarbleToken", data.token, {
         path: "/",
+        expires: fourWeeksFromNow,
       });
       localStorage.setItem("username", data.username);
       navigate("/");
@@ -107,7 +110,12 @@ export const SignIn = () => {
               >
                 Log In
               </button>
-              <a className="text-white/80 hover:text-white" href="/forgot-password">I forgot my password.</a>
+              <a
+                className="text-white/80 hover:text-white"
+                href="/forgot-password"
+              >
+                I forgot my password.
+              </a>
             </div>
           </form>
         </>
