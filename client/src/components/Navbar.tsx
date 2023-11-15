@@ -46,6 +46,7 @@ export const Navbar = () => {
   //localstorage needs to remove username if token is expired, otherwise makes it seem like user is logged in still.
   useEffect(() => {
     if (!token) localStorage.clear();
+    console.log(token);
   }, []);
 
   return (

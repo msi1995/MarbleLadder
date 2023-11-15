@@ -96,7 +96,7 @@ router.post("/login", async (req, res) => {
                             username: user.username,
                         },
                         "RANDOM-TOKEN",
-                        { expiresIn: "168h" }
+                        { expiresIn: "28d" }
                     );
 
                     //   return success response
