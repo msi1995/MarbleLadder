@@ -69,7 +69,6 @@ export let gemHuntColumns: ColumnsType<GemHuntLadderData["scores"][0]> = [
     dataIndex: "description",
     key: "description",
     render: (_, { description }) => (
-      //render score if available, otherwise render totalScore (for overall tab)
       <p>{description || 'N/A'}
       </p>
     ),
