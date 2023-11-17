@@ -309,7 +309,7 @@ export const GemHuntRecords = () => {
             map: selectedMap,
             score: reportedScore,
             mediaLink: mediaLink,
-            // description: description,
+            description: description,
           }),
         }
       );
@@ -418,7 +418,7 @@ export const GemHuntRecords = () => {
               placeholder="Example: https://i.imgur.com/BB7F6Oa.jpg"
               className="block w-full border-solid border-2 border-slate-500 rounded-md border-0 px-3.5 py-2 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             ></input>
-            {/* <label
+            <label
               htmlFor="text"
               className="block text-sm font-semibold w-full"
             >
@@ -426,11 +426,12 @@ export const GemHuntRecords = () => {
             </label>
             <input
               type="textarea"
-              onChange={(e) => setMediaLink(e.target.value)}
-              value={mediaLink ?? ""}
-              placeholder="Notes, timestamps if needed, etc..."
+              maxLength={36}
+              onChange={(e) => setDescription(e.target.value)}
+              value={description ?? ""}
+              placeholder="Brief info/notes if desired"
               className="block w-full border-solid border-2 border-slate-500 rounded-md border-0 px-3.5 py-2 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-            ></input> */}
+            ></input>
             <button
               type="submit"
               className="w-1/3 mt-2 py-1 px-1 bg-blue-500 hover:bg-blue-600 text-sm text-white font-bold rounded transition duration-200"
@@ -453,6 +454,11 @@ export const GemHuntRecords = () => {
             {unverifiedRuns[runConfirmationIdx]?.score} points on{" "}
             {unverifiedRuns[runConfirmationIdx]?.map}
           </span>
+          {unverifiedRuns[runConfirmationIdx]?.description && (
+            <span>
+              Player notes: {unverifiedRuns[runConfirmationIdx]?.description}
+            </span>
+          )}
           <span className="sm:w-128 w-64 text-center text-md font-semibold">
             Please check the attached media and either approve or deny the run.
           </span>

@@ -134,6 +134,7 @@ router.post('/submit-gem-hunt-record/', auth, async (req, res) => {
     const score = req.body.score;
     const map = req.body.map;
     const mediaLink = req.body.mediaLink;
+    const description = req.body.description;
     // const youtubeURLPattern = /^https?:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)[A-Za-z0-9_-]{11}$/;
     // const imgurURLPattern = /^https?:\/\/(?:www\.)?(?:i\.imgur\.com\/|imgur\.com\/)([a-zA-Z0-9]{7})\.(?:jpg|jpeg|png|gif|bmp)$/;
     // if (youtubeURLPattern.test(mediaLink)) {
@@ -157,6 +158,7 @@ router.post('/submit-gem-hunt-record/', auth, async (req, res) => {
                     player: req.user.username,
                     score: score,
                     media: mediaLink,
+                    description: description,
                     verified: false,
                     denied: false,
                     date: new Date(),

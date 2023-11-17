@@ -16,8 +16,9 @@ export interface GemHuntLadderData {
     {
       player: string;
       score: number;
-      totalScore?: number,
+      totalScore?: number;
       media: string;
+      description: string;
       date: Date;
     }
   ];
@@ -60,6 +61,16 @@ export let gemHuntColumns: ColumnsType<GemHuntLadderData["scores"][0]> = [
     render: (_, { score, totalScore }) => (
       //render score if available, otherwise render totalScore (for overall tab)
       <p>{score || totalScore}
+      </p>
+    ),
+  },
+  {
+    title: "Notes",
+    dataIndex: "description",
+    key: "description",
+    render: (_, { description }) => (
+      //render score if available, otherwise render totalScore (for overall tab)
+      <p>{description || 'N/A'}
       </p>
     ),
   },
