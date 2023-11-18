@@ -1,20 +1,25 @@
 {
-    "name": "marble-ladder",
-    "version": "1.0.0",
-    "main": "",
-    "scripts": {
-        "start": "npm start --prefix api",
-        "install-client": "cd client && npm install && npm run build && cd ..",
-        "install-server": "cd api && npm install && cd .. ",
-        "heroku-postbuild": "npm run install-client && npm run install-server",
-        "cypress:o": "cypress open"
-    },
-    "dependencies": {
-        "moment": "^2.29.4",
-        "react-toggle-button": "^2.2.0"
-    },
-    "devDependencies": {
-        "cypress": "^13.3.0",
-        "typescript": "^5.2.2"
-    }
+  "name": "marble-ladder",
+  "version": "1.0.0",
+  "main": "",
+  "scripts": {
+    "start": "npm start --prefix api",
+    "install-client": "cd client && npm install && npm run build && cd ..",
+    "install-server": "cd api && npm install && cd .. ",
+    "heroku-postbuild": "npm run install-client && npm run install-server",
+    "cypress:o": "cypress open",
+    "lint": "eslint \"client/src/**/*.{js,jsx,ts,tsx}\"",
+    "lint:fix": "eslint \"client/src/**/*.{js,jsx,ts,tsx}\" --fix"
+  },
+  "dependencies": {
+    "moment": "^2.29.4",
+    "react-toggle-button": "^2.2.0"
+  },
+  "devDependencies": {
+    "cypress": "^13.3.0",
+    "eslint": "^8.54.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "typescript": "^5.2.2"
+  }
 }

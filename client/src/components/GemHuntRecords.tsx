@@ -448,6 +448,7 @@ export const GemHuntRecords = () => {
             className="text-blue-500"
             href={unverifiedRuns[runConfirmationIdx]?.media}
             target="_blank"
+            rel="noreferrer"
           >
             {unverifiedRuns[runConfirmationIdx]?.media}
           </a>

@@ -56,7 +56,7 @@ export let ladderColumns: ColumnsType<LadderPlayer> = [
             color={currentStreak >= 0 ? "green" : "volcano"}
             key={currentStreak}
           >
-            {currentStreak == 0
+            {currentStreak === 0
               ? ""
               : currentStreak > 0
               ? `${currentStreak}W`
