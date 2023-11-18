@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { BASE_ROUTE } from "../App";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 export const ResetPassword = () => {
@@ -15,7 +15,7 @@ export const ResetPassword = () => {
     checkToken();
   }, []);
 
-  const handleSubmitNewPassword = async (event: any) => {
+  const handleSubmitNewPassword = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if(!Boolean(newPassword) || (newPassword !== confirmedNewPassword)){
       alert("Passwords don't match or were invalid.")

@@ -13,12 +13,12 @@ import { PlayerInfo } from "./components/PlayerInfo";
 import { getLadderData } from "./utils/utils";
 import { ForgotPassword } from "./components/ForgotPassword";
 import { ResetPassword } from "./components/ResetPassword";
-import { PlayerLadderData } from "./antd/ladderColumns";
+import { LadderPlayer } from "./types/interfaces";
 export const BASE_ROUTE = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3001'
-export const LadderData = createContext<PlayerLadderData[]>([]);
+export const LadderData = createContext<LadderPlayer[]>([]);
 
 function App() {
-  const [ladderData, setLadderData] = useState<PlayerLadderData[]>([]);
+  const [ladderData, setLadderData] = useState<LadderPlayer[]>([]);
   useEffect(() => {
     getLadderData(setLadderData);
   }, []);

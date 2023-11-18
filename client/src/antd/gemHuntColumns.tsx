@@ -1,30 +1,9 @@
 import { ColumnsType } from "antd/es/table";
 import { NavLink } from "react-router-dom";
-import { Tag } from "antd";
+import { GemHuntMapRecordScore} from "../types/interfaces";
+import { smallScreen } from "../utils/utils";
 
-export const smallScreen = () => {
-  return window.innerWidth <= 850;
-};
-
-export const above1080 = () => {
-  return window.innerWidth > 1980;
-}
-
-export interface GemHuntLadderData {
-  mapName: string;
-  scores: [
-    {
-      player: string;
-      score: number;
-      totalScore?: number;
-      media: string;
-      description: string;
-      date: Date;
-    }
-  ];
-}
-
-export let gemHuntColumns: ColumnsType<GemHuntLadderData["scores"][0]> = [
+export let gemHuntColumns: ColumnsType<GemHuntMapRecordScore> = [
     {
     title: "Game",
     dataIndex: "game",
@@ -46,7 +25,7 @@ export let gemHuntColumns: ColumnsType<GemHuntLadderData["scores"][0]> = [
     title: "Player",
     dataIndex: "player",
     key: "player",
-    render: (text, record) => (
+    render: (text) => (
       <NavLink
         to={{ pathname: `/player/${text}` }}
       >
@@ -69,7 +48,7 @@ export let gemHuntColumns: ColumnsType<GemHuntLadderData["scores"][0]> = [
     dataIndex: "description",
     key: "description",
     render: (_, { description }) => (
-      <p>{description || 'N/A'}
+      <p>{description || '-'}
       </p>
     ),
   },

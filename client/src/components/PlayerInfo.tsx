@@ -1,27 +1,27 @@
 import { useParams } from "react-router-dom";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, FormEvent } from "react";
 import { BASE_ROUTE } from "../App";
 import { Table, Tag } from "antd";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import type { ColumnsType } from "antd/es/table";
 import Cookies from "universal-cookie";
-import { handleLogout } from "../utils/utils";
+import { handleLogout, smallScreen } from "../utils/utils";
 import { useNavigate, NavLink } from "react-router-dom";
 import { round } from "../utils/utils";
 import { LadderData } from "../App";
 import moment from "moment";
-import { PlayerLadderData } from "../antd/ladderColumns";
 import { Modal } from "./Modal";
+import { LadderPlayer, matchResult } from "../types/interfaces";
 
 export const PlayerInfo = () => {
   const username = localStorage.getItem("username");
   const navigate = useNavigate();
   const cookies = new Cookies();
   const token = cookies.get("MarbleToken");
-  const ladderData: PlayerLadderData[] = useContext(LadderData);
-  const [playerData, setPlayerData] = useState<any>();
+  const ladderData: LadderPlayer[] = useContext(LadderData);
+  const [playerData, setPlayerData] = useState<LadderPlayer>();
   const [playerLadderRank, setPlayerLadderRank] = useState<number | null>(null);
-  const [playerMatchData, setPlayerMatchData] = useState<any>();
+  const [playerMatchData, setPlayerMatchData] = useState<matchResult[]>([]);
   const [replayModalOpen, setReplayModalOpen] = useState(false);
   const [matchWinner, setMatchWinner] = useState<string>("");
   const [matchLoser, setMatchLoser] = useState<string>("");
@@ -47,10 +47,6 @@ export const PlayerInfo = () => {
     calculatePointDifferential(playerMatchData);
     calculateRival(playerMatchData);
   }, [playerMatchData]);
-
-  const smallScreen = () => {
-    return window.innerWidth <= 850;
-  };
 
   const handleAddReplayToMatch = (
     traceID: string,
@@ -84,7 +80,7 @@ export const PlayerInfo = () => {
     setReplayModalOpen(false);
   };
 
-  const handleURLModalSubmit = async (event: any) => {
+  const handleURLModalSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     try {
@@ -112,7 +108,7 @@ export const PlayerInfo = () => {
     }
   };
 
-  const getLadderPositionFromLadderData = (ladderData: PlayerLadderData[]) => {
+  const getLadderPositionFromLadderData = (ladderData: LadderPlayer[]) => {
     let sortedData;
     sortedData = [...ladderData]?.sort((a, b) => b.ratingScore - a.ratingScore);
     sortedData.forEach((item, index) => {
@@ -124,7 +120,7 @@ export const PlayerInfo = () => {
     setPlayerLadderRank(ladderPosition);
   };
 
-  const calculatePointDifferential = (matches: any[]) => {
+  const calculatePointDifferential = (matches: matchResult[]) => {
     if (!matches) {
       setAveragePointDifferential(null);
     }
@@ -140,8 +136,8 @@ export const PlayerInfo = () => {
     setAveragePointDifferential(diff);
   };
 
-  const calculateRival = (matches: any) => {
-    const dict: any = {};
+  const calculateRival = (matches: matchResult[]) => {
+    const dict: Record<string, number> = {};
     for (let i = 0; i < matches?.length; i++) {
       if (matches[i].matchWinnerName != player_name) {
         dict[matches[i].matchWinnerName]
@@ -191,28 +187,7 @@ export const PlayerInfo = () => {
     }
   };
 
-  interface Replay {
-    submitter: string;
-    URL: string;
-  }
-
-  interface PlayerMatchHistory {
-    traceID: string;
-    matchDate: Date;
-    matchP1Name: string;
-    matchP1Rating: number;
-    matchP2Name: string;
-    matchP2Rating: number;
-    P1Score: number;
-    P2Score: number;
-    matchWinnerName: string;
-    matchWinnerELOChange: number;
-    matchLoserELOChange: number;
-    map: string;
-    replays: Replay[];
-  }
-
-  let columns: ColumnsType<PlayerMatchHistory> = [
+  let columns: ColumnsType<matchResult> = [
     {
       title: "Match Date",
       dataIndex: "matchDate",
@@ -500,9 +475,9 @@ export const PlayerInfo = () => {
             Streak:{" "}
             {playerData?.currentStreak === 0
               ? `No match data yet.`
-              : playerData?.currentStreak > 0
-              ? `${Math.abs(playerData?.currentStreak)} Wins`
-              : `${Math.abs(playerData?.currentStreak)} Losses`}
+              : playerData?.currentStreak! > 0
+              ? `${Math.abs(playerData?.currentStreak!)} Wins`
+              : `${Math.abs(playerData?.currentStreak!)} Losses`}
           </span>
         </div>
         <div className="flex sm:mx-auto mx-4 py-6 flex-wrap text-center justify-center flex-row text-white sm:text-xl text-md border-1 border-solid border-red-600">

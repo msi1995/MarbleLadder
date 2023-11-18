@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { BASE_ROUTE } from "../App";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
@@ -10,7 +10,7 @@ export const SignIn = () => {
   const navigate = useNavigate();
   const cookies = new Cookies();
 
-  const handleLogInSubmit = async (event: any) => {
+  const handleLogInSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!email || !password) {
       alert("Please fill out all required fields.");

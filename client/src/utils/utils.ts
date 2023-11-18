@@ -1,7 +1,9 @@
+import { NavigateFunction } from "react-router-dom";
 import { BASE_ROUTE } from "../App";
-import { PlayerLadderData } from "../antd/ladderColumns";
+import Cookies from "universal-cookie";
+import { LadderPlayer } from "../types/interfaces";
 
-export const handleLogout = (navigate: any, cookies: any) => {
+export const handleLogout = (navigate: NavigateFunction, cookies: Cookies) => {
   cookies.remove("MarbleToken", { path: "/" });
   localStorage.clear();
   navigate("/");
@@ -13,17 +15,17 @@ export const round =(value: number, precision: number) => {
   return Math.round(value * multiplier) / multiplier;
 }
 
-export const getLadderData = async (setLadderData: React.Dispatch<React.SetStateAction<PlayerLadderData[]>>) => {
+export const getLadderData = async (setLadderData: React.Dispatch<React.SetStateAction<LadderPlayer[]>>) => {
   try {
     const res: Response = await fetch(BASE_ROUTE + "/ladder-data");
-    const data: PlayerLadderData[] = await res.json();
+    const data: LadderPlayer[] = await res.json();
     setLadderData(data);
   } catch (error) {
     console.log(error);
   }
 };
 
-export const userIsAdmin = async (token: any) => {
+export const userIsAdmin = async (token: string) => {
   try {
     const res: Response = await fetch(
       BASE_ROUTE + `/check-admin`,
@@ -41,3 +43,11 @@ export const userIsAdmin = async (token: any) => {
     console.log(error);
   }
 };
+
+export const smallScreen = () => {
+  return window.innerWidth <= 850;
+};
+
+export const above1080 = () => {
+  return window.innerWidth > 1980;
+}

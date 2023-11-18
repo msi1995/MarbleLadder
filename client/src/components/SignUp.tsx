@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { BASE_ROUTE } from "../App";
 import { useNavigate } from "react-router-dom";
 
@@ -10,7 +10,7 @@ export const SignUp = () => {
   const [errorMessage, setErrorMessage] = useState<string>("");
   const navigate = useNavigate();
 
-  const handleRegisterSubmit = async (event: any) => {
+  const handleRegisterSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!email || !password || !confirmedPassword || !displayName) {
       alert("Please fill out all required fields.");

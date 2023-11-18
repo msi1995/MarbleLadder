@@ -1,11 +1,10 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { BASE_ROUTE } from "../App";
-import { useNavigate } from "react-router-dom";
 export const ForgotPassword = () => {
   const [email, setEmail] = useState<string>("");
   const [resetEmailSent, setResetEmailSent] = useState<boolean>(false);
 
-  const handleResetSubmit = async (event: any) => {
+  const handleResetSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!email) {
       alert("Please fill out all required fields.");
