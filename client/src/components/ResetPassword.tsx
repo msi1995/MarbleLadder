@@ -1,11 +1,11 @@
 import { FormEvent, useEffect, useState } from "react";
 import { BASE_ROUTE } from "../App";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 export const ResetPassword = () => {
   const [newPassword, setNewPassword] = useState<string>("");
   const [confirmedNewPassword, setConfirmedNewPassword] = useState<string>("");
   const [alternateText, setAlternateText] = useState<string>("Token is invalid or has expired.")
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const [resetAllowed, setResetAllowed] = useState<boolean>(false);
 
   const email = searchParams.get("email");

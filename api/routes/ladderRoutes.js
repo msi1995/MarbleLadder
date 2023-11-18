@@ -485,8 +485,8 @@ router.post('/dispute-match', auth, async (req, res) => {
         const unconfirmedMatch = await matchResult.findOne({
             traceID: req.body.traceID
         })
-        matchWinner = unconfirmedMatch.matchWinner;
-        matchLoser = matchWinner === unconfirmedMatch.matchP1 ? unconfirmedMatch.matchP2 : unconfirmedMatch.matchP1;
+        const matchWinner = unconfirmedMatch.matchWinner;
+        const matchLoser = matchWinner === unconfirmedMatch.matchP1 ? unconfirmedMatch.matchP2 : unconfirmedMatch.matchP1;
 
         await matchResult.updateOne({ traceID: req.body.traceID },
             {

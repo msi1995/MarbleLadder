@@ -46,13 +46,14 @@ export const Navbar = () => {
   //localstorage needs to remove username if token is expired, otherwise makes it seem like user is logged in still.
   useEffect(() => {
     if (!token) localStorage.clear();
-  }, []);
+  }, [token]);
 
   return (
     <>
       <nav className="fixed w-full z-50 select-none px-4 py-4 flex justify-between items-center bg-black opacity-90">
         <NavLink to={"/"}>
           <img
+          alt="Website Logo"
             className="h-16 sm:px-4 hover:scale-105 hover:cursor-pointer"
             src={`/marbleladder01tsp.png`}
           ></img>

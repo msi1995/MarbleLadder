@@ -57,7 +57,7 @@ export const SoloLadder = () => {
         !opponentDropdownData.some(
           (opponent) => opponent.name === entry.username
         ) &&
-        entry.username != username
+        entry.username !== username
       ) {
         sortedOpponentData.push({
           name: entry.username,
@@ -157,7 +157,7 @@ export const SoloLadder = () => {
           body: JSON.stringify({
             opponentUsername: playerOpponent,
             reporterIsWinner: reporterIsWinner,
-            map: reportedMap == "Select" ? "" : reportedMap,
+            map: reportedMap === "Select" ? "" : reportedMap,
             playerScore: reporterIsWinner ? winnerScore : loserScore,
             opponentScore: reporterIsWinner ? loserScore : winnerScore,
           }),

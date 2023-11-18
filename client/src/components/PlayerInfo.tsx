@@ -59,12 +59,11 @@ export const PlayerInfo = () => {
   ) => {
     setMatchWinner(matchWinnerName);
     setMatchMap(map);
-    if(matchWinnerName.toLowerCase() === matchP1Name.toLowerCase()){
+    if (matchWinnerName.toLowerCase() === matchP1Name.toLowerCase()) {
       setMatchWinnerScore(P1Score);
       setMatchLoser(matchP2Name);
       setMatchLoserScore(P2Score);
-    }
-    else{
+    } else {
       setMatchWinnerScore(P2Score);
       setMatchLoser(matchP1Name);
       setMatchLoserScore(P1Score);
@@ -139,7 +138,7 @@ export const PlayerInfo = () => {
   const calculateRival = (matches: matchResult[]) => {
     const dict: Record<string, number> = {};
     for (let i = 0; i < matches?.length; i++) {
-      if (matches[i].matchWinnerName != player_name) {
+      if (matches[i].matchWinnerName !== player_name) {
         dict[matches[i].matchWinnerName]
           ? (dict[matches[i].matchWinnerName] += 1)
           : (dict[matches[i].matchWinnerName] = 1);
@@ -217,6 +216,7 @@ export const PlayerInfo = () => {
       render: (_, { map }) => (
         <div className="flex justify-center">
           <img
+            alt="Level Thumbnail"
             data-tooltip-id={map.replace(/'/g, "")}
             className="sm:w-28 sm:h-20 w-20 rounded-md"
             src={`/Level_Images/${map || "NoMap"}.png`}
@@ -348,7 +348,7 @@ export const PlayerInfo = () => {
         <div className="flex flex-col items-center">
           {replays?.length > 0 ? (
             replays.map((replay) => (
-              <a className="text-blue-600" href={replay.URL} target="_blank">
+              <a className="text-blue-600" href={replay.URL} target="_blank" rel="noreferrer">
                 {replay.submitter} pov
               </a>
             ))
@@ -397,7 +397,10 @@ export const PlayerInfo = () => {
           <span className="sm:text-4xl text-2xl font-bold">
             Submit Match Replay
           </span>
-          <span className='text-green-600 text-lg'>{matchWinner} defeats {matchLoser} | {matchWinnerScore} - {matchLoserScore} on {matchMap}</span>
+          <span className="text-green-600 text-lg">
+            {matchWinner} defeats {matchLoser} | {matchWinnerScore} -{" "}
+            {matchLoserScore} on {matchMap}
+          </span>
           <span className="sm:w-128 w-64 text-center text-md">
             To submit a match replay, provide a YouTube link to the match below.
             You can also replace a replay by submitting this form again if you

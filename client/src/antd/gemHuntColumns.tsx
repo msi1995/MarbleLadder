@@ -11,6 +11,7 @@ export let gemHuntColumns: ColumnsType<GemHuntMapRecordScore> = [
     width: smallScreen() ? "auto" : "15%",
     render: (_) => (
             <img
+            alt="Ultra Logo"
             className="w-3/4"
             src={'ultra_image.png'}
           ></img>
@@ -59,7 +60,7 @@ export let gemHuntColumns: ColumnsType<GemHuntMapRecordScore> = [
     width: "auto",
     render: (_, { media }) => (
       media ? 
-      <a className='text-blue-600' href={media} target="_blank">
+      <a className='text-blue-600' href={media} target="_blank" rel="noreferrer">
         Link
       </a> : <>See individual maps</>
     ),
