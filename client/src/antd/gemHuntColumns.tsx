@@ -48,7 +48,7 @@ export let gemHuntColumns: ColumnsType<GemHuntMapRecordScore> = [
     dataIndex: "description",
     key: "description",
     render: (_, { description }) => (
-      <p>{description || 'N/A'}
+      <p>{description || ''}
       </p>
     ),
   },
