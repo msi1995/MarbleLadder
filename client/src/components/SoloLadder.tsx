@@ -1,16 +1,18 @@
-import React from "react";
+import React, { ChangeEvent, FormEvent } from "react";
 import { Table } from "antd";
 import { useState, useEffect, useContext } from "react";
 import { BASE_ROUTE } from "../App";
 import SelectSearch from "react-select-search";
 import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
-import { handleLogout } from "../utils/utils";
+import { handleLogout, smallScreen } from "../utils/utils";
 import ToggleButton from "react-toggle-button";
 import { LadderData } from "../App";
-import { ladderColumns, smallScreen, OpponentData, PlayerLadderData } from "../antd/ladderColumns";
+import {
+  ladderColumns,
+} from "../antd/ladderColumns";
 import "react-select-search/style.css";
-
+import { OpponentDropdownData, matchResult } from "../types/interfaces";
 
 export const SoloLadder = () => {
   const navigate = useNavigate();
@@ -18,9 +20,9 @@ export const SoloLadder = () => {
   const token = cookies.get("MarbleToken");
   const ladderData = useContext(LadderData);
   const [opponentDropdownData, setOpponentDropdownData] = useState<
-    OpponentData[]
+    OpponentDropdownData[]
   >([]);
-  const [unconfirmedMatches, setUnconfirmedMatches] = useState<any>();
+  const [unconfirmedMatches, setUnconfirmedMatches] = useState<matchResult[]>([]);
   const [bulkMode, setBulkMode] = useState<boolean>(false);
   const [bulkModeTextArea, setBulkModeTextArea] = useState<string>("");
   const [bulkModeError, setBulkModeError] = useState<string>("");
@@ -49,7 +51,7 @@ export const SoloLadder = () => {
   }, [ladderData]);
 
   const populateOpponentDropdownList = () => {
-    const sortedOpponentData: any = [];
+    const sortedOpponentData: OpponentDropdownData[] = [];
     ladderData.forEach((entry) => {
       if (
         !opponentDropdownData.some(
@@ -63,7 +65,7 @@ export const SoloLadder = () => {
         });
       }
     });
-    sortedOpponentData.sort((p1: any, p2: any) => {
+    sortedOpponentData.sort((p1, p2) => {
       const name1 = p1.name.toLowerCase();
       const name2 = p2.name.toLowerCase();
       return name1 > name2 ? 1 : -1;
@@ -89,14 +91,14 @@ export const SoloLadder = () => {
       if (res.status === 403) {
         handleLogout(navigate, cookies);
       }
-      const data: any = await res.json();
+      const data = await res.json();
       setUnconfirmedMatches(data);
     } catch (e) {
       console.log(e);
     }
   };
 
-  const handleOpenMatchReportModal = async (event: any) => {
+  const handleOpenMatchReportModal = () => {
     setReporterIsWinner(null);
     setWinnerScore(null);
     setLoserScore(null);
@@ -104,7 +106,9 @@ export const SoloLadder = () => {
     setReportMatchModalVisible(true);
   };
 
-  const handleMatchResultsReported = async (event: any) => {
+  const handleMatchResultsReported = async (
+    event: FormEvent<HTMLFormElement>
+  ) => {
     event.preventDefault();
 
     if (!Boolean(playerOpponent) || (reporterIsWinner === null && !bulkMode)) {
@@ -209,7 +213,7 @@ export const SoloLadder = () => {
     handleAction("dispute");
   };
 
-  const data: PlayerLadderData[] = ladderData;
+  const data = ladderData;
   let sortedData;
   try {
     sortedData = [...data]?.sort((a, b) => b.ratingScore - a.ratingScore);
@@ -361,7 +365,9 @@ export const SoloLadder = () => {
                   <textarea
                     value={bulkModeTextArea}
                     maxLength={1000}
-                    onChange={(e: any) => setBulkModeTextArea(e.target.value)}
+                    onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+                      setBulkModeTextArea(e.target.value)
+                    }
                     spellCheck={false}
                     placeholder="msi 81-74 frostbite, msi 107-77 jumphouse, mazik 89-80 surfs up, etc..."
                     className="w-5/6 h-32 p-4 text-black text-sm rounded-md"

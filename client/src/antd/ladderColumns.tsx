@@ -1,26 +1,10 @@
 import { ColumnsType } from "antd/es/table";
 import { NavLink } from "react-router-dom";
 import { Tag } from "antd";
-export interface PlayerLadderData {
-  rank: number;
-  key: string;
-  username: string;
-  ratingScore: number;
-  wins: number;
-  losses: number;
-  currentStreak: number;
-}
+import { LadderPlayer } from "../types/interfaces";
+import { smallScreen } from "../utils/utils";
 
-export interface OpponentData {
-  name: string;
-  value: string;
-}
-
-export const smallScreen = () => {
-    return window.innerWidth <= 850;
-  };
-  
-export let ladderColumns: ColumnsType<PlayerLadderData> = [
+export let ladderColumns: ColumnsType<LadderPlayer> = [
     {
       title: "Rank",
       dataIndex: "rank",
