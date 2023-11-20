@@ -10,3 +10,14 @@ MarbleLadder facilitates reporting of 1v1 games for 'Marble It Up!' and uses rep
 
 
 Global leaderboard tracks all players, and players can view match history from individual pages for each player. Implements JWT token authorization, password resets, persistent stat tracking, bulk match reporting via comma separation, detailed stats like average point margin and player 'rival', replay submission and association with specific matches, and others.
+
+------
+Built with/utilizes:
+- React
+- TypeScript
+- Node.js + Express
+- MongoDB
+- Tailwind CSS
+- CircleCI
+- Cypress
+- ESLint
