@@ -54,18 +54,17 @@ router.post('/approve-gem-hunt-record/', auth, async (req, res) => {
     const { worldRecord: mapWR } = await gemHuntMapRecord.findOne({ mapName: map })
     try {
         const unverifiedMatch = await gemHuntMapRecord.findOne({ "scores.runID": runID }, { "scores.$": 1 })
+        //WR will be new WR if approved score beats it
+        const WR = Math.max(unverifiedMatch.scores[0].score, mapWR)
 
         await gemHuntMapRecord.updateOne(
             { "scores.runID": runID },
             {
                 $set: {
                     "scores.$.verified": true,
-                    "scores.$.verifiedBy": req.user.username
+                    "scores.$.verifiedBy": req.user.username,
+                    "worldRecord": WR
                 },
-                //update the worldRecord property if new verified score beats it
-                $max: {
-                    "worldRecord": unverifiedMatch.scores[0].score > mapWR ? unverifiedMatch.scores[0].score : "$worldRecord"
-                }
             }
         );
 
