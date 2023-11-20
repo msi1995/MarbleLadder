@@ -13,7 +13,7 @@ export let gemHuntColumns: ColumnsType<GemHuntMapRecordScore> = [
             <img
             alt="Ultra Logo"
             className="w-3/4"
-            src={'ultra_image.png'}
+            src={'ultra_image_small.webp'}
           ></img>
     ),
   },

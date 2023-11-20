@@ -8,7 +8,7 @@ export let gemHuntOverallColumns: ColumnsType<any> = [
     dataIndex: "game",
     key: "game",
     width: smallScreen() ? "auto" : "15%",
-    render: (_) => <img alt="Ultra Logo" className="w-3/4" src={"ultra_image.png"}></img>,
+    render: (_) => <img alt="Ultra Logo" className="w-3/4" src={"ultra_image_small.webp"}></img>,
   },
   {
     title: "Rank",
