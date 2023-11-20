@@ -52,7 +52,7 @@ export const PlayerInfo = () => {
   useEffect(() => {
     getPlayerPageData(player_name);
     fetchGemHuntRecordData();
-  }, []);
+  }, [player_name]);
 
   useEffect(() => {
     getLadderPositionFromLadderData(ladderData);
