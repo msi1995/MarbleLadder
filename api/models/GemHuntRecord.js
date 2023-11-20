@@ -5,6 +5,9 @@ var gemHuntMapRecordModel = {
     mapName: {
         type: String,
     },
+    worldRecord: {
+        type: Number
+    },
     scores: [
         {
             runID: String,

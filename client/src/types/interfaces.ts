@@ -69,6 +69,7 @@ export interface GemHuntMapRecordScoreWithMap extends GemHuntMapRecordScore {
 
 export interface GemHuntMapRecord {
   mapName: string;
+  worldRecord: number;
   scores: GemHuntMapRecordScore[];
 }
 

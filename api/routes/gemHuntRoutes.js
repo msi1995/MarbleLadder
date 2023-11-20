@@ -50,16 +50,25 @@ router.post('/approve-gem-hunt-record/', auth, async (req, res) => {
     }
     const runID = req.body.runID;
     const map = req.body.map;
+    // const mapres = await gemHuntMapRecord.findOne({ mapName: map })
+    const { worldRecord: mapWR } = await gemHuntMapRecord.findOne({ mapName: map })
     try {
+        const unverifiedMatch = await gemHuntMapRecord.findOne({ "scores.runID": runID }, { "scores.$": 1 })
+
         await gemHuntMapRecord.updateOne(
             { "scores.runID": runID },
-            { $set: { 
-                "scores.$.verified": true,
-                "scores.$.verifiedBy": req.user.username
-            }  }
+            {
+                $set: {
+                    "scores.$.verified": true,
+                    "scores.$.verifiedBy": req.user.username
+                },
+                //update the worldRecord property if new verified score beats it
+                $max: {
+                    "worldRecord": unverifiedMatch.scores[0].score > mapWR ? unverifiedMatch.scores[0].score : "$worldRecord"
+                }
+            }
         );
 
-        const unverifiedMatch = await gemHuntMapRecord.findOne({ "scores.runID": runID }, { "scores.$": 1 })
 
         //UPDATES TO LADDERPLAYER COLLECTION
         const { gemHuntRecords } = await ladderPlayer.findOne({
@@ -122,7 +131,7 @@ router.post('/deny-gem-hunt-record/', auth, async (req, res) => {
             { "scores.runID": runID },
             { $set: { "scores.$.denied": true } }
         );
-        res.status(200).send({message: "Run updated as denied."})
+        res.status(200).send({ message: "Run updated as denied." })
     } catch (err) {
         console.error(`error: ${err}`);
     }
@@ -130,23 +139,23 @@ router.post('/deny-gem-hunt-record/', auth, async (req, res) => {
 
 router.post('/submit-gem-hunt-record/', auth, async (req, res) => {
     try {
-    // let mediaType;
-    const score = req.body.score;
-    const map = req.body.map;
-    const mediaLink = req.body.mediaLink;
-    const description = req.body.description;
-    // const youtubeURLPattern = /^https?:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)[A-Za-z0-9_-]{11}$/;
-    // const imgurURLPattern = /^https?:\/\/(?:www\.)?(?:i\.imgur\.com\/|imgur\.com\/)([a-zA-Z0-9]{7})\.(?:jpg|jpeg|png|gif|bmp)$/;
-    // if (youtubeURLPattern.test(mediaLink)) {
-    //     mediaType = 'YouTube'
-    // }
-    // if (imgurURLPattern.test(mediaLink)) {
-    //     mediaType = 'Imgur'
-    // }
-    // if (mediaType === undefined) {
-    //     res.status(400).send({ error: "Bad media URL. Please provide an Imgur or Youtube URL." });
-    //     return;
-    // }
+        // let mediaType;
+        const score = req.body.score;
+        const map = req.body.map;
+        const mediaLink = req.body.mediaLink;
+        const description = req.body.description;
+        // const youtubeURLPattern = /^https?:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)[A-Za-z0-9_-]{11}$/;
+        // const imgurURLPattern = /^https?:\/\/(?:www\.)?(?:i\.imgur\.com\/|imgur\.com\/)([a-zA-Z0-9]{7})\.(?:jpg|jpeg|png|gif|bmp)$/;
+        // if (youtubeURLPattern.test(mediaLink)) {
+        //     mediaType = 'YouTube'
+        // }
+        // if (imgurURLPattern.test(mediaLink)) {
+        //     mediaType = 'Imgur'
+        // }
+        // if (mediaType === undefined) {
+        //     res.status(400).send({ error: "Bad media URL. Please provide an Imgur or Youtube URL." });
+        //     return;
+        // }
         const runID = uuidv4();
         //UPDATES TO MAP RECORD COLLECTION
         await gemHuntMapRecord.updateOne({
