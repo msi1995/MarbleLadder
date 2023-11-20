@@ -596,13 +596,13 @@ export const PlayerInfo = () => {
                 <span className="text-yellow-400 text-sm ml-1"> WR</span>
               )} */}
             </div>
-            <div className="sm:ml-0 ml-8 flex flex-row flex-wrap w-full sm:justify-evenly justify-between gap-y-2 sm:text-lg text-normal sm:text-center text-left">
+            <div className="sm:ml-0 ml-6 flex flex-row flex-wrap w-full sm:justify-evenly justify-between gap-y-2 sm:text-lg text-sm sm:text-center text-left">
             <span className="sm:basis-1/5 basis-1/2">
               Arcadia: {gemHuntRecordDictionary["Arcadia"] || "-"}
               {
                 gemHuntRecordDictionary["Arcadia"] ===
                   gemHuntMapWorldRecordDictionary["Arcadia"] && (
-                  <span className="text-yellow-400 text-sm"> WR</span>
+                  <span className="text-yellow-400 sm:text-sm text-xs"> WR</span>
                 )
               }
             </span>
@@ -610,63 +610,63 @@ export const PlayerInfo = () => {
               Assault: {gemHuntRecordDictionary["Assault"] || "-"}
               {gemHuntRecordDictionary["Assault"] ===
                 gemHuntMapWorldRecordDictionary["Assault"] && (
-                <span className="text-yellow-400 text-sm"> WR</span>
+                <span className="text-yellow-400 sm:text-sm text-xs"> WR</span>
               )}
             </span>
             <span className="sm:basis-1/5 basis-1/2">
               Brawl: {gemHuntRecordDictionary["Brawl"] || "-"}{" "}
               {gemHuntRecordDictionary["Brawl"] ===
                 gemHuntMapWorldRecordDictionary["Brawl"] && (
-                <span className="text-yellow-400 text-sm"> WR</span>
+                <span className="text-yellow-400 sm:text-sm text-xs"> WR</span>
               )}
             </span>
             <span className="sm:basis-1/5 basis-1/2">
               Frostbite: {gemHuntRecordDictionary["Frostbite"] || "-"}{" "}
               {gemHuntRecordDictionary["Frostbite"] ===
                 gemHuntMapWorldRecordDictionary["Frostbite"] && (
-                <span className="text-yellow-400 text-sm"> WR</span>
+                <span className="text-yellow-400 sm:text-sm text-xs"> WR</span>
               )}
             </span>
             <span className="sm:basis-1/5 basis-1/2">
               Jumphouse: {gemHuntRecordDictionary["Jumphouse"] || "-"}{" "}
               {gemHuntRecordDictionary["Jumphouse"] ===
                 gemHuntMapWorldRecordDictionary["Jumphouse"] && (
-                <span className="text-yellow-400 text-sm"> WR</span>
+                <span className="text-yellow-400 sm:text-sm text-xs"> WR</span>
               )}
             </span>
             <span className="sm:basis-1/5 basis-1/2">
               Nexus: {gemHuntRecordDictionary["Nexus"] || "-"}{" "}
               {gemHuntRecordDictionary["Nexus"] ===
                 gemHuntMapWorldRecordDictionary["Nexus"] && (
-                <span className="text-yellow-400 text-sm"> WR</span>
+                <span className="text-yellow-400 sm:text-sm text-xs"> WR</span>
               )}
             </span>
             <span className="sm:basis-1/5 basis-1/2">
               Mosh Pit: {gemHuntRecordDictionary["Mosh Pit"] || "-"}{" "}
               {gemHuntRecordDictionary["Mosh Pit"] ===
                 gemHuntMapWorldRecordDictionary["Mosh Pit"] && (
-                <span className="text-yellow-400 text-sm"> WR</span>
+                <span className="text-yellow-400 sm:text-sm text-xs"> WR</span>
               )}
             </span>
             <span className="sm:basis-1/5 basis-1/2">
               Pythagoras: {gemHuntRecordDictionary["Pythagoras"] || "-"}{" "}
               {gemHuntRecordDictionary["Pythagoras"] ===
                 gemHuntMapWorldRecordDictionary["Pythagoras"] && (
-                <span className="text-yellow-400 text-sm"> WR</span>
+                <span className="text-yellow-400 sm:text-sm text-xs"> WR</span>
               )}
             </span>
             <span className="sm:basis-1/5 basis-1/2">
               Stadion: {gemHuntRecordDictionary["Stadion"] || "-"}{" "}
               {gemHuntRecordDictionary["Stadion"] ===
                 gemHuntMapWorldRecordDictionary["Stadion"] && (
-                <span className="text-yellow-400 text-sm"> WR</span>
+                <span className="text-yellow-400 sm:text-sm text-xs"> WR</span>
               )}
             </span>
             <span className="sm:basis-1/5 basis-1/2">
               Surf's Up: {gemHuntRecordDictionary["Surf's Up"] || "-"}{" "}
               {gemHuntRecordDictionary["Surf's Up"] ===
                 gemHuntMapWorldRecordDictionary["Surf's Up"] && (
-                <span className="text-yellow-400 text-sm"> WR</span>
+                <span className="text-yellow-400 sm:text-sm text-xs"> WR</span>
               )}
             </span>
             </div>
