@@ -26,7 +26,6 @@ export const PlayerInfo = () => {
   const [playerData, setPlayerData] = useState<LadderPlayer>();
   const [gemHuntMapData, setGemHuntMapData] = useState<GemHuntMapRecord[]>([]);
   const [playerLadderRank, setPlayerLadderRank] = useState<number | null>(null);
-  const [gemHuntTotalWR, setGemHuntTotalWR] = useState<number>(0);
   const [personalGemHuntTotalRecord, setPersonalGemHuntTotalRecord] =
     useState<number>(0);
   const [gemHuntWRCount, setGemHuntWRCount] = useState<number>(0);
@@ -69,9 +68,10 @@ export const PlayerInfo = () => {
   }, [playerMatchData]);
 
   useEffect(() => {
-    setGemHuntTotalWR(Object.values(
-      gemHuntMapWorldRecordDictionary
-    )?.reduce((acc, val) => acc + val, 0));
+    // setGemHuntTotalWR(Object.values(
+    //   gemHuntMapWorldRecordDictionary
+    // )?.reduce((acc, val) => acc + val, 0));
+    
     setPersonalGemHuntTotalRecord(Object.values(
       gemHuntRecordDictionary
     )?.reduce((acc, val) => acc + val, 0));
@@ -592,14 +592,13 @@ export const PlayerInfo = () => {
                   pts
                 </span>
               </span>
-              {personalGemHuntTotalRecord === gemHuntTotalWR && (
+              {/* {personalGemHuntTotalRecord === gemHuntTotalWR && (
                 <span className="text-yellow-400 text-sm ml-1"> WR</span>
-              )}
+              )} */}
             </div>
             <span className="sm:basis-1/5">
               Arcadia: {gemHuntRecordDictionary["Arcadia"] || "-"}
               {
-                //compare the user's personal record to the world record, show WR text if ==
                 gemHuntRecordDictionary["Arcadia"] ===
                   gemHuntMapWorldRecordDictionary["Arcadia"] && (
                   <span className="text-yellow-400 text-sm"> WR</span>
