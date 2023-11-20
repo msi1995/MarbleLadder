@@ -11,7 +11,11 @@ import { round } from "../utils/utils";
 import { LadderData } from "../App";
 import moment from "moment";
 import { Modal } from "./Modal";
-import { LadderPlayer, matchResult } from "../types/interfaces";
+import {
+  GemHuntMapRecord,
+  LadderPlayer,
+  matchResult,
+} from "../types/interfaces";
 
 export const PlayerInfo = () => {
   const username = localStorage.getItem("username");
@@ -20,7 +24,9 @@ export const PlayerInfo = () => {
   const token = cookies.get("MarbleToken");
   const ladderData: LadderPlayer[] = useContext(LadderData);
   const [playerData, setPlayerData] = useState<LadderPlayer>();
+  const [gemHuntMapData, setGemHuntMapData] = useState<GemHuntMapRecord[]>([]);
   const [playerLadderRank, setPlayerLadderRank] = useState<number | null>(null);
+  const [gemHuntWRCount, setGemHuntWRCount] = useState<number>(0);
   const [playerMatchData, setPlayerMatchData] = useState<matchResult[]>([]);
   const [replayModalOpen, setReplayModalOpen] = useState(false);
   const [matchWinner, setMatchWinner] = useState<string>("");
@@ -36,17 +42,69 @@ export const PlayerInfo = () => {
   const [averagePointDifferential, setAveragePointDifferential] = useState<
     number | null
   >(null);
+  const [gemHuntRecordDictionary, setGemHuntRecordDictionary] = useState<
+    Record<string, number>
+  >({});
+  const [gemHuntMapWorldRecordDictionary, setGemHuntMapWorldRecordDictionary] =
+    useState<Record<string, number>>({});
   const { name: player_name } = useParams();
 
   useEffect(() => {
     getPlayerPageData(player_name);
+    fetchGemHuntRecordData();
+  }, []);
+
+  useEffect(() => {
     getLadderPositionFromLadderData(ladderData);
-  }, [player_name, ladderData]);
+    getGemHuntRecordsFromPlayerData(playerData);
+    getGemHuntMapRecords(gemHuntMapData);
+  }, [ladderData, playerData, gemHuntMapData]);
 
   useEffect(() => {
     calculatePointDifferential(playerMatchData);
     calculateRival(playerMatchData);
   }, [playerMatchData]);
+
+  const fetchGemHuntRecordData = async () => {
+    try {
+      const res: Response = await fetch(BASE_ROUTE + `/gem-hunt-map-records`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      if (res.status === 403) {
+        handleLogout(navigate, cookies);
+      }
+      const mapData: GemHuntMapRecord[] = await res.json();
+      setGemHuntMapData(mapData);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const getGemHuntRecordsFromPlayerData = (
+    player: LadderPlayer | undefined
+  ) => {
+    if (player) {
+      const gemRecordDict: Record<string, number> = {};
+      player.gemHuntRecords.forEach(
+        (entry) => (gemRecordDict[entry.map] = entry.score)
+      );
+      setGemHuntRecordDictionary(gemRecordDict);
+    } else {
+      return;
+    }
+  };
+
+  const getGemHuntMapRecords = (gemHuntMapData: GemHuntMapRecord[]) => {
+    const gemMapWorldRecordDict: Record<string, number> = {};
+    gemHuntMapData.forEach(
+      (entry) => (gemMapWorldRecordDict[entry.mapName] = entry.worldRecord)
+    );
+    setGemHuntMapWorldRecordDictionary(gemMapWorldRecordDict);
+  };
 
   const handleAddReplayToMatch = (
     traceID: string,
@@ -348,7 +406,12 @@ export const PlayerInfo = () => {
         <div className="flex flex-col items-center">
           {replays?.length > 0 ? (
             replays.map((replay) => (
-              <a className="text-blue-600" href={replay.URL} target="_blank" rel="noreferrer">
+              <a
+                className="text-blue-600"
+                href={replay.URL}
+                target="_blank"
+                rel="noreferrer"
+              >
                 {replay.submitter} pov
               </a>
             ))
@@ -427,6 +490,9 @@ export const PlayerInfo = () => {
       </Modal>
       <div className="mx-auto rounded-lg bg-black/90 w-5/6 sm:w-2/3">
         <div className="flex mx-auto py-6 gap-x-2 flex-wrap justify-center items-center flex-row text-white sm:text-5xl text-2xl border-1 border-solid border-red-600">
+          {playerLadderRank === 1 && <span>👑</span>}
+          {playerLadderRank === 2 && <span>🥈</span>}
+          {playerLadderRank === 3 && <span>🥉</span>}
           <span className="flex items-center">{player_name}</span>
           <span className="flex items-center sm:text-3xl text-lg sm:pt-2 pt-1">
             [{playerData?.ratingScore}]
@@ -483,10 +549,10 @@ export const PlayerInfo = () => {
               : `${Math.abs(playerData?.currentStreak!)} Losses`}
           </span>
         </div>
-        <div className="flex sm:mx-auto mx-4 py-6 flex-wrap text-center justify-center flex-row text-white sm:text-xl text-md border-1 border-solid border-red-600">
+        <div className="flex sm:mx-auto mx-4 py-2 flex-wrap text-center justify-center flex-row text-white sm:text-xl text-md border-1 border-solid border-red-600">
           <span className="text-red-600 sm:pr-2 text-xl">Rival:</span>
           {rivalWins ? (
-            <div>
+            <div className="basis-full">
               <NavLink
                 className="text-violet-300 hover:text-violet-400"
                 to={`/player/${rival}`}
@@ -498,6 +564,103 @@ export const PlayerInfo = () => {
           ) : (
             <span>No rival yet.</span>
           )}
+          <div className="w-full my-4 mx-8 bg-white/40 rounded-lg h-0.5"></div>
+          <span className="font-semibold basis-full mb-4">
+            Solo Gem Hunt Records {gemHuntWRCount > 0 && <span> - {gemHuntWRCount} solo world records</span>}
+          </span>
+          <div className="flex flex-row flex-wrap w-full justify-evenly gap-y-2 text-lg">
+            <span className="basis-1/5">
+              Arcadia: {gemHuntRecordDictionary["Arcadia"] || "-"}
+              {
+                //compare the user's personal record to the world record, show WR text if ==
+                gemHuntRecordDictionary["Arcadia"] ===
+                  gemHuntMapWorldRecordDictionary["Arcadia"] && (
+                  <span className="text-yellow-400 text-sm"> WR</span>
+                )
+              }
+            </span>
+            <span className="basis-1/5">
+              Assault: {gemHuntRecordDictionary["Assault"] || "-"}
+              {
+                gemHuntRecordDictionary["Assault"] ===
+                  gemHuntMapWorldRecordDictionary["Assault"] && (
+                  <span className="text-yellow-400 text-sm"> WR</span>
+                )
+              }
+            </span>
+            <span className="basis-1/5">
+              Brawl: {gemHuntRecordDictionary["Brawl"] || "-"}{" "}
+              {
+                gemHuntRecordDictionary["Brawl"] ===
+                  gemHuntMapWorldRecordDictionary["Brawl"] && (
+                  <span className="text-yellow-400 text-sm"> WR</span>
+                )
+              }
+            </span>
+            <span className="basis-1/5">
+              Frostbite: {gemHuntRecordDictionary["Frostbite"] || "-"}{" "}
+              {
+                gemHuntRecordDictionary["Frostbite"] ===
+                  gemHuntMapWorldRecordDictionary["Frostbite"] && (
+                  <span className="text-yellow-400 text-sm"> WR</span>
+                )
+              }
+            </span>
+            <span className="basis-1/5">
+              Jumphouse: {gemHuntRecordDictionary["Jumphouse"] || "-"}{" "}
+              {
+                gemHuntRecordDictionary["Jumphouse"] ===
+                  gemHuntMapWorldRecordDictionary["Jumphouse"] && (
+                  <span className="text-yellow-400 text-sm"> WR</span>
+                )
+              }
+            </span>
+            <span className="basis-1/5">
+              Nexus: {gemHuntRecordDictionary["Nexus"] || "-"}{" "}
+              {
+                gemHuntRecordDictionary["Nexus"] ===
+                  gemHuntMapWorldRecordDictionary["Nexus"] && (
+                  <span className="text-yellow-400 text-sm"> WR</span>
+                )
+              }
+            </span>
+            <span className="basis-1/5">
+              Mosh Pit: {gemHuntRecordDictionary["Mosh Pit"] || "-"}{" "}
+              {
+                gemHuntRecordDictionary["Mosh Pit"] ===
+                  gemHuntMapWorldRecordDictionary["Mosh Pit"] && (
+                  <span className="text-yellow-400 text-sm"> WR</span>
+                )
+              }
+            </span>
+            <span className="basis-1/5">
+              Pythagoras: {gemHuntRecordDictionary["Pythagoras"] || "-"}{" "}
+              {
+                gemHuntRecordDictionary["Pythagoras"] ===
+                  gemHuntMapWorldRecordDictionary["Pythagoras"] && (
+                  <span className="text-yellow-400 text-sm"> WR</span>
+                )
+              }
+            </span>
+            <span className="basis-1/5">
+              Stadion: {gemHuntRecordDictionary["Stadion"] || "-"}{" "}
+              {
+                gemHuntRecordDictionary["Stadion"] ===
+                  gemHuntMapWorldRecordDictionary["Stadion"] && (
+                  <span className="text-yellow-400 text-sm"> WR</span>
+                )
+              }
+            </span>
+            <span className="basis-1/5">
+              Surf's Up: {gemHuntRecordDictionary["Surf's Up"] || "-"}{" "}
+              {
+                gemHuntRecordDictionary["Surf's Up"] ===
+                  gemHuntMapWorldRecordDictionary["Surf's Up"] && (
+                  <span className="text-yellow-400 text-sm"> WR</span>
+                )
+              }
+            </span>
+          </div>
         </div>
       </div>
       <div className="sm:pt-12 pt-12 flex flex-col items-center border-0 border-solid border-green-600">
