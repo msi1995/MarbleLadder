@@ -55,7 +55,7 @@ export const Navbar = () => {
           <img
           alt="Website Logo"
             className="h-16 sm:px-4 hover:scale-105 hover:cursor-pointer"
-            src={`/marbleladder01tsp.png`}
+            src={`/marbleladder01tsp.webp`}
           ></img>
         </NavLink>
         <div className="xl:hidden">

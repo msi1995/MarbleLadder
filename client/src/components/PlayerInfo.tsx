@@ -289,7 +289,7 @@ export const PlayerInfo = () => {
             alt="Level Thumbnail"
             data-tooltip-id={map.replace(/'/g, "")}
             className="sm:w-28 sm:h-20 w-20 rounded-md"
-            src={`/Level_Images/${map || "NoMap"}.png`}
+            src={`/Level_Images/${map || "NoMap"}_128.webp`}
           ></img>
         </div>
       ),
