@@ -321,7 +321,8 @@ export const GemHuntRecords = () => {
         },
         body: JSON.stringify({
           runID: unverifiedRuns[runConfirmationIdx].runID,
-          map: unverifiedRuns[runConfirmationIdx]?.map
+          map: unverifiedRuns[runConfirmationIdx]?.map,
+          runPlayer: unverifiedRuns[runConfirmationIdx]?.player
         }),
       });
 
