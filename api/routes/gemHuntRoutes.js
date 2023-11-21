@@ -98,7 +98,7 @@ router.post('/approve-gem-hunt-record/', auth, async (req, res) => {
         //only update player's best if the new score is better than previous
         if (unverifiedMatch.scores[0].score > mapRecord.score) {
             await ladderPlayer.updateOne({
-                _id: new ObjectId(req.user.userId),
+                username: runner,
                 'gemHuntRecords.map': map
             }, {
                 $set: {
