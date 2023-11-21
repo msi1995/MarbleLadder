@@ -50,6 +50,7 @@ router.post('/approve-gem-hunt-record/', auth, async (req, res) => {
     }
     const runID = req.body.runID;
     const map = req.body.map;
+    const runner = req.body.runPlayer;
     // const mapres = await gemHuntMapRecord.findOne({ mapName: map })
     const { worldRecord: mapWR } = await gemHuntMapRecord.findOne({ mapName: map })
     try {
@@ -71,14 +72,14 @@ router.post('/approve-gem-hunt-record/', auth, async (req, res) => {
 
         //UPDATES TO LADDERPLAYER COLLECTION
         const { gemHuntRecords } = await ladderPlayer.findOne({
-            _id: new ObjectId(req.user.userId)
+            username: runner,
         })
         const mapRecord = gemHuntRecords.find((entry) => entry.map === map)
 
         //if user has no verified score on this map, add an entry
         if (mapRecord === undefined) {
             await ladderPlayer.updateOne({
-                _id: new ObjectId(req.user.userId)
+                username: runner
             }, {
                 $push: {
                     gemHuntRecords: {
@@ -97,7 +98,7 @@ router.post('/approve-gem-hunt-record/', auth, async (req, res) => {
         //only update player's best if the new score is better than previous
         if (unverifiedMatch.scores[0].score > mapRecord.score) {
             await ladderPlayer.updateOne({
-                _id: new ObjectId(req.user.userId),
+                username: runner,
                 'gemHuntRecords.map': map
             }, {
                 $set: {
