@@ -233,7 +233,6 @@ export const SoloLadder = () => {
   const tableRef: any = useRef(null);
   useEffect(() => {
     if (tableRef.current) {
-      console.log(tableRef.current.querySelectorAll(".ant-table-row")[0]?.offsetHeight);
       setTableRowHeight(
         tableRef.current.querySelectorAll(".ant-table-row")[0]?.offsetHeight
       );
