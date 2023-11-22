@@ -70,7 +70,8 @@ export let ladderColumns: ColumnsType<LadderPlayer> = [
     render: (_, { currentStreak }) => (
       <>
         <Tag
-          color={currentStreak >= 0 ? "green" : "volcano"}
+        className='font-semibold !opacity-100'
+          color={currentStreak >= 0 ? "green" : "gold"}
           key={currentStreak}
         >
           {currentStreak === 0
@@ -91,7 +92,7 @@ export let ladderColumns: ColumnsType<LadderPlayer> = [
     render: (text, record) => (
       <>
         <NavLink
-          className="bg-blue-600 text-white px-2 py-1 rounded-md hover:bg-blue-800 hover:text-white"
+          className="text-cyan-400 font-semibold hover:text-white"
           to={{ pathname: `/player/${record.username}` }}
         >
           View Player

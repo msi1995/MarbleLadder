@@ -1,16 +1,14 @@
-import React, { ChangeEvent, FormEvent } from "react";
+import React, { ChangeEvent, FormEvent, useRef } from "react";
 import { Table } from "antd";
 import { useState, useEffect, useContext } from "react";
 import { BASE_ROUTE } from "../App";
 import SelectSearch from "react-select-search";
 import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
-import { handleLogout, smallScreen } from "../utils/utils";
+import { above1080, handleLogout, smallScreen } from "../utils/utils";
 import ToggleButton from "react-toggle-button";
 import { LadderData } from "../App";
-import {
-  ladderColumns,
-} from "../antd/ladderColumns";
+import { ladderColumns } from "../antd/ladderColumns";
 import "react-select-search/style.css";
 import { OpponentDropdownData, matchResult } from "../types/interfaces";
 
@@ -22,7 +20,9 @@ export const SoloLadder = () => {
   const [opponentDropdownData, setOpponentDropdownData] = useState<
     OpponentDropdownData[]
   >([]);
-  const [unconfirmedMatches, setUnconfirmedMatches] = useState<matchResult[]>([]);
+  const [unconfirmedMatches, setUnconfirmedMatches] = useState<matchResult[]>(
+    []
+  );
   const [bulkMode, setBulkMode] = useState<boolean>(false);
   const [bulkModeTextArea, setBulkModeTextArea] = useState<string>("");
   const [bulkModeError, setBulkModeError] = useState<string>("");
@@ -38,6 +38,7 @@ export const SoloLadder = () => {
     useState<Boolean>(false);
   const [confirmMatchModalVisible, setConfirmMatchModalVisible] =
     useState<Boolean>(false);
+  const [tableRowHeight, setTableRowHeight] = useState<number>(0);
   const username = localStorage.getItem("username");
 
   useEffect(() => {
@@ -229,8 +230,18 @@ export const SoloLadder = () => {
     setPlayerOpponent(opponent);
   };
 
+  const tableRef: any = useRef(null);
+  useEffect(() => {
+    if (tableRef.current) {
+      console.log(tableRef.current.querySelectorAll(".ant-table-row")[0]?.offsetHeight);
+      setTableRowHeight(
+        tableRef.current.querySelectorAll(".ant-table-row")[0]?.offsetHeight
+      );
+    }
+  }, [sortedData]);
+
   return (
-    <div className="pt-16 h-screen w-screen relative overflow-x-hidden">
+    <div className="sm:pt-40 pt-20 h-screen w-screen relative overflow-x-hidden">
       {Boolean(confirmMatchModalVisible) && (
         <div className="absolute sm:top-1/3 top-1/2 left-1/2 xl:w-1/3 lg:w-2/3 w-5/6 -translate-x-1/2 -translate-y-1/2 transform rounded-md bg-black-opacity-90 z-10 text-white">
           <div className="flex flex-col pb-16 pb-12 justify-center items-center">
@@ -521,7 +532,7 @@ export const SoloLadder = () => {
           </div>
         </div>
       )}
-      <div className="pt-24 flex flex-row flex-wrap relative overflow-x-hidden justify-center opacity-95">
+      <div className="flex flex-row flex-wrap relative overflow-x-hidden justify-center opacity-95">
         <div className="flex sm:w-3/5 w-full justify-end px-2">
           {Boolean(unconfirmedMatches?.length) && (
             <button
@@ -545,15 +556,21 @@ export const SoloLadder = () => {
             Total Players: {ladderData.length}
           </span>
         </div>
-
         <Table
+          ref={tableRef}
           className="sm:w-3/5 w-full sm:px-0 px-2"
           columns={ladderColumns}
           dataSource={sortedData}
-          scroll={{ y: 825 }}
+          scroll={
+            above1080()
+              ? { y: tableRowHeight * 15 }
+              : smallScreen()
+              ? { y: tableRowHeight * 10 }
+              : { y: tableRowHeight * 10 }
+          }
           pagination={{
             showSizeChanger: true,
-            defaultPageSize: smallScreen() ? 5 : 15,
+            defaultPageSize: 15,
             pageSizeOptions: [5, 15, 25, 50],
           }}
         />
