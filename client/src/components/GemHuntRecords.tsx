@@ -1,6 +1,4 @@
-import {
-  gemHuntColumns
-} from "../antd/gemHuntColumns";
+import { gemHuntColumns } from "../antd/gemHuntColumns";
 import { Table } from "antd";
 import Cookies from "universal-cookie";
 import { BASE_ROUTE } from "../App";
@@ -9,7 +7,12 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
 import { Modal } from "./Modal";
 import ToggleButton from "react-toggle-button";
-import { GemHuntMapRecord, GemHuntMapRecordScore, GemHuntMapRecordScoreWithMap, PlayerTotalScoreObject } from "../types/interfaces";
+import {
+  GemHuntMapRecord,
+  GemHuntMapRecordScore,
+  GemHuntMapRecordScoreWithMap,
+  PlayerTotalScoreObject,
+} from "../types/interfaces";
 import { gemHuntOverallColumns } from "../antd/gemHuntOverallColumns";
 
 export const GemHuntRecords = () => {
@@ -36,10 +39,12 @@ export const GemHuntRecords = () => {
   const [allMapData, setAllMapData] = useState<GemHuntMapRecord[]>([]);
   const [communityWorldRecord, setCommunityWorldRecord] = useState<number>(0);
   const [allRuns, setAllRuns] = useState<boolean>(false);
-  const [rawMapRecordData, setRawMapRecordData] = useState<GemHuntMapRecordScore[]>([]);
-  const [sortedMapRecordAllData, setSortedMapRecordAllData] = useState<GemHuntMapRecordScore[]>([]);
-  const [sortedMapRecordUniqueData, setSortedMapRecordUniqueData] =
-    useState<GemHuntMapRecordScore[]>([]);
+  const [sortedMapRecordAllData, setSortedMapRecordAllData] = useState<
+    GemHuntMapRecordScore[]
+  >([]);
+  const [sortedMapRecordUniqueData, setSortedMapRecordUniqueData] = useState<
+    GemHuntMapRecordScore[]
+  >([]);
   const [playerTotalScoreData, setPlayerTotalScoreData] = useState<any>([]);
   const [mapWorldRecord, setMapWorldRecord] = useState<number>(0);
   const [mapWorldRecordHolder, setMapWorldRecordHolder] = useState<string>("");
@@ -48,7 +53,9 @@ export const GemHuntRecords = () => {
   const [reportedScore, setReportedScore] = useState<number | null>(null);
   const [mediaLink, setMediaLink] = useState<string | null>(null);
   const [description, setDescription] = useState<string>("");
-  const [unverifiedRuns, setUnverifiedRuns] = useState<GemHuntMapRecordScoreWithMap[]>([]);
+  const [unverifiedRuns, setUnverifiedRuns] = useState<
+    GemHuntMapRecordScoreWithMap[]
+  >([]);
   const [runConfirmationIdx, setRunConfirmationIdx] = useState<number>(0);
 
   useEffect(() => {
@@ -59,96 +66,73 @@ export const GemHuntRecords = () => {
     }
   }, []);
 
+  //set overall community record
   useEffect(() => {
-    setCommunityWorldRecord(allMapData.reduce((acc, val) => acc + val.worldRecord, 0));
-    if (mapIndex !== 0) {
-      setSelectedMap(maps[mapIndex]);
-      const selectedMapData = allMapData.find(
-        (item: GemHuntMapRecord) => item.mapName === maps[mapIndex]
-      );
-      setRawMapRecordData(selectedMapData?.scores ?? []);
+    setCommunityWorldRecord(
+      allMapData.reduce((acc, val) => acc + val.worldRecord, 0)
+    );
+  }, [allMapData]);
+
+  useEffect(() => {
+    // handle overall tab (no map)
+    if (mapIndex === 0) {
+      setSelectedMap(maps[1]); // default to Arcadia for submission from Overall tab
+      handleOverallTabData(allMapData);
+      return;
+    }
+
+    // handle selected map
+    setSelectedMap(maps[mapIndex]);
+    const selectedMapData = allMapData.find(
+      (item: GemHuntMapRecord) => item.mapName === maps[mapIndex]
+    );
+    if (selectedMapData?.scores.length) {
+      // from the map data, set the Unique Runs data and All Runs data
+      getUniqueBestRunsOnMap(selectedMapData.scores);
+      getAllBestRunsOnMap(selectedMapData.scores);
     } else {
-      setSelectedMap(maps[1]) // default to Arcadia for submission from Overall tab
-      //overall score data is calculated here onward
-      const allScoresWithMapName: GemHuntMapRecordScoreWithMap[] = allMapData
-        .flatMap((mapEntry: GemHuntMapRecord) =>
-          mapEntry.scores.map((score: GemHuntMapRecordScore) => ({
-            ...score,
-            map: mapEntry.mapName,
-          }))
-        )
-        .filter((score) => score.verified !== false);
-      // dict to store the total scores for each player
-      const playerTotalScoreObjects: Record<string, PlayerTotalScoreObject> =
-        {};
-
-      allScoresWithMapName.forEach((score) => {
-        const { player, score: currentScore, map } = score;
-
-        // create player entry if player isn't in dict already
-        if (!playerTotalScoreObjects[player]) {
-          playerTotalScoreObjects[player] = {
-            player: player,
-            totalScore: 0,
-            bestScoresByMap: {},
-          };
-        }
-
-        // if no score for map, or score being evaluated is > best score on map
-        if (
-          !playerTotalScoreObjects[player].bestScoresByMap[map] ||
-          currentScore >
-            playerTotalScoreObjects[player].bestScoresByMap[map]
-        ) {
-          // set best score
-          playerTotalScoreObjects[player].bestScoresByMap[map] =
-            currentScore;
-        }
-      });
-
-      // sum the best scores for each map
-      Object.values(playerTotalScoreObjects).forEach((playerObject) => {
-        const { bestScoresByMap } = playerObject;
-
-        // for each value in bestScoresByMap, sum += score. sum initialized to 0.
-        // set playerObject.totalScore to the return value of the reduce fn (sum of all map scores)
-        playerObject.totalScore = Object.values(bestScoresByMap).reduce(
-          (sum, score) => sum + score,
-          0
-        );
-      });
-
-      const playerBestTotalScores: PlayerTotalScoreObject[] = Object.values(
-        playerTotalScoreObjects
-      );
-      const sortedPlayerBestTotalScores = playerBestTotalScores
-        .sort((a, b) => {
-          return b.totalScore - a.totalScore;
-        })
-        .map((item: PlayerTotalScoreObject, index: number) => ({
-          ...item,
-          rank: index + 1,
-          key: `${index + 1}`,
-        }));
-      setPlayerTotalScoreData(sortedPlayerBestTotalScores);
-      // 'map' in this case is Overall rather than specific map.
-      setMapWorldRecordHolder(sortedPlayerBestTotalScores[0]?.player);
-      setMapWorldRecord(sortedPlayerBestTotalScores[0]?.totalScore);
+      setSortedMapRecordAllData([]);
+      setSortedMapRecordUniqueData([]);
+      setMapWorldRecord(0);
     }
   }, [mapIndex, allMapData]);
 
-  useEffect(() => {
-    try {
-      if (!rawMapRecordData?.length) {
-        setSortedMapRecordAllData([]);
-        setSortedMapRecordUniqueData([]);
-        setMapWorldRecord(0);
-        return;
-      }
+  const getAllBestRunsOnMap = (mapScoreRecordData: GemHuntMapRecordScore[]) => {
+    const filteredAllRecords = mapScoreRecordData
+      .filter((entry) => entry.verified !== false)
+      .sort((a, b) => {
+        if (b.score !== a.score) {
+          return b.score - a.score;
+        } else {
+          const dateA = new Date(a.date).getTime();
+          const dateB = new Date(b.date).getTime();
 
-      const filteredUniqueRecords = rawMapRecordData
-        .filter((entry: GemHuntMapRecordScore) => entry.verified !== false)
-        .reduce((accumulator: GemHuntMapRecordScore[], current: GemHuntMapRecordScore) => {
+          return dateA - dateB; // Sort by date if the scores are equal. Earliest instance of score should keep WR
+        }
+      })
+      .map((item, index) => ({
+        ...item,
+        rank: index + 1,
+        key: `${index + 1}`,
+      }));
+
+    if (filteredAllRecords.length) {
+      setSortedMapRecordAllData(filteredAllRecords.slice(0, 10));
+    } else {
+      setSortedMapRecordAllData([]);
+    }
+  };
+
+  const getUniqueBestRunsOnMap = (
+    mapScoreRecordData: GemHuntMapRecordScore[]
+  ) => {
+    const filteredUniqueRecords = mapScoreRecordData
+      .filter((entry: GemHuntMapRecordScore) => entry.verified !== false)
+      .reduce(
+        (
+          accumulator: GemHuntMapRecordScore[],
+          current: GemHuntMapRecordScore
+        ) => {
           const existingPlayerIndex = accumulator.findIndex(
             (item) => item.player === current.player
           );
@@ -164,59 +148,97 @@ export const GemHuntRecords = () => {
           }
 
           return accumulator;
-        }, [])
-        .sort((a, b) => {
-          if (b.score !== a.score) {
-            return b.score - a.score;
-          } else {
-            const dateA = new Date(a.date).getTime();
-            const dateB = new Date(b.date).getTime();
-            return dateA - dateB;
-          }
-        })
-        .map((item, index) => ({
-          ...item,
-          rank: index + 1,
-          key: `${index + 1}`,
-        }));
+        },
+        []
+      )
+      .sort((a, b) => {
+        if (b.score !== a.score) {
+          return b.score - a.score;
+        } else {
+          const dateA = new Date(a.date).getTime();
+          const dateB = new Date(b.date).getTime();
+          return dateA - dateB;
+        }
+      })
+      .map((item, index) => ({
+        ...item,
+        rank: index + 1,
+        key: `${index + 1}`,
+      }));
 
-      if (filteredUniqueRecords.length) {
-        setSortedMapRecordUniqueData(filteredUniqueRecords.slice(0, 10));
-        setMapWorldRecordHolder(filteredUniqueRecords[0].player);
-        setMapWorldRecord(filteredUniqueRecords[0].score);
-      } else {
-        setSortedMapRecordUniqueData([]);
-        setMapWorldRecord(0);
-      }
-
-      const filteredAllRecords = rawMapRecordData
-        .filter((entry) => entry.verified !== false)
-        .sort((a, b) => {
-          if (b.score !== a.score) {
-            return b.score - a.score;
-          } else {
-            const dateA = new Date(a.date).getTime();
-            const dateB = new Date(b.date).getTime();
-
-            return dateA - dateB; // Sort by date if the scores are equal. Earliest instance of score should keep WR
-          }
-        })
-        .map((item, index) => ({
-          ...item,
-          rank: index + 1,
-          key: `${index + 1}`,
-        }));
-
-      if (filteredAllRecords.length) {
-        setSortedMapRecordAllData(filteredAllRecords.slice(0, 10));
-      } else {
-        setSortedMapRecordAllData([]);
-      }
-    } catch (e) {
-      console.log(e);
+    if (filteredUniqueRecords.length) {
+      setSortedMapRecordUniqueData(filteredUniqueRecords.slice(0, 10));
+      setMapWorldRecordHolder(filteredUniqueRecords[0].player);
+      setMapWorldRecord(filteredUniqueRecords[0].score);
+    } else {
+      setSortedMapRecordUniqueData([]);
+      setMapWorldRecord(0);
     }
-  }, [rawMapRecordData]);
+  };
 
+  const handleOverallTabData = (mapRecordData: GemHuntMapRecord[]) => {
+    const allScoresWithMapName: GemHuntMapRecordScoreWithMap[] = mapRecordData
+      .flatMap((mapEntry: GemHuntMapRecord) =>
+        mapEntry.scores.map((score: GemHuntMapRecordScore) => ({
+          ...score,
+          map: mapEntry.mapName,
+        }))
+      )
+      .filter((score) => score.verified !== false);
+    
+    // dict <string, obj>
+    const playerTotalScoreObjects: Record<string, PlayerTotalScoreObject> = {};
+
+    allScoresWithMapName.forEach((score) => {
+      const { player, score: currentScore, map } = score;
+
+      // create player entry if player isn't in dict already
+      if (!playerTotalScoreObjects[player]) {
+        playerTotalScoreObjects[player] = {
+          player: player,
+          totalScore: 0,
+          bestScoresByMap: {},
+        };
+      }
+
+      // if no score for map, or score being evaluated is > best score on map
+      if (
+        !playerTotalScoreObjects[player].bestScoresByMap[map] ||
+        currentScore > playerTotalScoreObjects[player].bestScoresByMap[map]
+      ) {
+        // set best score
+        playerTotalScoreObjects[player].bestScoresByMap[map] = currentScore;
+      }
+    });
+
+    // sum the best scores for each map
+    Object.values(playerTotalScoreObjects).forEach((playerObject) => {
+      const { bestScoresByMap } = playerObject;
+
+      // for each value in bestScoresByMap, sum += score. sum initialized to 0.
+      // set playerObject.totalScore to the return value of the reduce fn (sum of all map scores)
+      playerObject.totalScore = Object.values(bestScoresByMap).reduce(
+        (sum, score) => sum + score,
+        0
+      );
+    });
+
+    const playerBestTotalScores: PlayerTotalScoreObject[] = Object.values(
+      playerTotalScoreObjects
+    );
+    const sortedPlayerBestTotalScores = playerBestTotalScores
+      .sort((a, b) => {
+        return b.totalScore - a.totalScore;
+      })
+      .map((item: PlayerTotalScoreObject, index: number) => ({
+        ...item,
+        rank: index + 1,
+        key: `${index + 1}`,
+      }));
+    setPlayerTotalScoreData(sortedPlayerBestTotalScores);
+    setMapWorldRecordHolder(sortedPlayerBestTotalScores[0]?.player);
+    setMapWorldRecord(sortedPlayerBestTotalScores[0]?.totalScore);
+  };
   const mapForward = () => {
     setMapIndex((mapIndex + 1) % maps.length);
   };
@@ -270,12 +292,10 @@ export const GemHuntRecords = () => {
     }
   };
 
-  const handleGemHuntModalSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleGemHuntModalSubmit = async (
+    event: FormEvent<HTMLFormElement>
+  ) => {
     event?.preventDefault();
-    submitGemHuntRecord();
-  };
-
-  const submitGemHuntRecord = async () => {
     if (!mediaLink || !reportedScore) {
       alert("Score & screenshot or YT link are required.");
       return;
@@ -299,7 +319,7 @@ export const GemHuntRecords = () => {
       );
       if (res.status === 201) {
         setSubmissionModalOpen(false);
-        setReportedScore(null)
+        setReportedScore(null);
       }
       if (res.status === 403) {
         handleLogout(navigate, cookies);
@@ -325,7 +345,7 @@ export const GemHuntRecords = () => {
         body: JSON.stringify({
           runID: unverifiedRuns[runConfirmationIdx].runID,
           map: unverifiedRuns[runConfirmationIdx]?.map,
-          runPlayer: unverifiedRuns[runConfirmationIdx]?.player
+          runPlayer: unverifiedRuns[runConfirmationIdx]?.player,
         }),
       });
 
@@ -386,7 +406,7 @@ export const GemHuntRecords = () => {
                     ? setReportedScore(1)
                     : setReportedScore(parseInt(e.target.value))
                 }
-                value={reportedScore ?? ''}
+                value={reportedScore ?? ""}
                 className="block w-16 border-solid border-2 border-slate-500 rounded-md border-0 px-2 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               ></input>
             </div>
@@ -492,20 +512,24 @@ export const GemHuntRecords = () => {
         </div>
         {mapWorldRecord !== 0 ? (
           <>
-          <span className="bg-black/50 sm:text-3xl text-xl py-1 px-2 rounded-md mb-4">
-          <span className="text-yellow-400">👑 Solo World Record:</span>{" "}
-          {mapWorldRecord} points by{" "}
-          <NavLink
-            className=""
-            to={{ pathname: `/player/${mapWorldRecordHolder}` }}
-          >
-            {mapWorldRecordHolder}
-          </NavLink>
-        </span>
-          <span className="bg-black/70 sm:text-xl text-md py-1 px-2 rounded-md mb-8">
-            <span className="text-cyan-400">Sum of All Bests: {communityWorldRecord}</span>
-          </span>
-        </>
+            <span className="bg-black/50 sm:text-3xl text-xl py-1 px-2 rounded-md mb-4">
+              <span className="text-yellow-400">👑 Solo World Record:</span>{" "}
+              {mapWorldRecord} points by{" "}
+              <NavLink
+                className=""
+                to={{ pathname: `/player/${mapWorldRecordHolder}` }}
+              >
+                {mapWorldRecordHolder}
+              </NavLink>
+            </span>
+            {mapIndex === 0 && (
+              <span className="bg-black/70 sm:text-xl text-md py-1 px-2 rounded-md mb-8">
+                <span className="text-cyan-400">
+                  Sum of All Bests: {communityWorldRecord}
+                </span>
+              </span>
+            )}
+          </>
         ) : (
           <span className="bg-black/40 sm:text-3xl text-xl py-1 px-2 rounded-md">
             No records for this map yet.
