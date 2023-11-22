@@ -3,7 +3,7 @@ import { Table } from "antd";
 import Cookies from "universal-cookie";
 import { BASE_ROUTE } from "../App";
 import { above1080, handleLogout, userIsAdmin } from "../utils/utils";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
 import { FormEvent, useEffect, useState } from "react";
 import { Modal } from "./Modal";
 import ToggleButton from "react-toggle-button";
@@ -32,6 +32,8 @@ export const GemHuntRecords = () => {
     "Stadion",
     "Surf's Up",
   ];
+  const [searchParams] = useSearchParams();
+  const paramIdx = searchParams.get("mapIdx");
 
   const [admin, setAdmin] = useState<boolean>(false);
   const [mapIndex, setMapIndex] = useState<number>(0);
@@ -65,6 +67,12 @@ export const GemHuntRecords = () => {
       checkAdmin();
     }
   }, []);
+
+  useEffect(() => {
+    if(paramIdx){
+      setMapIndex(parseInt(paramIdx));
+    }
+  }, [paramIdx])
 
   //set overall community record
   useEffect(() => {
@@ -516,7 +524,7 @@ export const GemHuntRecords = () => {
               <span className="text-yellow-400">👑 Solo World Record:</span>{" "}
               {mapWorldRecord} points by{" "}
               <NavLink
-                className=""
+                className="hover:text-cyan-400"
                 to={{ pathname: `/player/${mapWorldRecordHolder}` }}
               >
                 {mapWorldRecordHolder}

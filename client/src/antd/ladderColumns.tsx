@@ -40,7 +40,7 @@ export let ladderColumns: ColumnsType<LadderPlayer> = [
     align: smallScreen() ? "center" : "justify",
     width: smallScreen() ? "auto" : "25%",
     render: (text, record) => (
-      <NavLink to={{ pathname: `/player/${text}` }}>{text}</NavLink>
+      <NavLink to={{ pathname: `/player/${text}` }} className='hover:text-cyan-400'>{text}</NavLink>
     ),
   },
   {
