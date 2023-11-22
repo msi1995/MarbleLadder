@@ -4,13 +4,13 @@ export const Homepage = () => {
   const username = localStorage.getItem("username");
   return (
     <div className="sm:pt-0 pt-48 h-screen w-screen relative overflow-x-hidden overflow-y-hidden">
-      <div className="flex flex-col w-screen h-screen sm:justify-center sm:items-center sm:pb-40">
-        <div className="select-none text-center neon-text-allsize sm:text-6xl text-3xl text-white mb-8">
+      <div className="flex flex-col w-screen h-screen sm:justify-center sm:items-center sm:pb-40 text-white font-semibold">
+        <div className="select-none text-center neon-text-allsize sm:text-6xl text-3xl mb-8">
           {username === null
             ? "Welcome to MarbleLadder!"
             : `Welcome to MarbleLadder, ${username}!`}
         </div>
-        <div className="select-none text-center neon-text sm:text-3xl text-xl text-white">
+        <div className="select-none text-center neon-text sm:text-3xl text-xl">
           <a href='https://discord.gg/marbleitup'>Click to join the MIU Discord and find opponents!</a>
         </div>
       </div>

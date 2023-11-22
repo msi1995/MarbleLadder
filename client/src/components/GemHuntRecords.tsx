@@ -2,9 +2,14 @@ import { gemHuntColumns } from "../antd/gemHuntColumns";
 import { Table } from "antd";
 import Cookies from "universal-cookie";
 import { BASE_ROUTE } from "../App";
-import { above1080, handleLogout, userIsAdmin } from "../utils/utils";
+import {
+  above1080,
+  handleLogout,
+  smallScreen,
+  userIsAdmin,
+} from "../utils/utils";
 import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { Modal } from "./Modal";
 import ToggleButton from "react-toggle-button";
 import {
@@ -59,6 +64,7 @@ export const GemHuntRecords = () => {
     GemHuntMapRecordScoreWithMap[]
   >([]);
   const [runConfirmationIdx, setRunConfirmationIdx] = useState<number>(0);
+  const [tableRowHeight, setTableRowHeight] = useState<number>(0);
 
   useEffect(() => {
     fetchGemHuntRecordData();
@@ -69,10 +75,10 @@ export const GemHuntRecords = () => {
   }, []);
 
   useEffect(() => {
-    if(paramIdx){
+    if (paramIdx) {
       setMapIndex(parseInt(paramIdx));
     }
-  }, [paramIdx])
+  }, [paramIdx]);
 
   //set overall community record
   useEffect(() => {
@@ -193,7 +199,7 @@ export const GemHuntRecords = () => {
         }))
       )
       .filter((score) => score.verified !== false);
-    
+
     // dict <string, obj>
     const playerTotalScoreObjects: Record<string, PlayerTotalScoreObject> = {};
 
@@ -378,8 +384,14 @@ export const GemHuntRecords = () => {
     handleVerifyAction("deny");
   };
 
+  const tableRef: any = useRef(null);
+  useEffect(() => {
+    if (tableRef.current) {
+      setTableRowHeight(tableRef.current.querySelectorAll('.ant-table-row')[0]?.offsetHeight);
+    }
+  }, [playerTotalScoreData, sortedMapRecordAllData, sortedMapRecordUniqueData]);
   return (
-    <div className="pt-28 h-screen w-screen relative overflow-x-hidden">
+    <div className="sm:pt-28 pt-20 h-screen w-screen relative overflow-x-hidden">
       <Modal
         isOpen={submissionModalOpen}
         onClose={() => setSubmissionModalOpen(false)}
@@ -585,9 +597,16 @@ export const GemHuntRecords = () => {
       </div>
       <div className="flex flex-row flex-wrap relative overflow-x-hidden justify-center opacity-95">
         <Table
+          ref={tableRef}
           className="sm:w-1/2 w-full sm:px-0 px-2"
           columns={mapIndex === 0 ? gemHuntOverallColumns : gemHuntColumns}
-          scroll={above1080() ? {} : { y: 340 }}
+          scroll={
+            above1080()
+              ? { y: tableRowHeight * 15 }
+              : smallScreen()
+              ? { y: tableRowHeight * 10 }
+              : { y: tableRowHeight * 10 }
+          }
           dataSource={(() => {
             if (mapIndex === 0) {
               return playerTotalScoreData;

@@ -29,10 +29,79 @@ code {
   }
 }
 
-.ant-table-row {
-  padding: 0;
-  margin: 0;
+::-webkit-scrollbar {
+  width: 10px;
 }
+::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.636);
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: rgb(255, 255, 255);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+
+/* table header */
+th{
+  background: #000000 !important;
+  color: white !important;
+}
+
+/* hides scroll bar when not needed */
+.ant-table-body{
+  overflow-y: auto !important;
+}
+
+/* table rows */
+.ant-table-cell{
+  border-bottom: 1px solid rgba(34, 211, 238, 0.4) !important;
+  background-color: rgb(0,0,0,1);
+  color: white;
+}
+
+
+/* turns off white dividers on row headers */
+.ant-table-cell::before{
+  background-color: black !important;
+}
+
+.ant-table-cell-scrollbar{
+  background-color: rgb(0,0,0,1) !important;
+  box-shadow: none !important;
+}
+
+/* makes DATE column in matchHistory black */
+.ant-table-column-sort{
+  border-bottom: 1px solid rgba(34, 211, 238, 0.4) !important;
+  background-color: rgb(0,0,0,1) !important;
+  color: white;
+}
+
+
+/* needed to prevent AntD row highlight overriding desired css*/
+table,
+tr,
+thead {
+    background: #000000 !important;
+}
+
+table:hover,
+tr:hover,
+thead:hover {
+    background: #20293c !important;
+}
+
+.ant-table-tbody > tr.ant-table-row:hover > td {
+    background: none !important;
+}
+
 
 .bg-black-opacity-50 {
   background-color: rgba(

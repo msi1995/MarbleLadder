@@ -60,7 +60,7 @@ export let gemHuntColumns: ColumnsType<GemHuntMapRecordScore> = [
     width: "auto",
     render: (_, { media }) => (
       media ? 
-      <a className='text-blue-600' href={media} target="_blank" rel="noreferrer">
+      <a className='text-cyan-400 hover:text-white' href={media} target="_blank" rel="noreferrer">
         Link
       </a> : <>See individual maps</>
     ),

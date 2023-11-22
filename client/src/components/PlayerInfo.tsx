@@ -1,11 +1,11 @@
 import { useParams } from "react-router-dom";
-import { useState, useEffect, useContext, FormEvent } from "react";
+import { useState, useEffect, useContext, FormEvent, useRef } from "react";
 import { BASE_ROUTE } from "../App";
 import { Table, Tag } from "antd";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import type { ColumnsType } from "antd/es/table";
 import Cookies from "universal-cookie";
-import { handleLogout, smallScreen } from "../utils/utils";
+import { above1080, handleLogout, smallScreen } from "../utils/utils";
 import { useNavigate, NavLink } from "react-router-dom";
 import { round } from "../utils/utils";
 import { LadderData } from "../App";
@@ -49,6 +49,7 @@ export const PlayerInfo = () => {
   >({});
   const [gemHuntMapWorldRecordDictionary, setGemHuntMapWorldRecordDictionary] =
     useState<Record<string, number>>({});
+  const [tableRowHeight, setTableRowHeight] = useState<number>(55);
   const { name: player_name } = useParams();
 
   useEffect(() => {
@@ -419,7 +420,7 @@ export const PlayerInfo = () => {
           {replays?.length > 0 ? (
             replays.map((replay) => (
               <a
-                className="text-blue-600"
+                className="text-cyan-400"
                 href={replay.URL}
                 target="_blank"
                 rel="noreferrer"
@@ -465,8 +466,20 @@ export const PlayerInfo = () => {
     columns = columns.filter((item) => item.key !== "traceID");
   }
 
+  const tableRef: any = useRef(null);
+  useEffect(() => {
+    if (tableRef.current) {
+      console.log(
+        tableRef.current.querySelectorAll(".ant-table-row")[0]?.offsetHeight
+      );
+      setTableRowHeight(
+        tableRef.current.querySelectorAll(".ant-table-row")[0]?.offsetHeight
+      );
+    }
+  }, [playerMatchData]);
+
   return (
-    <div className="sm:pt-28 pt-28 h-screen w-screen overflow-x-hidden border-0 border-solid border-red-600">
+    <div className="sm:pt-28 pt-20 h-screen w-screen overflow-x-hidden border-0 border-solid border-red-600">
       <Modal isOpen={replayModalOpen} onClose={closeReplayModal}>
         <div className="flex flex-col items-center sm:px-16 py-4 gap-y-4">
           <span className="sm:text-4xl text-2xl font-bold">
@@ -609,10 +622,7 @@ export const PlayerInfo = () => {
           </span>
           <div className="flex flex-row flex-wrap w-full sm:justify-evenly justify-between gap-y-2 sm:text-lg text-normal sm:text-center text-left">
             <div className="basis-full mb-6 text-center">
-              <a
-                href="/gem-hunt-records"
-                className=" hover:text-cyan-400"
-              >
+              <a href="/gem-hunt-records" className=" hover:text-cyan-400">
                 Total:{" "}
                 <span className="font-light">
                   {personalGemHuntTotalRecord + " "}
@@ -794,24 +804,36 @@ export const PlayerInfo = () => {
           </div>
         </div>
       </div>
-      <div className="sm:pt-12 pt-12 flex flex-col items-center border-0 border-solid border-green-600">
+      <div className="sm:pt-12 pt-12 flex flex-col items-center opacity-95">
         <div className="pb-8">
           <span className="bg-black/50 py-2 px-4 text-white text-3xl rounded-md">
             Match History
           </span>
         </div>
-        <Table
-          className="sm:w-3/5 w-full sm:px-0 px-1"
-          columns={columns}
-          dataSource={playerMatchData}
-          showHeader={true}
-          scroll={{ y: 650 }}
-          pagination={{
-            showSizeChanger: true,
-            defaultPageSize: smallScreen() ? 5 : 25,
-            pageSizeOptions: [5, 25, 50, 100],
-          }}
-        />
+        {playerMatchData.length ? (
+          <Table
+            ref={tableRef}
+            className="sm:w-3/5 w-full sm:px-0 px-1"
+            columns={columns}
+            dataSource={playerMatchData}
+            scroll={
+              above1080()
+                ? { y: tableRowHeight * 5 }
+                : smallScreen()
+                ? { y: tableRowHeight * 5 }
+                : { y: tableRowHeight * 5 }
+            }
+            pagination={{
+              showSizeChanger: true,
+              defaultPageSize: 25,
+              pageSizeOptions: [5, 25, 50, 100],
+            }}
+          />
+        ) : (
+          <span className="bg-black/50 sm:py-32 sm:px-48 sm:mb-8 p-4 mb-2 text-white sm:text-3xl text-lg rounded-md">
+            This user hasn't played any matches yet.
+          </span>
+        )}
         <ReactTooltip id="Arcadia" place="top" content="Arcadia" />
         <ReactTooltip id="Assault" place="top" content="Assault" />
         <ReactTooltip id="Brawl" place="top" content="Brawl" />
