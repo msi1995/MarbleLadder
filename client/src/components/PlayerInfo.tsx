@@ -71,11 +71,11 @@ export const PlayerInfo = () => {
     // setGemHuntTotalWR(Object.values(
     //   gemHuntMapWorldRecordDictionary
     // )?.reduce((acc, val) => acc + val, 0));
-    
-    setPersonalGemHuntTotalRecord(Object.values(
-      gemHuntRecordDictionary
-    )?.reduce((acc, val) => acc + val, 0));
-  }, [gemHuntMapWorldRecordDictionary, gemHuntRecordDictionary])
+
+    setPersonalGemHuntTotalRecord(
+      Object.values(gemHuntRecordDictionary)?.reduce((acc, val) => acc + val, 0)
+    );
+  }, [gemHuntMapWorldRecordDictionary, gemHuntRecordDictionary]);
 
   const fetchGemHuntRecordData = async () => {
     try {
@@ -502,9 +502,27 @@ export const PlayerInfo = () => {
       </Modal>
       <div className="mx-auto rounded-lg bg-black/90 w-5/6 sm:w-2/3">
         <div className="flex mx-auto py-6 gap-x-2 flex-wrap justify-center items-center flex-row text-white sm:text-5xl text-2xl border-1 border-solid border-red-600">
-          {playerLadderRank === 1 && <span>👑</span>}
-          {playerLadderRank === 2 && <span>🥈</span>}
-          {playerLadderRank === 3 && <span>🥉</span>}
+          {playerLadderRank === 1 && (
+            <img
+              alt="blue gem"
+              className="sm:h-16 sm:w-16 sm:mr-4 h-12 w-12 mr-2"
+              src={`/gem_blue.webp`}
+            ></img>
+          )}
+          {playerLadderRank === 2 && (
+            <img
+              alt="blue gem"
+              className="sm:h-16 sm:w-16 sm:mr-4 h-12 w-12 mr-2"
+              src={`/gem_yellow.webp`}
+            ></img>
+          )}
+          {playerLadderRank === 3 && (
+            <img
+              alt="blue gem"
+              className="sm:h-16 sm:w-16 sm:mr-4 h-12 w-12 mr-2"
+              src={`/gem_red.webp`}
+            ></img>
+          )}
           <span className="flex items-center">{player_name}</span>
           <span className="flex items-center sm:text-3xl text-lg sm:pt-2 pt-1">
             [{playerData?.ratingScore}]
@@ -597,78 +615,106 @@ export const PlayerInfo = () => {
               )} */}
             </div>
             <div className="sm:ml-0 ml-6 flex flex-row flex-wrap w-full sm:justify-evenly justify-between gap-y-2 sm:text-lg text-sm sm:text-center text-left">
-            <span className="sm:basis-1/5 basis-1/2">
-              Arcadia: {gemHuntRecordDictionary["Arcadia"] || "-"}
-              {
-                gemHuntRecordDictionary["Arcadia"] ===
+              <span className="sm:basis-1/5 basis-1/2">
+                Arcadia: {gemHuntRecordDictionary["Arcadia"] || "-"}
+                {gemHuntRecordDictionary["Arcadia"] ===
                   gemHuntMapWorldRecordDictionary["Arcadia"] && (
-                  <span className="text-yellow-400 sm:text-sm text-xs"> WR</span>
-                )
-              }
-            </span>
-            <span className="sm:basis-1/5 basis-1/2">
-              Assault: {gemHuntRecordDictionary["Assault"] || "-"}
-              {gemHuntRecordDictionary["Assault"] ===
-                gemHuntMapWorldRecordDictionary["Assault"] && (
-                <span className="text-yellow-400 sm:text-sm text-xs"> WR</span>
-              )}
-            </span>
-            <span className="sm:basis-1/5 basis-1/2">
-              Brawl: {gemHuntRecordDictionary["Brawl"] || "-"}{" "}
-              {gemHuntRecordDictionary["Brawl"] ===
-                gemHuntMapWorldRecordDictionary["Brawl"] && (
-                <span className="text-yellow-400 sm:text-sm text-xs"> WR</span>
-              )}
-            </span>
-            <span className="sm:basis-1/5 basis-1/2">
-              Frostbite: {gemHuntRecordDictionary["Frostbite"] || "-"}{" "}
-              {gemHuntRecordDictionary["Frostbite"] ===
-                gemHuntMapWorldRecordDictionary["Frostbite"] && (
-                <span className="text-yellow-400 sm:text-sm text-xs"> WR</span>
-              )}
-            </span>
-            <span className="sm:basis-1/5 basis-1/2">
-              Jumphouse: {gemHuntRecordDictionary["Jumphouse"] || "-"}{" "}
-              {gemHuntRecordDictionary["Jumphouse"] ===
-                gemHuntMapWorldRecordDictionary["Jumphouse"] && (
-                <span className="text-yellow-400 sm:text-sm text-xs"> WR</span>
-              )}
-            </span>
-            <span className="sm:basis-1/5 basis-1/2">
-              Nexus: {gemHuntRecordDictionary["Nexus"] || "-"}{" "}
-              {gemHuntRecordDictionary["Nexus"] ===
-                gemHuntMapWorldRecordDictionary["Nexus"] && (
-                <span className="text-yellow-400 sm:text-sm text-xs"> WR</span>
-              )}
-            </span>
-            <span className="sm:basis-1/5 basis-1/2">
-              Mosh Pit: {gemHuntRecordDictionary["Mosh Pit"] || "-"}{" "}
-              {gemHuntRecordDictionary["Mosh Pit"] ===
-                gemHuntMapWorldRecordDictionary["Mosh Pit"] && (
-                <span className="text-yellow-400 sm:text-sm text-xs"> WR</span>
-              )}
-            </span>
-            <span className="sm:basis-1/5 basis-1/2">
-              Pythagoras: {gemHuntRecordDictionary["Pythagoras"] || "-"}{" "}
-              {gemHuntRecordDictionary["Pythagoras"] ===
-                gemHuntMapWorldRecordDictionary["Pythagoras"] && (
-                <span className="text-yellow-400 sm:text-sm text-xs"> WR</span>
-              )}
-            </span>
-            <span className="sm:basis-1/5 basis-1/2">
-              Stadion: {gemHuntRecordDictionary["Stadion"] || "-"}{" "}
-              {gemHuntRecordDictionary["Stadion"] ===
-                gemHuntMapWorldRecordDictionary["Stadion"] && (
-                <span className="text-yellow-400 sm:text-sm text-xs"> WR</span>
-              )}
-            </span>
-            <span className="sm:basis-1/5 basis-1/2">
-              Surf's Up: {gemHuntRecordDictionary["Surf's Up"] || "-"}{" "}
-              {gemHuntRecordDictionary["Surf's Up"] ===
-                gemHuntMapWorldRecordDictionary["Surf's Up"] && (
-                <span className="text-yellow-400 sm:text-sm text-xs"> WR</span>
-              )}
-            </span>
+                  <span className="text-yellow-400 sm:text-sm text-xs">
+                    {" "}
+                    WR
+                  </span>
+                )}
+              </span>
+              <span className="sm:basis-1/5 basis-1/2">
+                Assault: {gemHuntRecordDictionary["Assault"] || "-"}
+                {gemHuntRecordDictionary["Assault"] ===
+                  gemHuntMapWorldRecordDictionary["Assault"] && (
+                  <span className="text-yellow-400 sm:text-sm text-xs">
+                    {" "}
+                    WR
+                  </span>
+                )}
+              </span>
+              <span className="sm:basis-1/5 basis-1/2">
+                Brawl: {gemHuntRecordDictionary["Brawl"] || "-"}{" "}
+                {gemHuntRecordDictionary["Brawl"] ===
+                  gemHuntMapWorldRecordDictionary["Brawl"] && (
+                  <span className="text-yellow-400 sm:text-sm text-xs">
+                    {" "}
+                    WR
+                  </span>
+                )}
+              </span>
+              <span className="sm:basis-1/5 basis-1/2">
+                Frostbite: {gemHuntRecordDictionary["Frostbite"] || "-"}{" "}
+                {gemHuntRecordDictionary["Frostbite"] ===
+                  gemHuntMapWorldRecordDictionary["Frostbite"] && (
+                  <span className="text-yellow-400 sm:text-sm text-xs">
+                    {" "}
+                    WR
+                  </span>
+                )}
+              </span>
+              <span className="sm:basis-1/5 basis-1/2">
+                Jumphouse: {gemHuntRecordDictionary["Jumphouse"] || "-"}{" "}
+                {gemHuntRecordDictionary["Jumphouse"] ===
+                  gemHuntMapWorldRecordDictionary["Jumphouse"] && (
+                  <span className="text-yellow-400 sm:text-sm text-xs">
+                    {" "}
+                    WR
+                  </span>
+                )}
+              </span>
+              <span className="sm:basis-1/5 basis-1/2">
+                Nexus: {gemHuntRecordDictionary["Nexus"] || "-"}{" "}
+                {gemHuntRecordDictionary["Nexus"] ===
+                  gemHuntMapWorldRecordDictionary["Nexus"] && (
+                  <span className="text-yellow-400 sm:text-sm text-xs">
+                    {" "}
+                    WR
+                  </span>
+                )}
+              </span>
+              <span className="sm:basis-1/5 basis-1/2">
+                Mosh Pit: {gemHuntRecordDictionary["Mosh Pit"] || "-"}{" "}
+                {gemHuntRecordDictionary["Mosh Pit"] ===
+                  gemHuntMapWorldRecordDictionary["Mosh Pit"] && (
+                  <span className="text-yellow-400 sm:text-sm text-xs">
+                    {" "}
+                    WR
+                  </span>
+                )}
+              </span>
+              <span className="sm:basis-1/5 basis-1/2">
+                Pythagoras: {gemHuntRecordDictionary["Pythagoras"] || "-"}{" "}
+                {gemHuntRecordDictionary["Pythagoras"] ===
+                  gemHuntMapWorldRecordDictionary["Pythagoras"] && (
+                  <span className="text-yellow-400 sm:text-sm text-xs">
+                    {" "}
+                    WR
+                  </span>
+                )}
+              </span>
+              <span className="sm:basis-1/5 basis-1/2">
+                Stadion: {gemHuntRecordDictionary["Stadion"] || "-"}{" "}
+                {gemHuntRecordDictionary["Stadion"] ===
+                  gemHuntMapWorldRecordDictionary["Stadion"] && (
+                  <span className="text-yellow-400 sm:text-sm text-xs">
+                    {" "}
+                    WR
+                  </span>
+                )}
+              </span>
+              <span className="sm:basis-1/5 basis-1/2">
+                Surf's Up: {gemHuntRecordDictionary["Surf's Up"] || "-"}{" "}
+                {gemHuntRecordDictionary["Surf's Up"] ===
+                  gemHuntMapWorldRecordDictionary["Surf's Up"] && (
+                  <span className="text-yellow-400 sm:text-sm text-xs">
+                    {" "}
+                    WR
+                  </span>
+                )}
+              </span>
             </div>
           </div>
         </div>
