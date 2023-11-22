@@ -23,8 +23,8 @@ export const GemHuntRecords = () => {
     "Brawl",
     "Frostbite",
     "Jumphouse",
-    "Nexus",
     "Mosh Pit",
+    "Nexus",
     "Pythagoras",
     "Stadion",
     "Surf's Up",
@@ -44,7 +44,7 @@ export const GemHuntRecords = () => {
   const [mapWorldRecordHolder, setMapWorldRecordHolder] = useState<string>("");
   const [submissionModalOpen, setSubmissionModalOpen] = useState(false);
   const [verifyRunsModalOpen, setVerifyRunsModalOpen] = useState(false);
-  const [reportedScore, setReportedScore] = useState<number>();
+  const [reportedScore, setReportedScore] = useState<number | null>(null);
   const [mediaLink, setMediaLink] = useState<string | null>(null);
   const [description, setDescription] = useState<string>("");
   const [unverifiedRuns, setUnverifiedRuns] = useState<GemHuntMapRecordScoreWithMap[]>([]);
@@ -66,7 +66,7 @@ export const GemHuntRecords = () => {
       );
       setRawMapRecordData(selectedMapData?.scores ?? []);
     } else {
-
+      setSelectedMap(maps[1]) // default to Arcadia for submission from Overall tab
       //overall score data is calculated here onward
       const allScoresWithMapName: GemHuntMapRecordScoreWithMap[] = allMapData
         .flatMap((mapEntry: GemHuntMapRecord) =>
@@ -297,6 +297,7 @@ export const GemHuntRecords = () => {
       );
       if (res.status === 201) {
         setSubmissionModalOpen(false);
+        setReportedScore(null)
       }
       if (res.status === 403) {
         handleLogout(navigate, cookies);
@@ -383,7 +384,7 @@ export const GemHuntRecords = () => {
                     ? setReportedScore(1)
                     : setReportedScore(parseInt(e.target.value))
                 }
-                value={reportedScore}
+                value={reportedScore ?? ''}
                 className="block w-16 border-solid border-2 border-slate-500 rounded-md border-0 px-2 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               ></input>
             </div>
