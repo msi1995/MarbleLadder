@@ -21,7 +21,7 @@ export interface LadderPlayer {
   matchCount: number;
   disputes: { traceID: string }[];
   createdAt: Date;
-  rank?: number;
+  rank: number;
   key: string;
 }
 
