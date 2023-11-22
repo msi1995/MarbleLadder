@@ -524,14 +524,20 @@ export const PlayerInfo = () => {
             ></img>
           )}
           <span className="flex items-center">{player_name}</span>
-          <span className="flex items-center sm:text-3xl text-lg sm:pt-2 pt-1">
+          <a
+            href="/ladder"
+            className="flex items-center sm:text-3xl text-lg sm:pt-2 pt-1 hover:text-cyan-400"
+          >
             [{playerData?.ratingScore}]
-          </span>
+          </a>
         </div>
         <div className="flex mx-auto flex-wrap justify-evenly flex-row text-white sm:text-xl text-md border-1 border-solid border-red-600">
-          <span className="flex items-center text-yellow-400 sm:text-lg">
+          <a
+            href="/ladder"
+            className="flex items-center text-yellow-400 sm:text-lg hover:text-cyan-400"
+          >
             Ladder Position: #{playerLadderRank}
-          </span>
+          </a>
         </div>
         <div className="flex mx-auto py-6 flex-wrap justify-around flex-row text-white sm:text-xl text-md border-1 border-solid border-red-600">
           <div>
@@ -584,7 +590,7 @@ export const PlayerInfo = () => {
           {rivalWins ? (
             <div className="basis-full">
               <NavLink
-                className="text-violet-300 hover:text-violet-400"
+                className="text-cyan-300 hover:text-cyan-400"
                 to={`/player/${rival}`}
               >
                 {rival}{" "}
@@ -595,28 +601,34 @@ export const PlayerInfo = () => {
             <span>No rival yet.</span>
           )}
           <div className="w-full my-4 mx-8 bg-white/40 rounded-lg h-0.5"></div>
-          <span className="font-semibold basis-full mb-4">
-            Solo Gem Hunt Records{" "}
+          <span className="font-bold basis-full mb-4 hover:text-cyan-400">
+            <a href="/gem-hunt-records">Solo Gem Hunt Records </a>
             {gemHuntWRCount > 0 && (
               <span> - {gemHuntWRCount} solo world records</span>
             )}
           </span>
           <div className="flex flex-row flex-wrap w-full sm:justify-evenly justify-between gap-y-2 sm:text-lg text-normal sm:text-center text-left">
             <div className="basis-full mb-6 text-center">
-              <span>
+              <a
+                href="/gem-hunt-records"
+                className=" hover:text-cyan-400"
+              >
                 Total:{" "}
-                <span className="text-green-500">
+                <span className="font-light">
                   {personalGemHuntTotalRecord + " "}
                   pts
                 </span>
-              </span>
-              {/* {personalGemHuntTotalRecord === gemHuntTotalWR && (
-                <span className="text-yellow-400 text-sm ml-1"> WR</span>
-              )} */}
+              </a>
             </div>
             <div className="sm:ml-0 ml-6 flex flex-row flex-wrap w-full sm:justify-evenly justify-between gap-y-2 sm:text-lg text-sm sm:text-center text-left">
-              <span className="sm:basis-1/5 basis-1/2">
-                Arcadia: {gemHuntRecordDictionary["Arcadia"] || "-"}
+              <a
+                href="/gem-hunt-records?mapIdx=1"
+                className=" sm:basis-1/5 basis-1/2 hover:text-cyan-400"
+              >
+                Arcadia:{" "}
+                <span className="font-light">
+                  {gemHuntRecordDictionary["Arcadia"] || "-"}
+                </span>
                 {gemHuntRecordDictionary["Arcadia"] ===
                   gemHuntMapWorldRecordDictionary["Arcadia"] && (
                   <span className="text-yellow-400 sm:text-sm text-xs">
@@ -624,9 +636,16 @@ export const PlayerInfo = () => {
                     WR
                   </span>
                 )}
-              </span>
-              <span className="sm:basis-1/5 basis-1/2">
-                Assault: {gemHuntRecordDictionary["Assault"] || "-"}
+              </a>
+
+              <a
+                href="/gem-hunt-records?mapIdx=2"
+                className=" sm:basis-1/5 basis-1/2 hover:text-cyan-400"
+              >
+                Assault:{" "}
+                <span className="font-light">
+                  {gemHuntRecordDictionary["Assault"] || "-"}
+                </span>
                 {gemHuntRecordDictionary["Assault"] ===
                   gemHuntMapWorldRecordDictionary["Assault"] && (
                   <span className="text-yellow-400 sm:text-sm text-xs">
@@ -634,9 +653,16 @@ export const PlayerInfo = () => {
                     WR
                   </span>
                 )}
-              </span>
-              <span className="sm:basis-1/5 basis-1/2">
-                Brawl: {gemHuntRecordDictionary["Brawl"] || "-"}{" "}
+              </a>
+
+              <a
+                href="/gem-hunt-records?mapIdx=3"
+                className=" sm:basis-1/5 basis-1/2 hover:text-cyan-400"
+              >
+                Brawl:{" "}
+                <span className="font-light">
+                  {gemHuntRecordDictionary["Brawl"] || "-"}
+                </span>{" "}
                 {gemHuntRecordDictionary["Brawl"] ===
                   gemHuntMapWorldRecordDictionary["Brawl"] && (
                   <span className="text-yellow-400 sm:text-sm text-xs">
@@ -644,9 +670,16 @@ export const PlayerInfo = () => {
                     WR
                   </span>
                 )}
-              </span>
-              <span className="sm:basis-1/5 basis-1/2">
-                Frostbite: {gemHuntRecordDictionary["Frostbite"] || "-"}{" "}
+              </a>
+
+              <a
+                href="/gem-hunt-records?mapIdx=4"
+                className=" sm:basis-1/5 basis-1/2 hover:text-cyan-400"
+              >
+                Frostbite:{" "}
+                <span className="font-light">
+                  {gemHuntRecordDictionary["Frostbite"] || "-"}
+                </span>{" "}
                 {gemHuntRecordDictionary["Frostbite"] ===
                   gemHuntMapWorldRecordDictionary["Frostbite"] && (
                   <span className="text-yellow-400 sm:text-sm text-xs">
@@ -654,9 +687,16 @@ export const PlayerInfo = () => {
                     WR
                   </span>
                 )}
-              </span>
-              <span className="sm:basis-1/5 basis-1/2">
-                Jumphouse: {gemHuntRecordDictionary["Jumphouse"] || "-"}{" "}
+              </a>
+
+              <a
+                href="/gem-hunt-records?mapIdx=5"
+                className=" sm:basis-1/5 basis-1/2 hover:text-cyan-400"
+              >
+                Jumphouse:{" "}
+                <span className="font-light">
+                  {gemHuntRecordDictionary["Jumphouse"] || "-"}
+                </span>{" "}
                 {gemHuntRecordDictionary["Jumphouse"] ===
                   gemHuntMapWorldRecordDictionary["Jumphouse"] && (
                   <span className="text-yellow-400 sm:text-sm text-xs">
@@ -664,19 +704,16 @@ export const PlayerInfo = () => {
                     WR
                   </span>
                 )}
-              </span>
-              <span className="sm:basis-1/5 basis-1/2">
-                Nexus: {gemHuntRecordDictionary["Nexus"] || "-"}{" "}
-                {gemHuntRecordDictionary["Nexus"] ===
-                  gemHuntMapWorldRecordDictionary["Nexus"] && (
-                  <span className="text-yellow-400 sm:text-sm text-xs">
-                    {" "}
-                    WR
-                  </span>
-                )}
-              </span>
-              <span className="sm:basis-1/5 basis-1/2">
-                Mosh Pit: {gemHuntRecordDictionary["Mosh Pit"] || "-"}{" "}
+              </a>
+
+              <a
+                href="/gem-hunt-records?mapIdx=6"
+                className=" sm:basis-1/5 basis-1/2 hover:text-cyan-400"
+              >
+                Mosh Pit:{" "}
+                <span className="font-light">
+                  {gemHuntRecordDictionary["Mosh Pit"] || "-"}
+                </span>{" "}
                 {gemHuntRecordDictionary["Mosh Pit"] ===
                   gemHuntMapWorldRecordDictionary["Mosh Pit"] && (
                   <span className="text-yellow-400 sm:text-sm text-xs">
@@ -684,9 +721,33 @@ export const PlayerInfo = () => {
                     WR
                   </span>
                 )}
-              </span>
-              <span className="sm:basis-1/5 basis-1/2">
-                Pythagoras: {gemHuntRecordDictionary["Pythagoras"] || "-"}{" "}
+              </a>
+
+              <a
+                href="/gem-hunt-records?mapIdx=7"
+                className=" sm:basis-1/5 basis-1/2 hover:text-cyan-400"
+              >
+                Nexus:{" "}
+                <span className="font-light">
+                  {gemHuntRecordDictionary["Nexus"] || "-"}
+                </span>{" "}
+                {gemHuntRecordDictionary["Nexus"] ===
+                  gemHuntMapWorldRecordDictionary["Nexus"] && (
+                  <span className="text-yellow-400 sm:text-sm text-xs">
+                    {" "}
+                    WR
+                  </span>
+                )}
+              </a>
+
+              <a
+                href="/gem-hunt-records?mapIdx=8"
+                className=" sm:basis-1/5 basis-1/2 hover:text-cyan-400"
+              >
+                Pythagoras:{" "}
+                <span className="font-light">
+                  {gemHuntRecordDictionary["Pythagoras"] || "-"}
+                </span>{" "}
                 {gemHuntRecordDictionary["Pythagoras"] ===
                   gemHuntMapWorldRecordDictionary["Pythagoras"] && (
                   <span className="text-yellow-400 sm:text-sm text-xs">
@@ -694,9 +755,16 @@ export const PlayerInfo = () => {
                     WR
                   </span>
                 )}
-              </span>
-              <span className="sm:basis-1/5 basis-1/2">
-                Stadion: {gemHuntRecordDictionary["Stadion"] || "-"}{" "}
+              </a>
+
+              <a
+                href="/gem-hunt-records?mapIdx=9"
+                className=" sm:basis-1/5 basis-1/2 hover:text-cyan-400"
+              >
+                Stadion:{" "}
+                <span className="font-light">
+                  {gemHuntRecordDictionary["Stadion"] || "-"}
+                </span>{" "}
                 {gemHuntRecordDictionary["Stadion"] ===
                   gemHuntMapWorldRecordDictionary["Stadion"] && (
                   <span className="text-yellow-400 sm:text-sm text-xs">
@@ -704,9 +772,16 @@ export const PlayerInfo = () => {
                     WR
                   </span>
                 )}
-              </span>
-              <span className="sm:basis-1/5 basis-1/2">
-                Surf's Up: {gemHuntRecordDictionary["Surf's Up"] || "-"}{" "}
+              </a>
+
+              <a
+                href="/gem-hunt-records?mapIdx=10"
+                className=" sm:basis-1/5 basis-1/2 hover:text-cyan-400"
+              >
+                Surf's Up:{" "}
+                <span className="font-light">
+                  {gemHuntRecordDictionary["Surf's Up"] || "-"}
+                </span>{" "}
                 {gemHuntRecordDictionary["Surf's Up"] ===
                   gemHuntMapWorldRecordDictionary["Surf's Up"] && (
                   <span className="text-yellow-400 sm:text-sm text-xs">
@@ -714,7 +789,7 @@ export const PlayerInfo = () => {
                     WR
                   </span>
                 )}
-              </span>
+              </a>
             </div>
           </div>
         </div>
