@@ -34,6 +34,7 @@ export const GemHuntRecords = () => {
   const [mapIndex, setMapIndex] = useState<number>(0);
   const [selectedMap, setSelectedMap] = useState<string>(maps[1]);
   const [allMapData, setAllMapData] = useState<GemHuntMapRecord[]>([]);
+  const [communityWorldRecord, setCommunityWorldRecord] = useState<number>(0);
   const [allRuns, setAllRuns] = useState<boolean>(false);
   const [rawMapRecordData, setRawMapRecordData] = useState<GemHuntMapRecordScore[]>([]);
   const [sortedMapRecordAllData, setSortedMapRecordAllData] = useState<GemHuntMapRecordScore[]>([]);
@@ -59,6 +60,7 @@ export const GemHuntRecords = () => {
   }, []);
 
   useEffect(() => {
+    setCommunityWorldRecord(allMapData.reduce((acc, val) => acc + val.worldRecord, 0));
     if (mapIndex !== 0) {
       setSelectedMap(maps[mapIndex]);
       const selectedMapData = allMapData.find(
@@ -489,16 +491,21 @@ export const GemHuntRecords = () => {
           </button>
         </div>
         {mapWorldRecord !== 0 ? (
-          <span className="bg-black/50 sm:text-3xl text-xl py-1 px-2 rounded-md mb-8">
-            <span className="text-yellow-400">👑 World Record:</span>{" "}
-            {mapWorldRecord} points by{" "}
-            <NavLink
-              className=""
-              to={{ pathname: `/player/${mapWorldRecordHolder}` }}
-            >
-              {mapWorldRecordHolder}
-            </NavLink>
+          <>
+          <span className="bg-black/50 sm:text-3xl text-xl py-1 px-2 rounded-md mb-4">
+          <span className="text-yellow-400">👑 Solo World Record:</span>{" "}
+          {mapWorldRecord} points by{" "}
+          <NavLink
+            className=""
+            to={{ pathname: `/player/${mapWorldRecordHolder}` }}
+          >
+            {mapWorldRecordHolder}
+          </NavLink>
+        </span>
+          <span className="bg-black/70 sm:text-xl text-md py-1 px-2 rounded-md mb-8">
+            <span className="text-cyan-400">Sum of All Bests: {communityWorldRecord}</span>
           </span>
+        </>
         ) : (
           <span className="bg-black/40 sm:text-3xl text-xl py-1 px-2 rounded-md">
             No records for this map yet.
