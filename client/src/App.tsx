@@ -26,7 +26,7 @@ function App() {
   return (
     <BrowserRouter>
     <Navbar/>
-    <div className="fixed -z-10 w-screen h-screen bg-center bg-cover bg-fixed brightness-75 sm:bg-[url('/public/miu_2.avif')] bg-[url('/public/miu_2_mobile.avif')]" />
+    <div className="fixed -z-10 w-screen h-screen bg-cover bg-fixed brightness-75 sm:bg-[url('/public/miu_2.avif')] bg-[url('/public/miu_2_mobile.avif')]" />
     <LadderData.Provider value={ladderData}>
       <Routes>
         <Route path="/" element={<Homepage/>} />
