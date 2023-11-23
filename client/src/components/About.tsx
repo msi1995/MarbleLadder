@@ -12,20 +12,20 @@ export const About = () => {
   return (
     <div className="flex w-full h-screen items-center">
       <div className="flex flex-row flex-wrap max-w-6xl sm:p-8 p-4 mx-auto bg-black/90 rounded-md text-center justify-center">
-        <div className="w-full flex flex-row justify-between items-center">
-          <span className="basis-1/4 sm:text-4xl text-2xl text-white pb-4"></span>
-          <span className="basis-1/2 sm:text-4xl text-2xl text-white pb-4">
+        <div className="w-full flex flex-row flex-wrap justify-center items-center">
+          <span className="sm:basis-1/4 sm:text-4xl text-2xl text-white pb-4"></span>
+          <span className="sm:basis-1/2 basis-full sm:text-4xl text-2xl text-white pb-4">
             What is MarbleLadder?
           </span>
           <Checkbox
             onChange={handleCheckbox}
-            className="basis-1/4 sm:text-base text-xs text-white pb-4"
+            className="sm:basis-1/4 sm:text-base text-xs text-white pb-4"
           >
             More basic please
           </Checkbox>
         </div>
         {showBasicAbout ? (
-          <span className="basis-full sm:text-lg text-sm p-4 text-white">
+          <span className="basis-full sm:text-lg text-sm px-4 py-2 text-white">
             Marble It Up Ultra is a Steam arcade game created by Marble
             Collective. The game features single player and multiplayer modes,
             but does not currently include a ranked mode. This website aims to
@@ -36,7 +36,7 @@ export const About = () => {
             playing by themselves, without an opponent.
           </span>
         ) : (
-          <span className="basis-full sm:text-lg text-sm p-4 text-white">
+          <span className="basis-full sm:text-lg text-sm px-4 py-2 text-white">
             MarbleLadder implements a ranked ladder with a functional ELO system
             and persistent multiplayer stat tracking. It also maintains a
             verified leaderboard of solo Gem Hunt records. To participate, sign
