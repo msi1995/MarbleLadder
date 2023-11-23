@@ -444,9 +444,9 @@ export const PlayerInfo = () => {
                   map
                 )
               }
-              className="mt-2 py-1 px-1 bg-blue-500 hover:bg-blue-600 text-xs text-white sm:font-bold rounded transition duration-200"
+              className="text-cyan-400 hover:text-white italic"
             >
-              add replay
+              Add Replay
             </button>
           )}
         </div>
@@ -463,7 +463,7 @@ export const PlayerInfo = () => {
 
   //don't show match ID on mobile. too long, doesn't matter.
   if (smallScreen()) {
-    columns = columns.filter((item) => item.key !== "traceID");
+    columns = columns.filter((item) => item.key !== "traceID" && item.key !== 'ELO_change');
   }
 
   const tableRef: any = useRef(null);

@@ -33,10 +33,14 @@ export let gemHuntOverallColumns: ColumnsType<any> = [
     ),
   },
   {
-    title: "Screenshot/Video",
+    title: "Screenshot / Video",
     dataIndex: "media",
     key: "mediaLink",
     width: "auto",
     render: (_,) => <>See individual maps</>
   },
 ];
+
+if (smallScreen()) {
+  gemHuntOverallColumns = gemHuntOverallColumns.filter((item) => item.key !== "game");
+}

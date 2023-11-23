@@ -54,7 +54,7 @@ export let gemHuntColumns: ColumnsType<GemHuntMapRecordScore> = [
     ),
   },
   {
-    title: "Screenshot/Video",
+    title: "Screenshot / Video",
     dataIndex: "media",
     key: "mediaLink",
     width: "auto",
@@ -75,5 +75,5 @@ export let gemHuntColumns: ColumnsType<GemHuntMapRecordScore> = [
 ];
 
 if (smallScreen()) {
-  gemHuntColumns = gemHuntColumns.filter((item) => item.key !== "game");
+  gemHuntColumns = gemHuntColumns.filter((item) => item.key !== "game" && item.key !== "date");
 }
