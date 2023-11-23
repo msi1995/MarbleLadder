@@ -18,9 +18,9 @@ export const Homepage = () => {
         <span className="block w-full sm:px-4 sm:pb-8 sm:text-4xl text-lg">
           MarbleLadder implements features supporting <i className='neon-text-allsize'>Marble It Up! Ultra</i> ranked matches and gem hunt record tracking!
         </span>
-        <span className="block w-full sm:px-64 px-4 mt-4 sm:text-xl text-sm">
-          Play and report online 1v1 matches against opponents on PC, Xbox, PlayStation or Switch to try and climb the 1v1 Gem Hunt ladder, or play solo to try your luck at setting a Solo Gem Hunt world record! You can look for opponents in the
-          MIU Discord and then host a private game to play ranked ladder matches.
+        <span className="block w-full sm:px-64 px-4 mt-4 sm:text-xl text-xs">
+          Play and report 1v1 matches against opponents on PC, Xbox, PlayStation or Switch to climb the 1v1 ladder, or play solo to try and set a Solo Gem Hunt world record! You can look for opponents in the
+          MIU Discord and then host a private game to play ranked matches.
         </span>
       </div>
     </div>
