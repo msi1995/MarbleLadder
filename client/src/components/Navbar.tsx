@@ -8,9 +8,13 @@ export const Navbar = () => {
   const cookies = new Cookies();
   const token = cookies.get("MarbleToken");
   const navigate = useNavigate();
+  const menu = document?.querySelector(".navbar-menu");
 
   const handleSignoutClick = () => {
     handleLogout(navigate, cookies);
+  };
+  const closeBurgerOnClick = () => {
+    menu?.classList.add("hidden");
   };
 
   useEffect(() => {
@@ -53,7 +57,7 @@ export const Navbar = () => {
       <nav className="fixed w-full z-50 select-none px-4 sm:py-4 py-2 flex justify-between items-center bg-black opacity-100">
         <NavLink to={"/"}>
           <img
-          alt="Website Logo"
+            alt="Website Logo"
             className="sm:h-16 h-8 sm:px-4 hover:scale-105 hover:cursor-pointer"
             src={`/marbleladder01tsp.webp`}
           ></img>
@@ -244,6 +248,7 @@ export const Navbar = () => {
             <ul>
               <li className="mb-1">
                 <NavLink
+                  onClick={() => closeBurgerOnClick()}
                   to={"/"}
                   className="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-white rounded"
                 >
@@ -252,6 +257,7 @@ export const Navbar = () => {
               </li>
               <li className="mb-1">
                 <NavLink
+                  onClick={() => closeBurgerOnClick()}
                   to={"/ladder"}
                   className="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-white rounded"
                 >
@@ -260,6 +266,7 @@ export const Navbar = () => {
               </li>
               <li className="mb-1">
                 <NavLink
+                  onClick={() => closeBurgerOnClick()}
                   to={"/gem-hunt-records"}
                   className="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-white rounded"
                 >
@@ -268,6 +275,7 @@ export const Navbar = () => {
               </li>
               <li className="mb-1">
                 <NavLink
+                  onClick={() => closeBurgerOnClick()}
                   to={"/about"}
                   className="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-white rounded"
                 >
@@ -276,6 +284,7 @@ export const Navbar = () => {
               </li>
               <li className="mb-1">
                 <NavLink
+                  onClick={() => closeBurgerOnClick()}
                   to={"/contact"}
                   className="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-white rounded"
                 >
