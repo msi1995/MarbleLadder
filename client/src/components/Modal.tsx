@@ -17,7 +17,7 @@ export const Modal = ({ isOpen, onClose, children }: ModalProps) => {
   return (
     <div
       className="z-40 fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-700 bg-opacity-50"
-      onClick={(e) => checkClick(e.target)}
+      onMouseDown={(e) => checkClick(e.target)}
     >
       <div className="relative border-2 border-blue-500 border-solid p-4 rounded shadow-xl bg-white/90">
         <button
