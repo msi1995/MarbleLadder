@@ -169,6 +169,7 @@ export const PlayerInfo = () => {
       );
       if (res.status === 200) {
         setReplayModalOpen(false);
+        window.location.reload();
       }
       if (res.status === 403) {
         //do something
@@ -420,7 +421,7 @@ export const PlayerInfo = () => {
           {replays?.length > 0 ? (
             replays.map((replay) => (
               <a
-                className="text-cyan-400"
+                className="text-cyan-400 hover:text-cyan-300"
                 href={replay.URL}
                 target="_blank"
                 rel="noreferrer"
@@ -429,7 +430,7 @@ export const PlayerInfo = () => {
               </a>
             ))
           ) : (
-            <span>N/A</span>
+            <span className="text-cyan-400">N/A</span>
           )}
           {(matchP1Name === username || matchP2Name === username) && (
             <button
@@ -444,7 +445,7 @@ export const PlayerInfo = () => {
                   map
                 )
               }
-              className="text-cyan-400 hover:text-white italic"
+              className="text-white hover:text-cyan-300 italic"
             >
               Add Replay
             </button>
