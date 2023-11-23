@@ -396,23 +396,23 @@ export const GemHuntRecords = () => {
         isOpen={submissionModalOpen}
         onClose={() => setSubmissionModalOpen(false)}
       >
-        <div className="flex flex-col items-center sm:px-16 py-4 gap-y-4">
+        <div className="flex flex-col items-center sm:px-16 sm:py-4 px-2 pt-4 pb-2 gap-y-4">
           <span className="sm:text-4xl text-2xl font-bold">
             Submit Gem Hunt Record
           </span>
           <span className="text-green-600 text-2xl">
             Submitting for: {selectedMap}
           </span>
-          <span className="sm:w-128 w-64 text-center text-md">
+          <span className="sm:w-128 w-64 text-center sm:text-lg text-sm">
             With the goal of these records being highly credible, all
             submissions will be verified before appearing on the leaderboard.
           </span>
-          <span className="font-semibold">
+          <span className="font-semibold sm:text-lg text-sm">
             A screenshot or video is required.
           </span>
           <form
             onSubmit={handleGemHuntModalSubmit}
-            className="block w-full flex flex-col items-center gap-y-4 mt-4"
+            className="block w-full flex flex-col items-center gap-y-2 mt-2"
           >
             <div className="flex items-center w-full gap-x-2">
               <label htmlFor="text" className="block text-sm font-semibold">
@@ -427,7 +427,7 @@ export const GemHuntRecords = () => {
                     : setReportedScore(parseInt(e.target.value))
                 }
                 value={reportedScore ?? ""}
-                className="block w-16 border-solid border-2 border-slate-500 rounded-md border-0 px-2 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="block sm:text-md text-sm w-16 border-solid border-2 border-slate-500 rounded-md border-0 px-2 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               ></input>
             </div>
             <label
@@ -441,8 +441,8 @@ export const GemHuntRecords = () => {
               type="text"
               onChange={(e) => setMediaLink(e.target.value)}
               value={mediaLink ?? ""}
-              placeholder="Example: https://i.imgur.com/BB7F6Oa.jpg"
-              className="block w-full border-solid border-2 border-slate-500 rounded-md border-0 px-3.5 py-2 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              placeholder="Ex: https://i.imgur.com/BB7F6Oa.jpg"
+              className="block sm:text-md text-sm w-full border-solid border-2 border-slate-500 rounded-md px-3.5 py-2 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             ></input>
             <label
               htmlFor="text"
@@ -456,11 +456,11 @@ export const GemHuntRecords = () => {
               onChange={(e) => setDescription(e.target.value)}
               value={description ?? ""}
               placeholder="Brief info/notes if desired"
-              className="block w-full border-solid border-2 border-slate-500 rounded-md border-0 px-3.5 py-2 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              className="block sm:text-md text-sm w-full border-solid border-2 border-slate-500 rounded-md px-3.5 py-2 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             ></input>
             <button
               type="submit"
-              className="w-1/3 mt-2 py-1 px-1 bg-blue-500 hover:bg-blue-600 text-sm text-white font-bold rounded transition duration-200"
+              className="w-1/2 mt-2 py-1 px-1 bg-blue-500 hover:bg-blue-600 text-sm text-white font-bold rounded transition duration-200"
             >
               Submit score
             </button>
