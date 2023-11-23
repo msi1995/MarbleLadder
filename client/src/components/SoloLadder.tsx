@@ -577,7 +577,7 @@ export const SoloLadder = () => {
             above1080()
               ? { y: tableRowHeight * 15 }
               : smallScreen()
-              ? { y: tableRowHeight * 10 }
+              ? { y: tableRowHeight * 5 }
               : { y: tableRowHeight * 10 }
           }
           pagination={{
