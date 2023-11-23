@@ -39,6 +39,8 @@ export const SoloLadder = () => {
   const [confirmMatchModalVisible, setConfirmMatchModalVisible] =
     useState<Boolean>(false);
   const [tableRowHeight, setTableRowHeight] = useState<number>(0);
+  const [confirmationButtonsDisabled, setConfirmationButtonsDisabled] =
+    useState<boolean>(false);
   const username = localStorage.getItem("username");
 
   useEffect(() => {
@@ -194,6 +196,7 @@ export const SoloLadder = () => {
       });
 
       setMatchConfirmationIdx(matchConfirmationIdx + 1);
+      setConfirmationButtonsDisabled(false);
       if (matchConfirmationIdx >= unconfirmedMatches.length - 1) {
         setConfirmMatchModalVisible(false);
         window.location.reload();
@@ -207,10 +210,12 @@ export const SoloLadder = () => {
   };
 
   const handleConfirmMatch = () => {
+    setConfirmationButtonsDisabled(true);
     handleAction("confirm");
   };
 
   const handleDisputeMatch = () => {
+    setConfirmationButtonsDisabled(true);
     handleAction("dispute");
   };
 
@@ -279,14 +284,22 @@ export const SoloLadder = () => {
           </div>
           <div className="flex w-full flex-row gap-6 justify-center pb-8">
             <button
+              disabled={confirmationButtonsDisabled}
               onClick={handleConfirmMatch}
-              className="block w-1/3 rounded-md  bg-emerald-600 hover:bg-emerald-500 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              className={`block w-1/3 rounded-md bg-emerald-600 hover:bg-emerald-500 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${
+                confirmationButtonsDisabled
+                  ? "opacity-50 hover:bg-emerald-600"
+                  : ""
+              }`}
             >
               Confirm
             </button>
             <button
+              disabled={confirmationButtonsDisabled}
               onClick={handleDisputeMatch}
-              className="block w-1/3 rounded-md bg-red-500 hover:bg-red-700 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              className={`block w-1/3 rounded-md bg-red-500 hover:bg-red-700 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600${
+                confirmationButtonsDisabled ? "opacity-50 hover:bg-red-700" : ""
+              }`}
             >
               Dispute
             </button>
