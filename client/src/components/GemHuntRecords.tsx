@@ -40,7 +40,6 @@ export const GemHuntRecords = () => {
   ];
   const [searchParams] = useSearchParams();
   const paramIdx = searchParams.get("mapIdx");
-
   const [admin, setAdmin] = useState<boolean>(false);
   const [mapIndex, setMapIndex] = useState<number>(0);
   const [selectedMap, setSelectedMap] = useState<string>(maps[1]);
@@ -48,8 +47,9 @@ export const GemHuntRecords = () => {
   const [communityWorldRecord, setCommunityWorldRecord] = useState<number>(0);
   const [allRuns, setAllRuns] = useState<boolean>(false);
   const [YTEmbedURL, setYTEmbedURL] = useState<string>("");
-  const [showWRVideoBackground, setShowWRVideoBackground] =
-    useState<boolean>(false);
+  const [showWRVideoBackground, setShowWRVideoBackground] = useState<boolean>(
+    localStorage.getItem("WRVideoBackgroundEnabled") === "true" ? true : false
+  );
   const [sortedMapRecordAllData, setSortedMapRecordAllData] = useState<
     GemHuntMapRecordScore[]
   >([]);
@@ -399,7 +399,7 @@ export const GemHuntRecords = () => {
   }, [playerTotalScoreData, sortedMapRecordAllData, sortedMapRecordUniqueData]);
   return (
     <div className="sm:pt-28 pt-20 h-screen w-screen relative overflow-x-hidden">
-      {showWRVideoBackground && YTEmbedURL !== "" && (
+      {showWRVideoBackground && (
         <div className="-z-10 fixed w-screen h-screen sm:-mt-4 brightness-20">
           <div className="flex flex-col h-screen items-center justify-center">
             <YoutubeEmbedded YTUrl={YTEmbedURL} />
@@ -581,6 +581,10 @@ export const GemHuntRecords = () => {
                   activeLabel={"On"}
                   value={showWRVideoBackground}
                   onToggle={(showVideo: boolean) => {
+                    localStorage.setItem(
+                      "WRVideoBackgroundEnabled",
+                      showVideo === false ? "true" : "false"
+                    );
                     setShowWRVideoBackground(!showVideo);
                   }}
                   thumbStyle={{ borderRadius: 2 }}
