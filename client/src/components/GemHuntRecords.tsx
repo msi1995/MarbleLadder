@@ -11,6 +11,7 @@ import {
 import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { Modal } from "./Modal";
+import { YoutubeEmbedded } from "./youtubeEmbedded";
 import ToggleButton from "react-toggle-button";
 import {
   GemHuntMapRecord,
@@ -46,6 +47,9 @@ export const GemHuntRecords = () => {
   const [allMapData, setAllMapData] = useState<GemHuntMapRecord[]>([]);
   const [communityWorldRecord, setCommunityWorldRecord] = useState<number>(0);
   const [allRuns, setAllRuns] = useState<boolean>(false);
+  const [YTEmbedURL, setYTEmbedURL] = useState<string>("");
+  const [showWRVideoBackground, setShowWRVideoBackground] =
+    useState<boolean>(false);
   const [sortedMapRecordAllData, setSortedMapRecordAllData] = useState<
     GemHuntMapRecordScore[]
   >([]);
@@ -184,6 +188,7 @@ export const GemHuntRecords = () => {
       setSortedMapRecordUniqueData(filteredUniqueRecords.slice(0, 10));
       setMapWorldRecordHolder(filteredUniqueRecords[0].player);
       setMapWorldRecord(filteredUniqueRecords[0].score);
+      setYTEmbedURL(filteredUniqueRecords[0].media);
     } else {
       setSortedMapRecordUniqueData([]);
       setMapWorldRecord(0);
@@ -387,11 +392,20 @@ export const GemHuntRecords = () => {
   const tableRef: any = useRef(null);
   useEffect(() => {
     if (tableRef.current) {
-      setTableRowHeight(tableRef.current.querySelectorAll('.ant-table-row')[0]?.offsetHeight);
+      setTableRowHeight(
+        tableRef.current.querySelectorAll(".ant-table-row")[0]?.offsetHeight
+      );
     }
   }, [playerTotalScoreData, sortedMapRecordAllData, sortedMapRecordUniqueData]);
   return (
     <div className="sm:pt-28 pt-20 h-screen w-screen relative overflow-x-hidden">
+      {showWRVideoBackground && YTEmbedURL !== "" && (
+        <div className="-z-10 fixed w-screen h-screen sm:-mt-4 brightness-20">
+          <div className="flex flex-col h-screen items-center justify-center">
+            <YoutubeEmbedded YTUrl={YTEmbedURL} />
+          </div>
+        </div>
+      )}
       <Modal
         isOpen={submissionModalOpen}
         onClose={() => setSubmissionModalOpen(false)}
@@ -556,20 +570,39 @@ export const GemHuntRecords = () => {
           </span>
         )}
         <div className="flex flex-row w-full">
-          <div className="flex flex-row self-end h-10 px-2 gap-x-2 sm:ml-0 ml-2 items-center bg-black/80 rounded-md">
-            <span className="sm:pb-1 px-2 sm:text-base text-sm whitespace-nowrap text-left">
-              Display All Runs
-            </span>
-            <ToggleButton
-              inactiveLabel={"Off"}
-              activeLabel={"On"}
-              value={allRuns}
-              onToggle={(uniqueOnly: boolean) => {
-                setAllRuns(!uniqueOnly);
-              }}
-              thumbStyle={{ borderRadius: 2 }}
-              trackStyle={{ borderRadius: 2 }}
-            />
+          <div className="flex flex-col gap-y-1 sm:justify-start justify-end">
+            {!smallScreen() && (
+              <div className="flex flex-row justify-between h-8 px-2 gap-x-2 sm:ml-0 ml-2 items-center bg-black/80 rounded-md">
+                <span className="sm:pb-1 px-2 sm:text-sm text-xs font-semibold whitespace-nowrap text-left">
+                  WR Videos
+                </span>
+                <ToggleButton
+                  inactiveLabel={"Off"}
+                  activeLabel={"On"}
+                  value={showWRVideoBackground}
+                  onToggle={(showVideo: boolean) => {
+                    setShowWRVideoBackground(!showVideo);
+                  }}
+                  thumbStyle={{ borderRadius: 2 }}
+                  trackStyle={{ borderRadius: 2 }}
+                />
+              </div>
+            )}
+            <div className="flex flex-row justify-between h-8 px-2 gap-x-2 sm:ml-0 ml-2 items-center bg-black/80 rounded-md">
+              <span className="sm:pb-1 px-2 sm:text-sm text-xs font-semibold whitespace-nowrap text-left">
+                Display All Runs
+              </span>
+              <ToggleButton
+                inactiveLabel={"Off"}
+                activeLabel={"On"}
+                value={allRuns}
+                onToggle={(uniqueOnly: boolean) => {
+                  setAllRuns(!uniqueOnly);
+                }}
+                thumbStyle={{ borderRadius: 2 }}
+                trackStyle={{ borderRadius: 2 }}
+              />
+            </div>
           </div>
           <div className="basis-full justify-end flex sm:flex-row flex-col gap-x-4">
             {Boolean(admin) && (
