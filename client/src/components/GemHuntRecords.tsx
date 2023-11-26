@@ -45,8 +45,10 @@ export const GemHuntRecords = () => {
   const [selectedMap, setSelectedMap] = useState<string>(maps[1]);
   const [allMapData, setAllMapData] = useState<GemHuntMapRecord[]>([]);
   const [communityWorldRecord, setCommunityWorldRecord] = useState<number>(0);
-  const [allRuns, setAllRuns] = useState<boolean>(false);
   const [YTEmbedURL, setYTEmbedURL] = useState<string>("");
+  const [allRuns, setAllRuns] = useState<boolean>(
+    localStorage.getItem("showAllRunsEnabled") === "true" ? true : false
+  );
   const [showWRVideoBackground, setShowWRVideoBackground] = useState<boolean>(
     localStorage.getItem("WRVideoBackgroundEnabled") === "true" ? true : false
   );
@@ -400,7 +402,7 @@ export const GemHuntRecords = () => {
   return (
     <div className="sm:pt-28 pt-20 h-screen w-screen relative overflow-x-hidden">
       {showWRVideoBackground && (
-        <div className="-z-10 fixed w-screen h-screen sm:-mt-4 brightness-20">
+        <div className="-z-10 fixed w-screen h-screen sm:-mt-4 brightness-50">
           <div className="flex flex-col h-screen items-center justify-center">
             <YoutubeEmbedded YTUrl={YTEmbedURL} />
           </div>
@@ -601,6 +603,10 @@ export const GemHuntRecords = () => {
                 activeLabel={"On"}
                 value={allRuns}
                 onToggle={(uniqueOnly: boolean) => {
+                  localStorage.setItem(
+                    "showAllRunsEnabled",
+                    uniqueOnly === false ? "true" : "false"
+                  );
                   setAllRuns(!uniqueOnly);
                 }}
                 thumbStyle={{ borderRadius: 2 }}
