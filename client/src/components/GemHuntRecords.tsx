@@ -561,7 +561,7 @@ export const GemHuntRecords = () => {
             {mapIndex === 0 && (
               <span className="bg-black/70 sm:text-xl text-md py-1 px-2 rounded-md mb-8">
                 <span className="text-cyan-400">
-                  Sum of All Bests: {communityWorldRecord}
+                  Sum of All Bests: {communityWorldRecord >= 2000 ? <span className='text-yellow-400 font-semibold'>🎉 {communityWorldRecord} 🎉</span> : <span>{communityWorldRecord}</span>}
                 </span>
               </span>
             )}
