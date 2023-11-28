@@ -66,7 +66,7 @@ export let gemHuntColumns: ColumnsType<GemHuntMapRecordScore> = [
     ),
   },
   {
-    title: "Date of run",
+    title: "Date",
     dataIndex: "date",
     key: "date",
     render: (_, { date }) => date ? <>{date.toString().split("T")[0]}</> : <>N/A</>,
@@ -75,5 +75,5 @@ export let gemHuntColumns: ColumnsType<GemHuntMapRecordScore> = [
 ];
 
 if (smallScreen()) {
-  gemHuntColumns = gemHuntColumns.filter((item) => item.key !== "game" && item.key !== "date");
+  gemHuntColumns = gemHuntColumns.filter((item) => item.key !== "game" && item.key !== "notes");
 }
