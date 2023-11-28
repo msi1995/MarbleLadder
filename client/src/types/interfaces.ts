@@ -2,8 +2,8 @@ export interface LadderPlayer {
   admin: boolean;
   email: string;
   isVerified: boolean;
-  password: string 
-  username: string
+  password: string;
+  username: string;
   ratingScore: number;
   peakRatingScore: number;
   wins: number;
@@ -82,6 +82,16 @@ export interface PlayerTotalScoreObject {
 export interface OpponentDropdownData {
   name: string;
   value: string;
+}
+
+export interface TimelineEvent {
+  date: Date;
+  playerName: String;
+  map?: String;
+  description?: String;
+  score: Number;
+  previousRecord?: Number;
+  type: String;
 }
 
 export interface ModalProps {

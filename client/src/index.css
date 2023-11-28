@@ -172,6 +172,15 @@ thead:hover {
   }
 }
 
+.vertical-timeline-element-icon{
+  opacity: 1.0;
+  box-shadow: 0 0 0 4px #11bdd7, inset 0 2px 0 rgba(0,0,0,.08), 0 3px 0 4px rgba(0,0,0,.05) !important;
+}
+.vertical-timeline-element-date{
+  opacity: 0.9 !important;
+  text-shadow: 3px 2px 2px black !important;
+}
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;

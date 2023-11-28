@@ -4,6 +4,7 @@ const { ObjectId } = require('mongodb');
 const { v4: uuidv4 } = require('uuid');
 const gemHuntMapRecord = require('../models/GemHuntRecord');
 const ladderPlayer = require('../models/LadderPlayer');
+const TimelineEvent = require('../models/TimelineEvent');
 const router = express.Router();
 
 
@@ -16,6 +17,17 @@ router.get('/gem-hunt-map-records/', async (req, res) => {
         res.status(500).send({ error: "Error fetching ladder data from DB." });
     }
 });
+
+router.get('/gem-hunt-timeline-events', async (req, res) => {
+    try {
+        const timelineEvents = await TimelineEvent.find({}).sort({ date: -1 });
+        res.status(200).send(timelineEvents);
+    }
+    catch (e) {
+        console.log(e)
+        res.status(500).send({ error: "Error fetching timeline events" })
+    }
+})
 
 router.get('/gem-hunt-map-records/unverified', async (req, res) => {
     try {
@@ -68,6 +80,25 @@ router.post('/approve-gem-hunt-record/', auth, async (req, res) => {
                 },
             }
         );
+
+        if (WR > mapWR) {
+            try {
+                const newTimelineEvent = new TimelineEvent({
+                    date: new Date(),
+                    playerName: runner,
+                    map: map,
+                    score: unverifiedMatch.scores[0].score,
+                    previousRecord: mapWR,
+                    type: 'solo-IL'
+                })
+                newTimelineEvent.save()
+            }
+            catch {
+                (err) => console.log(err);
+                res.status(500).send({ error: "Error creating a timeline event." })
+            }
+
+        }
 
 
         //UPDATES TO LADDERPLAYER COLLECTION
