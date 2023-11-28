@@ -87,7 +87,7 @@ export const Navbar = () => {
               Home
             </NavLink>
           </li>
-          <li className="text-pink-500">
+          <li className="text-cyan-400">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -115,7 +115,7 @@ export const Navbar = () => {
               1v1 Gem Hunt Ladder
             </NavLink>
           </li>
-          <li className="text-pink-500">
+          <li className="text-cyan-400">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -143,7 +143,7 @@ export const Navbar = () => {
               Solo Gem Hunt Records
             </NavLink>
           </li>
-          <li className="text-pink-500">
+          <li className="text-cyan-400">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -171,7 +171,7 @@ export const Navbar = () => {
               Event Timeline
             </NavLink>
           </li>
-          <li className="text-pink-500">
+          <li className="text-cyan-400">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
