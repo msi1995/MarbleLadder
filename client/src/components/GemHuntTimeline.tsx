@@ -33,8 +33,8 @@ export const GemHuntTimeline = () => {
   };
 
   return (
-    <div className="pt-24 w-screen">
-      <div className="mt-12 flex justify-center text-white">
+    <div className="pt-24 w-full !overflow-x-hidden">
+      <div className="mt-12 flex justify-center text-white !overflow-x-hidden">
         <VerticalTimeline lineColor={"black"}>
           {timelineEvents.map((entry) => (
             <VerticalTimelineElement
