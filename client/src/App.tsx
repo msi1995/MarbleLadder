@@ -37,7 +37,7 @@ function App() {
         <Route path="/reset-password" element={<ResetPassword/>} />
         <Route path="/ladder" element={<SoloLadder/>} />
         <Route path="/gem-hunt-records" element={<GemHuntRecords/>}/>
-        <Route path="/gem-hunt-records/timeline" element={<GemHuntTimeline/>} />
+        <Route path="/timeline" element={<GemHuntTimeline/>} />
         <Route path="/about" element={<About/>} />
         <Route path="/contact" element={<Contact/>} />
         <Route path="/player/:name" element={<PlayerInfo/>}/>

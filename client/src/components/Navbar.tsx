@@ -161,6 +161,34 @@ export const Navbar = () => {
           </li>
           <li>
             <NavLink
+              to={"/timeline"}
+              className={({ isActive }) =>
+                isActive
+                  ? "text-sm text-white font-bold"
+                  : "text-sm text-gray-400 hover:text-gray-500"
+              }
+            >
+              Event Timeline
+            </NavLink>
+          </li>
+          <li className="text-pink-500">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              stroke="currentColor"
+              className="w-4 h-4 current-fill"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"
+              />
+            </svg>
+          </li>
+          <li>
+            <NavLink
               to={"/about"}
               className={({ isActive }) =>
                 isActive
@@ -186,18 +214,6 @@ export const Navbar = () => {
                 d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"
               />
             </svg>
-          </li>
-          <li>
-            <NavLink
-              to={"/contact"}
-              className={({ isActive }) =>
-                isActive
-                  ? "text-sm text-white font-bold"
-                  : "text-sm text-gray-400 hover:text-gray-500"
-              }
-            >
-              Contact
-            </NavLink>
           </li>
         </ul>
 
@@ -285,10 +301,10 @@ export const Navbar = () => {
               <li className="mb-1">
                 <NavLink
                   onClick={() => closeBurgerOnClick()}
-                  to={"/contact"}
+                  to={"/timeline"}
                   className="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-white rounded"
                 >
-                  Contact
+                  Event Timeline
                 </NavLink>
               </li>
             </ul>
@@ -298,12 +314,16 @@ export const Navbar = () => {
               {token ? (
                 <button
                   className="block w-full px-4 py-3 mb-3 leading-loose text-xs text-center font-semibold leading-none bg-gray-50 hover:bg-gray-100 rounded-xl"
-                  onClick={() => handleSignoutClick()}
+                  onClick={() => {
+                    closeBurgerOnClick();
+                    handleSignoutClick();
+                  }}
                 >
                   Sign Out
                 </button>
               ) : (
                 <NavLink
+                  onClick={() => closeBurgerOnClick()}
                   to={"/login"}
                   className="block px-4 py-3 mb-3 leading-loose text-xs text-center font-semibold leading-none bg-gray-50 hover:bg-gray-100 rounded-xl"
                 >
@@ -311,6 +331,7 @@ export const Navbar = () => {
                 </NavLink>
               )}
               <NavLink
+                onClick={() => closeBurgerOnClick()}
                 to={"/register"}
                 className="block px-4 py-2 mb-2 leading-loose text-xs text-center text-white font-semibold bg-blue-600 hover:bg-blue-700  rounded-xl"
               >
