@@ -10,7 +10,7 @@ export const About = () => {
     setShowBasicAbout(e.target.checked);
   };
   return (
-    <div className="flex w-full h-screen items-center">
+    <div className="flex w-full h-full items-center">
       <div className="flex flex-row flex-wrap max-w-6xl sm:p-8 p-4 mx-auto bg-black/90 rounded-md text-center justify-center">
         <div className="w-full flex flex-row flex-wrap justify-center items-center">
           <span className="sm:basis-1/4 sm:text-4xl text-2xl text-white pb-4"></span>
