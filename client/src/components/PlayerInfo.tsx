@@ -194,6 +194,11 @@ export const PlayerInfo = () => {
       // if both have played a game, sort by rating score
       return b.ratingScore - a.ratingScore;
     })
+    //assign ladder rank to sorted data
+    sortedData.forEach((item, index) => {
+      item.rank = index + 1;
+      item.key = `${index + 1}`;
+    });
     const player = sortedData.find((entry) => entry.username === player_name);
     const ladderPosition = player?.rank || null;
     setPlayerLadderRank(ladderPosition);
@@ -478,9 +483,6 @@ export const PlayerInfo = () => {
   const tableRef: any = useRef(null);
   useEffect(() => {
     if (tableRef.current) {
-      console.log(
-        tableRef.current.querySelectorAll(".ant-table-row")[0]?.offsetHeight
-      );
       setTableRowHeight(
         tableRef.current.querySelectorAll(".ant-table-row")[0]?.offsetHeight
       );
