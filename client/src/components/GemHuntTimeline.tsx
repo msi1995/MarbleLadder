@@ -48,7 +48,7 @@ export const GemHuntTimeline = () => {
               {entry.type === "solo-IL" ? (
                 <div>
                   <h3 className="font-semibold">
-                    New World Record -{" "}
+                    World Record -{" "}
                     <span className="italic text-cyan-400">
                       {`${entry.map} ${entry.score}`}
                     </span>

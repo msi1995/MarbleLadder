@@ -561,7 +561,14 @@ export const GemHuntRecords = () => {
             {mapIndex === 0 && (
               <span className="bg-black/70 sm:text-xl text-md py-1 px-2 rounded-md mb-8">
                 <span className="text-cyan-400">
-                  Sum of All Bests: {communityWorldRecord >= 2000 ? <span className='text-yellow-400 font-semibold'>🎉 {communityWorldRecord} 🎉</span> : <span>{communityWorldRecord}</span>}
+                  Sum of All Bests:{" "}
+                  {communityWorldRecord >= 2000 ? (
+                    <span className="text-yellow-400 font-semibold">
+                      🎉 {communityWorldRecord} 🎉
+                    </span>
+                  ) : (
+                    <span>{communityWorldRecord}</span>
+                  )}
                 </span>
               </span>
             )}
@@ -615,6 +622,9 @@ export const GemHuntRecords = () => {
             </div>
           </div>
           <div className="basis-full justify-end flex sm:flex-row flex-col gap-x-4">
+          <a href='/timeline' className="block self-end sm:w-48 w-36 px-2 py-2 mt-2 mr-2 sm:mr-0 sm:text-sm text-xs font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 rounded-md hover:bg-blue-500 bg-cyan-400 text-black">
+              View Timeline
+            </a>
             {Boolean(admin) && (
               <button
                 onClick={() =>
