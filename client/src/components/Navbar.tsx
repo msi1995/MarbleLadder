@@ -292,19 +292,19 @@ export const Navbar = () => {
               <li className="mb-1">
                 <NavLink
                   onClick={() => closeBurgerOnClick()}
-                  to={"/about"}
+                  to={"/timeline"}
                   className="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-white rounded"
                 >
-                  About
+                  Event Timeline
                 </NavLink>
               </li>
               <li className="mb-1">
                 <NavLink
                   onClick={() => closeBurgerOnClick()}
-                  to={"/timeline"}
+                  to={"/about"}
                   className="block p-4 text-sm font-semibold text-gray-400 hover:bg-blue-50 hover:text-white rounded"
                 >
-                  Event Timeline
+                  About
                 </NavLink>
               </li>
             </ul>
