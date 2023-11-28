@@ -181,11 +181,19 @@ export const PlayerInfo = () => {
 
   const getLadderPositionFromLadderData = (ladderData: LadderPlayer[]) => {
     let sortedData;
-    sortedData = [...ladderData]?.sort((a, b) => b.ratingScore - a.ratingScore);
-    sortedData.forEach((item, index) => {
-      item.rank = index + 1;
-      item.key = `${index + 1}`;
-    });
+    sortedData = [...ladderData]?.sort((a, b) => {
+      // compare by wins or losses
+      if (a.wins > 0 || a.losses > 0) {
+        if (!(b.wins > 0 || b.losses > 0)) {
+          return -1; // a has played a game but b hasn't, so A is first
+        }
+      } else if (b.wins > 0 || b.losses > 0) {
+        return 1; // B has played a game but A hasn't, so B is first
+      }
+  
+      // if both have played a game, sort by rating score
+      return b.ratingScore - a.ratingScore;
+    })
     const player = sortedData.find((entry) => entry.username === player_name);
     const ladderPosition = player?.rank || null;
     setPlayerLadderRank(ladderPosition);
