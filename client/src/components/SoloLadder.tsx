@@ -221,15 +221,31 @@ export const SoloLadder = () => {
 
   const data = ladderData;
   let sortedData;
-  try {
-    sortedData = [...data]?.sort((a, b) => b.ratingScore - a.ratingScore);
-    sortedData.forEach((item, index) => {
-      item.rank = index + 1;
-      item.key = `${index + 1}`;
-    });
-  } catch (e) {
-    console.log(e);
-  }
+try {
+  sortedData = [...data]?.sort((a, b) => {
+    // compare by wins or losses
+    if (a.wins > 0 || a.losses > 0) {
+      if (!(b.wins > 0 || b.losses > 0)) {
+        return -1; // a has played a game but b hasn't, so A is first
+      }
+    } else if (b.wins > 0 || b.losses > 0) {
+      return 1; // B has played a game but A hasn't, so B is first
+    }
+
+    // if both have played a game, sort by rating score
+    return b.ratingScore - a.ratingScore;
+  });
+
+  // Update ranks and keys
+  sortedData.forEach((item, index) => {
+    item.rank = index + 1;
+    item.key = `${index + 1}`;
+  });
+
+  console.log(sortedData);
+} catch (e) {
+  console.log(e);
+}
 
   const handleOpponentSelectChange = (opponent: any) => {
     setPlayerOpponent(opponent);
