@@ -540,7 +540,7 @@ export const PlayerInfo = () => {
           <span className="flex items-center">{player_name}</span>
           <a
             href="/ladder"
-            className="flex items-center sm:text-3xl text-lg sm:pt-2 pt-1 hover:text-cyan-400"
+            className="flex items-center sm:text-3xl text-lg sm:pt-2 pt-1 text-cyan-400 hover:text-cyan-300"
           >
             [{playerData?.ratingScore}]
           </a>
