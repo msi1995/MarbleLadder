@@ -7,7 +7,7 @@ import "react-vertical-timeline-component/style.min.css";
 import { BASE_ROUTE } from "../App";
 import { TimelineEvent } from "../types/interfaces";
 
-export const GemHuntTimeline = () => {
+export const Timeline = () => {
   const [timelineEvents, setTimelineEvents] = useState<TimelineEvent[]>([]);
   const fetchTimelineData = async () => {
     try {
@@ -50,7 +50,7 @@ export const GemHuntTimeline = () => {
                   <h3 className="font-semibold">
                     World Record -{" "}
                     <span className="italic text-cyan-400">
-                      {`${entry.map} ${entry.score}`}
+                      {`${entry.map}, ${entry.score} — ${entry.playerName}`}
                     </span>
                   </h3>
                   <p className="!font-normal">

@@ -14,7 +14,7 @@ import { getLadderData } from "./utils/utils";
 import { ForgotPassword } from "./components/ForgotPassword";
 import { ResetPassword } from "./components/ResetPassword";
 import { LadderPlayer } from "./types/interfaces";
-import { GemHuntTimeline } from "./components/GemHuntTimeline";
+import { Timeline } from "./components/Timeline";
 export const BASE_ROUTE = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3001'
 export const LadderData = createContext<LadderPlayer[]>([]);
 
@@ -37,7 +37,7 @@ function App() {
         <Route path="/reset-password" element={<ResetPassword/>} />
         <Route path="/ladder" element={<SoloLadder/>} />
         <Route path="/gem-hunt-records" element={<GemHuntRecords/>}/>
-        <Route path="/timeline" element={<GemHuntTimeline/>} />
+        <Route path="/timeline" element={<Timeline/>} />
         <Route path="/about" element={<About/>} />
         <Route path="/contact" element={<Contact/>} />
         <Route path="/player/:name" element={<PlayerInfo/>}/>
