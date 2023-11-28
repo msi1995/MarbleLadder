@@ -89,8 +89,8 @@ export interface TimelineEvent {
   playerName: String;
   map?: String;
   description?: String;
-  score: Number;
-  previousRecord?: Number;
+  score: number;
+  previousRecord?: number;
   type: String;
 }
 
