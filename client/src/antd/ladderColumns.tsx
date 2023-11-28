@@ -49,6 +49,11 @@ export let ladderColumns: ColumnsType<LadderPlayer> = [
     key: "ratingScore",
     align: smallScreen() ? "center" : "justify",
     width: smallScreen() ? "auto" : "15%",
+    render: (_, record) => (
+      <span>
+        {record.wins + record.losses === 0 ? '——' : record.ratingScore}
+      </span>
+    ),
   },
   {
     title: "W/L",
