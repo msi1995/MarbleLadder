@@ -55,7 +55,7 @@ export const GemHuntTimeline = () => {
                   </h3>
                   <p className="!font-normal">
                     <a
-                      href="/player/Elomith"
+                      href={`/player/${entry.playerName}`}
                       className="text-cyan-400 hover:text-cyan-500"
                     >
                       {entry.playerName}{" "}
