@@ -582,7 +582,7 @@ export const GemHuntRecords = () => {
           <div className="flex flex-col gap-y-1 sm:justify-start justify-end">
             {!smallScreen() && (
               <div className="z-10 flex flex-row justify-between h-8 px-2 gap-x-2 sm:ml-0 ml-2 items-center bg-black/80 rounded-md">
-                <span className="m:pb-1 px-2 sm:text-sm text-xs font-semibold whitespace-nowrap text-left">
+                <span className="sm:pb-1 px-2 sm:text-sm text-xs font-semibold whitespace-nowrap text-left">
                   WR Videos
                 </span>
                 <ToggleButton
