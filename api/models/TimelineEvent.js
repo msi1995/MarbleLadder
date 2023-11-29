@@ -29,6 +29,10 @@ var TimelineEventModel = {
         type: String,
         required: false,
     },
+    multiLineDescription: [{
+        type: String,
+        required: false,
+    }]
 
 };
 
