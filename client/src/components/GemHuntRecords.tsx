@@ -648,7 +648,7 @@ export const GemHuntRecords = () => {
           </div>
         </div>
       </div>
-      <div className={`${showWRVideoBackground ? 'opacity-0' : 'opacity-95'} flex flex-row flex-wrap relative overflow-x-hidden justify-center`}>
+      <div className={`${showWRVideoBackground && mapIndex !== 0 ? 'opacity-0' : 'opacity-95'} flex flex-row flex-wrap relative overflow-x-hidden justify-center`}>
         <Table
           ref={tableRef}
           className="sm:w-1/2 w-full sm:px-0 px-2"
