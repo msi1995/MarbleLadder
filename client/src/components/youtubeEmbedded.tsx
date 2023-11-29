@@ -17,9 +17,9 @@ export const YoutubeEmbedded = ({ YTUrl }: YoutubeEmbedProps) => {
   return embedID !== null ? (
     <div className="basis-full">
       <iframe
-        className="w-screen h-screen"
+        className="w-screen h-screen mb-24 pb-4"
         allow="autoplay; encrypted-media"
-        src={`https://www.youtube.com/embed/${embedID}?autoplay=1&mute=1&disablekb=1&controls=0&playlist=${embedID}&rel=0&fs=0&loop=1`}
+        src={`https://www.youtube.com/embed/${embedID}?autoplay=1&playlist=${embedID}&rel=0&fs=0&loop=1`}
         frameBorder="0"
         title="Embedded youtube"
       />
