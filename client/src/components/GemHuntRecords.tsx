@@ -402,7 +402,7 @@ export const GemHuntRecords = () => {
   return (
     <div className="sm:pt-28 pt-20 h-screen w-screen relative overflow-x-hidden">
       {showWRVideoBackground && (
-        <div className="-z-10 fixed w-screen h-screen sm:-mt-4 brightness-50">
+        <div className={`${showWRVideoBackground ? `` : `-z-10`} fixed w-screen h-screen sm:-mt-4`}>
           <div className="flex flex-col h-screen items-center justify-center">
             <YoutubeEmbedded YTUrl={YTEmbedURL} />
           </div>
@@ -529,7 +529,7 @@ export const GemHuntRecords = () => {
         </div>
       </Modal>
       <div className="sm:w-1/2 w-full flex flex-col mx-auto justify-center items-center md:text-2xl text-md text-white text-center pb-2">
-        <div className="flex items-center justify-center sm:text-6xl text-4xl pb-1 sm:mb-8 mb-4 sm:bg-inherit bg-black/50 px-2 rounded-md">
+        <div className="z-10 flex items-center justify-center sm:text-6xl text-4xl pb-1 sm:mb-8 mb-4 sm:bg-inherit bg-black/50 px-2 rounded-md">
           <button
             onClick={mapBackward}
             className="sm:text-7xl mr-8 sm:pb-0 pb-1 neon-text"
@@ -581,8 +581,8 @@ export const GemHuntRecords = () => {
         <div className="flex flex-row w-full">
           <div className="flex flex-col gap-y-1 sm:justify-start justify-end">
             {!smallScreen() && (
-              <div className="flex flex-row justify-between h-8 px-2 gap-x-2 sm:ml-0 ml-2 items-center bg-black/80 rounded-md">
-                <span className="sm:pb-1 px-2 sm:text-sm text-xs font-semibold whitespace-nowrap text-left">
+              <div className="z-10 flex flex-row justify-between h-8 px-2 gap-x-2 sm:ml-0 ml-2 items-center bg-black/80 rounded-md">
+                <span className="m:pb-1 px-2 sm:text-sm text-xs font-semibold whitespace-nowrap text-left">
                   WR Videos
                 </span>
                 <ToggleButton
@@ -601,7 +601,7 @@ export const GemHuntRecords = () => {
                 />
               </div>
             )}
-            <div className="flex flex-row justify-between h-8 px-2 gap-x-2 sm:ml-0 ml-2 items-center bg-black/80 rounded-md">
+            <div className="z-10 flex flex-row justify-between h-8 px-2 gap-x-2 sm:ml-0 ml-2 items-center bg-black/80 rounded-md">
               <span className="sm:pb-1 px-2 sm:text-sm text-xs font-semibold whitespace-nowrap text-left">
                 Display All Runs
               </span>
@@ -648,7 +648,7 @@ export const GemHuntRecords = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-row flex-wrap relative overflow-x-hidden justify-center opacity-95">
+      <div className={`${showWRVideoBackground ? 'opacity-0' : 'opacity-95'} flex flex-row flex-wrap relative overflow-x-hidden justify-center`}>
         <Table
           ref={tableRef}
           className="sm:w-1/2 w-full sm:px-0 px-2"
