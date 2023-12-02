@@ -815,7 +815,7 @@ export const PlayerInfo = () => {
           </div>
         </div>
       </div>
-      <div className="sm:pt-12 pt-12 flex flex-col items-center opacity-95">
+      <div className="sm:pt-12 pt-12 flex flex-col items-center opacity-95 pb-8">
         <div className="pb-8">
           <span className="bg-black/50 py-2 px-4 text-white text-3xl rounded-md">
             Match History

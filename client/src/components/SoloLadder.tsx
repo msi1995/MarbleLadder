@@ -560,7 +560,7 @@ try {
           </div>
         </div>
       )}
-      <div className="flex flex-row flex-wrap relative overflow-x-hidden justify-center opacity-95">
+      <div className="flex flex-row flex-wrap relative overflow-x-hidden justify-center opacity-95 pb-8">
         <div className="flex sm:w-3/5 w-full justify-end px-2">
           {Boolean(unconfirmedMatches?.length) && (
             <button
