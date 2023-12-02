@@ -26,7 +26,7 @@ export const GemHuntRecords = () => {
   const token = cookies.get("MarbleToken");
   const navigate = useNavigate();
   const maps = [
-    "OVERALL",
+    "Total Points",
     "Arcadia",
     "Assault",
     "Brawl",
@@ -58,7 +58,7 @@ export const GemHuntRecords = () => {
   const [sortedMapRecordUniqueData, setSortedMapRecordUniqueData] = useState<
     GemHuntMapRecordScore[]
   >([]);
-  const [playerTotalScoreData, setPlayerTotalScoreData] = useState<any>([]);
+  const [playerTotalScoreData, setPlayerTotalScoreData] = useState<PlayerTotalScoreObject[]>([]);
   const [mapWorldRecord, setMapWorldRecord] = useState<number>(0);
   const [mapWorldRecordHolder, setMapWorldRecordHolder] = useState<string>("");
   const [submissionModalOpen, setSubmissionModalOpen] = useState(false);
@@ -532,16 +532,16 @@ export const GemHuntRecords = () => {
         <div className="z-10 flex items-center justify-center sm:text-6xl text-4xl pb-1 sm:mb-8 mb-4 sm:bg-inherit bg-black/50 px-2 rounded-md">
           <button
             onClick={mapBackward}
-            className="sm:text-7xl mr-8 sm:pb-0 pb-1 neon-text"
+            className="sm:text-7xl mr-8 pb-1 neon-text"
           >
             {"<"}
           </button>
           <div className="sm:text-6xl text-3xl italic sm:w-72 w-40 inline-block">
-            <span>{maps[mapIndex]}</span>
+            <span className='whitespace-nowrap'>{maps[mapIndex]}</span>
           </div>
           <button
             onClick={mapForward}
-            className="sm:text-7xl ml-8 sm:pb-0 pb-1 neon-text"
+            className="sm:text-7xl ml-8 pb-1 neon-text"
           >
             {">"}
           </button>
@@ -648,7 +648,7 @@ export const GemHuntRecords = () => {
           </div>
         </div>
       </div>
-      <div className={`${showWRVideoBackground && mapIndex !== 0 ? 'opacity-0' : 'opacity-95'} flex flex-row flex-wrap relative overflow-x-hidden justify-center`}>
+      <div className={`${showWRVideoBackground && mapIndex !== 0 ? 'opacity-0' : 'opacity-95'} flex flex-row flex-wrap relative overflow-x-hidden justify-center pb-8`}>
         <Table
           ref={tableRef}
           className="sm:w-1/2 w-full sm:px-0 px-2"
