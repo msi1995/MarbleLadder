@@ -21,6 +21,8 @@ export const calculateScoreColor = (score: number) => {
   const yellow = [255, 255, 0];
   const lightGreen = [0, 236, 81];
   const teal = [0, 185, 185];
+  const intenseTeal = [0, 225, 225];
+  const purple = [115, 0, 180]
 
   let color;
 
@@ -42,28 +44,38 @@ export const calculateScoreColor = (score: number) => {
     color = yellow.map((channel, index) =>
       Math.round(channel + percentage * (lightGreen[index] - channel))
     );
-  } else if (score <= 85) {
+  } else if (score <= 82.5) {
     // green and teal
     const percentage = (score - 70) / 20;
     color = lightGreen.map((channel, index) =>
       Math.round(channel + percentage * (teal[index] - channel))
     );
-  } else if (score < 92.5) {
-    // teal and intense teal up to 924
+  } else if (score < 90) {
+    // teal and intense teal up to 900
     const percentage = (score - 75) / 20;
-    const intenseTeal = [0, 225, 225];
     const finalColor = teal.map((channel, index) =>
-      Math.round(channel + percentage * (intenseTeal[index] - channel))
+      Math.round(channel + percentage * (purple[index] - channel))
     );
 
     color = finalColor.map((value) => Math.min(255, value));
   }
-  // gold for 930-949
   else if (score < 95) {
-    color = [255, 255, 0];
-  } else {
-    // volcano for 950+
+    // purple up to 950
+    const percentage = (score - 72.5) / 20;
+    color = intenseTeal.map((channel, index) =>
+      Math.round(channel + percentage * (purple[index] - channel))
+    );
+  }
+  // // gold for 925-949
+  // else if (score < 95) {
+  //   color = [255, 255, 0];
+  // } 
+  else if (score < 99) {
+    // volcano for 950-990
     color = [255, 0, 0];
+  }
+  else{
+    color = [255,255,0]
   }
 
   return `rgb(${color.join(",")})`;
