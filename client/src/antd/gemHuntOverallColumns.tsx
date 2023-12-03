@@ -1,15 +1,9 @@
 import { ColumnsType } from "antd/es/table";
 import { NavLink } from "react-router-dom";
-import { smallScreen } from "../utils/utils";
+import { calculateScoreColor, smallScreen } from "../utils/utils";
+import { Tooltip } from 'antd'
 
 export let gemHuntOverallColumns: ColumnsType<any> = [
-  {
-    title: "Game",
-    dataIndex: "game",
-    key: "game",
-    width: smallScreen() ? "auto" : "15%",
-    render: (_) => <img alt="Ultra Logo" className="w-3/4" src={"ultra_image_small.webp"}></img>,
-  },
   {
     title: "Rank",
     dataIndex: "rank",
@@ -24,23 +18,40 @@ export let gemHuntOverallColumns: ColumnsType<any> = [
     ),
   },
   {
-    title: "Score",
-    dataIndex: "score",
-    key: "score",
-    render: (_, { totalScore }) => (
-      //render score if available, otherwise render totalScore (for overall tab)
-      <p>{totalScore}</p>
+    title: (
+      <Tooltip
+        overlayInnerStyle={{ fontSize: "14px" }}
+        title="Sum of all map ratings"
+        color="#108ee9"
+      >
+        Overall Rating ⓘ
+      </Tooltip>
     ),
+    dataIndex: "totalRunRating",
+    key: "score",
+    render: (_, { totalRunRating }) => (
+      //div by 100 for overall tab
+      <span style={{ color: calculateScoreColor(totalRunRating / 100 ?? 0) }}>
+        {totalRunRating}
+      </span>
+    ),
+  },
+  {
+    title: "Points",
+    dataIndex: "totalScore",
+    key: "totalScore",
   },
   {
     title: "Screenshot / Video",
     dataIndex: "media",
     key: "mediaLink",
     width: "auto",
-    render: (_,) => <>See individual maps</>
+    render: (_) => <>See individual maps</>,
   },
 ];
 
 if (smallScreen()) {
-  gemHuntOverallColumns = gemHuntOverallColumns.filter((item) => item.key !== "game");
+  gemHuntOverallColumns = gemHuntOverallColumns.filter(
+    (item) => item.key !== "game"
+  );
 }

@@ -7,6 +7,9 @@ import {
   handleLogout,
   smallScreen,
   userIsAdmin,
+  calculateScoreColor,
+  projectedMaxes,
+  round,
 } from "../utils/utils";
 import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
 import { FormEvent, useEffect, useRef, useState } from "react";
@@ -26,7 +29,7 @@ export const GemHuntRecords = () => {
   const token = cookies.get("MarbleToken");
   const navigate = useNavigate();
   const maps = [
-    "Total Points",
+    "Overall",
     "Arcadia",
     "Assault",
     "Brawl",
@@ -58,7 +61,9 @@ export const GemHuntRecords = () => {
   const [sortedMapRecordUniqueData, setSortedMapRecordUniqueData] = useState<
     GemHuntMapRecordScore[]
   >([]);
-  const [playerTotalScoreData, setPlayerTotalScoreData] = useState<PlayerTotalScoreObject[]>([]);
+  const [playerTotalScoreData, setPlayerTotalScoreData] = useState<
+    PlayerTotalScoreObject[]
+  >([]);
   const [mapWorldRecord, setMapWorldRecord] = useState<number>(0);
   const [mapWorldRecordHolder, setMapWorldRecordHolder] = useState<string>("");
   const [submissionModalOpen, setSubmissionModalOpen] = useState(false);
@@ -132,6 +137,10 @@ export const GemHuntRecords = () => {
       })
       .map((item, index) => ({
         ...item,
+        runRating: round(
+          (item.score / projectedMaxes[maps[mapIndex]]) * 1000,
+          1
+        ),
         rank: index + 1,
         key: `${index + 1}`,
       }));
@@ -182,11 +191,18 @@ export const GemHuntRecords = () => {
       })
       .map((item, index) => ({
         ...item,
+        // using maps[mapIndex] which returns the name of the selected map to get the projectedMax
+        // entry for the map. Don't have an easy way to access map name here. not ideal. maybe revisit.
+        runRating: round(
+          (item.score / projectedMaxes[maps[mapIndex]]) * 1000,
+          1
+        ),
         rank: index + 1,
         key: `${index + 1}`,
       }));
 
     if (filteredUniqueRecords.length) {
+      console.log(projectedMaxes[maps[mapIndex]]);
       setSortedMapRecordUniqueData(filteredUniqueRecords.slice(0, 10));
       setMapWorldRecordHolder(filteredUniqueRecords[0].player);
       setMapWorldRecord(filteredUniqueRecords[0].score);
@@ -203,11 +219,11 @@ export const GemHuntRecords = () => {
         mapEntry.scores.map((score: GemHuntMapRecordScore) => ({
           ...score,
           map: mapEntry.mapName,
+          runRating: 5,
         }))
       )
       .filter((score) => score.verified !== false);
 
-    // dict <string, obj>
     const playerTotalScoreObjects: Record<string, PlayerTotalScoreObject> = {};
 
     allScoresWithMapName.forEach((score) => {
@@ -218,7 +234,9 @@ export const GemHuntRecords = () => {
         playerTotalScoreObjects[player] = {
           player: player,
           totalScore: 0,
+          totalRunRating: 0,
           bestScoresByMap: {},
+          runRatingByMap: {},
         };
       }
 
@@ -227,19 +245,28 @@ export const GemHuntRecords = () => {
         !playerTotalScoreObjects[player].bestScoresByMap[map] ||
         currentScore > playerTotalScoreObjects[player].bestScoresByMap[map]
       ) {
-        // set best score
+        // set best scores/rating
         playerTotalScoreObjects[player].bestScoresByMap[map] = currentScore;
+        playerTotalScoreObjects[player].runRatingByMap[map] = round(
+          (currentScore / projectedMaxes[map]) * 1000,
+          1
+        );
       }
     });
 
     // sum the best scores for each map
     Object.values(playerTotalScoreObjects).forEach((playerObject) => {
-      const { bestScoresByMap } = playerObject;
+      const { bestScoresByMap, runRatingByMap } = playerObject;
 
-      // for each value in bestScoresByMap, sum += score. sum initialized to 0.
-      // set playerObject.totalScore to the return value of the reduce fn (sum of all map scores)
+      // reduce function
+      const reduceScores = (sum: number, value: number) => sum + value;
+
       playerObject.totalScore = Object.values(bestScoresByMap).reduce(
-        (sum, score) => sum + score,
+        reduceScores,
+        0
+      );
+      playerObject.totalRunRating = Object.values(runRatingByMap).reduce(
+        reduceScores,
         0
       );
     });
@@ -249,7 +276,7 @@ export const GemHuntRecords = () => {
     );
     const sortedPlayerBestTotalScores = playerBestTotalScores
       .sort((a, b) => {
-        return b.totalScore - a.totalScore;
+        return b.totalRunRating - a.totalRunRating;
       })
       .map((item: PlayerTotalScoreObject, index: number) => ({
         ...item,
@@ -399,10 +426,15 @@ export const GemHuntRecords = () => {
       );
     }
   }, [playerTotalScoreData, sortedMapRecordAllData, sortedMapRecordUniqueData]);
+
   return (
     <div className="sm:pt-28 pt-20 h-screen w-screen relative overflow-x-hidden">
       {showWRVideoBackground && (
-        <div className={`${showWRVideoBackground ? `` : `-z-10`} fixed w-screen h-screen sm:-mt-4`}>
+        <div
+          className={`${
+            showWRVideoBackground ? `` : `-z-10`
+          } fixed w-screen h-screen sm:-mt-4`}
+        >
           <div className="flex flex-col h-screen items-center justify-center">
             <YoutubeEmbedded YTUrl={YTEmbedURL} />
           </div>
@@ -537,7 +569,7 @@ export const GemHuntRecords = () => {
             {"<"}
           </button>
           <div className="sm:text-6xl text-3xl italic sm:w-72 w-40 inline-block">
-            <span className='whitespace-nowrap'>{maps[mapIndex]}</span>
+            <span className="whitespace-nowrap">{maps[mapIndex]}</span>
           </div>
           <button
             onClick={mapForward}
@@ -558,17 +590,14 @@ export const GemHuntRecords = () => {
                 {mapWorldRecordHolder}
               </NavLink>
             </span>
+            {mapIndex !== 0 && (
+              <span className='text-lg text-cyan-400 italic'>Projected Max: {projectedMaxes[maps[mapIndex]]}</span>
+            )}
             {mapIndex === 0 && (
               <span className="bg-black/70 sm:text-xl text-md py-1 px-2 rounded-md mb-8">
                 <span className="text-cyan-400">
                   Sum of All Bests:{" "}
-                  {communityWorldRecord >= 2000 ? (
-                    <span className="text-yellow-400 font-semibold">
-                      🎉 {communityWorldRecord} 🎉
-                    </span>
-                  ) : (
                     <span>{communityWorldRecord}</span>
-                  )}
                 </span>
               </span>
             )}
@@ -622,9 +651,6 @@ export const GemHuntRecords = () => {
             </div>
           </div>
           <div className="basis-full justify-end flex sm:flex-row flex-col gap-x-4">
-          <a href='/timeline' className="block self-end sm:w-48 w-36 px-2 py-2 mt-2 mr-2 sm:mr-0 sm:text-sm text-xs font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 rounded-md hover:bg-blue-500 bg-cyan-400 text-black">
-              View Timeline
-            </a>
             {Boolean(admin) && (
               <button
                 onClick={() =>
@@ -637,6 +663,12 @@ export const GemHuntRecords = () => {
                 Awaiting Approval ({unverifiedRuns?.length})
               </button>
             )}
+            <a
+              href="/timeline"
+              className="block self-end sm:w-48 w-36 px-2 py-2 mt-2 mr-2 sm:mr-0 sm:text-sm text-xs font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 rounded-md hover:bg-blue-500 bg-black"
+            >
+              View Timeline
+            </a>
             {Boolean(token) && (
               <button
                 onClick={() => setSubmissionModalOpen(true)}
@@ -648,7 +680,11 @@ export const GemHuntRecords = () => {
           </div>
         </div>
       </div>
-      <div className={`${showWRVideoBackground && mapIndex !== 0 ? 'opacity-0' : 'opacity-95'} flex flex-row flex-wrap relative overflow-x-hidden justify-center pb-8`}>
+      <div
+        className={`${
+          showWRVideoBackground && mapIndex !== 0 ? "opacity-0" : "opacity-95"
+        } flex flex-row flex-wrap relative overflow-x-hidden justify-center pb-8`}
+      >
         <Table
           ref={tableRef}
           className="sm:w-1/2 w-full sm:px-0 px-2"

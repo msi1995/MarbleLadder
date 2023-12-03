@@ -54,6 +54,7 @@ export interface GemHuntMapRecordScore {
   runID: string;
   player: string;
   score: number;
+  runRating?: number;
   totalScore?: number;
   bestScoresByMap?: Record<string, number>;
   media: string;
@@ -76,7 +77,9 @@ export interface GemHuntMapRecord {
 export interface PlayerTotalScoreObject {
   player: string;
   totalScore: number;
+  totalRunRating: number;
   bestScoresByMap: Record<string, number>;
+  runRatingByMap: Record<string, number>;
 }
 
 export interface OpponentDropdownData {
