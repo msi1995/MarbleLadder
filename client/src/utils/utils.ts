@@ -123,7 +123,7 @@ export const projectedMaxes: Record<string, number> = {
   "Brawl": 215,
   "Frostbite": 150,
   "Jumphouse": 250,
-  "Mosh Pit": 320,
+  "Mosh Pit": 315,
   "Nexus": 190,
   "Pythagoras": 200,
   "Stadion": 225,
