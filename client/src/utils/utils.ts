@@ -10,12 +10,68 @@ export const handleLogout = (navigate: NavigateFunction, cookies: Cookies) => {
   window.location.reload();
 };
 
-export const round =(value: number, precision: number) => {
+export const round = (value: number, precision: number) => {
   var multiplier = Math.pow(10, precision || 0);
   return Math.round(value * multiplier) / multiplier;
-}
+};
 
-export const getLadderData = async (setLadderData: React.Dispatch<React.SetStateAction<LadderPlayer[]>>) => {
+export const calculateScoreColor = (score: number) => {
+  const darkRed = [139, 0, 0];
+  const orange = [255, 165, 0];
+  const yellow = [255, 255, 0];
+  const lightGreen = [0, 236, 81];
+  const teal = [0, 185, 185];
+
+  let color;
+
+  if (score <= 20) {
+    // dark red and orange
+    const percentage = score / 20;
+    color = darkRed.map((channel, index) =>
+      Math.round(channel + percentage * (orange[index] - channel))
+    );
+  } else if (score <= 40) {
+    // orange and yellow
+    const percentage = (score - 20) / 20;
+    color = orange.map((channel, index) =>
+      Math.round(channel + percentage * (yellow[index] - channel))
+    );
+  } else if (score <= 60) {
+    // yellow and green
+    const percentage = (score - 40) / 20;
+    color = yellow.map((channel, index) =>
+      Math.round(channel + percentage * (lightGreen[index] - channel))
+    );
+  } else if (score <= 80) {
+    // green and teal
+    const percentage = (score - 60) / 20;
+    color = lightGreen.map((channel, index) =>
+      Math.round(channel + percentage * (teal[index] - channel))
+    );
+  } else if (score < 93) {
+    // teal and intense teal
+    const percentage = (score - 80) / 20;
+    const intenseTeal = [0, 240, 255];
+    const finalColor = teal.map((channel, index) =>
+      Math.round(channel + percentage * (intenseTeal[index] - channel))
+    );
+
+    color = finalColor.map((value) => Math.min(255, value));
+  }
+  // gold for 93-95.5
+  else if (score < 95.5) {
+    color = [255, 255, 0];
+  } else {
+    // volcano for 95.5+
+    color = [255, 0, 0];
+  }
+
+  return `rgb(${color.join(",")})`;
+};
+
+export const getLadderData = async (
+  setLadderData: React.Dispatch<React.SetStateAction<LadderPlayer[]>>
+) => {
   try {
     const res: Response = await fetch(BASE_ROUTE + "/ladder-data");
     const data: LadderPlayer[] = await res.json();
@@ -27,16 +83,13 @@ export const getLadderData = async (setLadderData: React.Dispatch<React.SetState
 
 export const userIsAdmin = async (token: string) => {
   try {
-    const res: Response = await fetch(
-      BASE_ROUTE + `/check-admin`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const res: Response = await fetch(BASE_ROUTE + `/check-admin`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
     const data = await res.json();
     return data.admin;
   } catch (error) {
@@ -50,4 +103,17 @@ export const smallScreen = () => {
 
 export const above1080 = () => {
   return window.innerWidth > 1980;
+};
+
+export const projectedMaxes: Record<string, number> = {
+  "Arcadia": 190,
+  "Assault": 275,
+  "Brawl": 215,
+  "Frostbite": 150,
+  "Jumphouse": 250,
+  "Mosh Pit": 320,
+  "Nexus": 190,
+  "Pythagoras": 200,
+  "Stadion": 225,
+  "Surf's Up": 140,
 }
