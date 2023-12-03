@@ -22,7 +22,7 @@ export const calculateScoreColor = (score: number) => {
   const lightGreen = [0, 236, 81];
   const teal = [0, 185, 185];
   const intenseTeal = [0, 225, 225];
-  const purple = [115, 0, 180]
+  const purple = [180, 0, 255]
 
   let color;
 
