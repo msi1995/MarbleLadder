@@ -202,7 +202,6 @@ export const GemHuntRecords = () => {
       }));
 
     if (filteredUniqueRecords.length) {
-      console.log(projectedMaxes[maps[mapIndex]]);
       setSortedMapRecordUniqueData(filteredUniqueRecords.slice(0, 10));
       setMapWorldRecordHolder(filteredUniqueRecords[0].player);
       setMapWorldRecord(filteredUniqueRecords[0].score);
