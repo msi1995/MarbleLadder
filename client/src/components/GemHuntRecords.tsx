@@ -706,7 +706,9 @@ export const GemHuntRecords = () => {
               }
             }
           })()}
-          pagination={false}
+          pagination={{
+            defaultPageSize: 50,
+          }}
         />
       </div>
     </div>
