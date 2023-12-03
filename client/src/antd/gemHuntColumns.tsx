@@ -1,7 +1,7 @@
 import { ColumnsType } from "antd/es/table";
 import { NavLink } from "react-router-dom";
 import { GemHuntMapRecordScore } from "../types/interfaces";
-import { calculateScoreColor, smallScreen } from "../utils/utils";
+import { calculateScoreColor, round, smallScreen } from "../utils/utils";
 import { Tooltip } from "antd";
 
 export let gemHuntColumns: ColumnsType<GemHuntMapRecordScore> = [
@@ -43,12 +43,12 @@ export let gemHuntColumns: ColumnsType<GemHuntMapRecordScore> = [
     ),
     dataIndex: "runRating",
     key: "runRating",
-    render: (_, { runRating }) => (
+    render: (_, { runRating }: any) => (
       //div by 10 for map tabs
       <span
         style={{ color: calculateScoreColor(runRating ? runRating / 10 : 0) }}
       >
-        {runRating}
+        {round(runRating, 1)}
       </span>
     ),
   },

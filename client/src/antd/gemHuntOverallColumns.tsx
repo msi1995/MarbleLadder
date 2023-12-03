@@ -1,6 +1,6 @@
 import { ColumnsType } from "antd/es/table";
 import { NavLink } from "react-router-dom";
-import { calculateScoreColor, smallScreen } from "../utils/utils";
+import { calculateScoreColor, round, smallScreen } from "../utils/utils";
 import { Tooltip } from 'antd'
 
 export let gemHuntOverallColumns: ColumnsType<any> = [
@@ -32,7 +32,7 @@ export let gemHuntOverallColumns: ColumnsType<any> = [
     render: (_, { totalRunRating }) => (
       //div by 100 for overall tab
       <span style={{ color: calculateScoreColor(totalRunRating / 100 ?? 0) }}>
-        {totalRunRating}
+        {round(totalRunRating, 1)}
       </span>
     ),
   },

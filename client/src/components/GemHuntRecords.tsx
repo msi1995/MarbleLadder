@@ -137,10 +137,8 @@ export const GemHuntRecords = () => {
       })
       .map((item, index) => ({
         ...item,
-        runRating: round(
+        runRating:
           (item.score / projectedMaxes[maps[mapIndex]]) * 1000,
-          1
-        ),
         rank: index + 1,
         key: `${index + 1}`,
       }));
@@ -193,10 +191,8 @@ export const GemHuntRecords = () => {
         ...item,
         // using maps[mapIndex] which returns the name of the selected map to get the projectedMax
         // entry for the map. Don't have an easy way to access map name here. not ideal. maybe revisit.
-        runRating: round(
+        runRating:
           (item.score / projectedMaxes[maps[mapIndex]]) * 1000,
-          1
-        ),
         rank: index + 1,
         key: `${index + 1}`,
       }));
@@ -246,10 +242,8 @@ export const GemHuntRecords = () => {
       ) {
         // set best scores/rating
         playerTotalScoreObjects[player].bestScoresByMap[map] = currentScore;
-        playerTotalScoreObjects[player].runRatingByMap[map] = round(
-          (currentScore / projectedMaxes[map]) * 1000,
-          1
-        );
+        playerTotalScoreObjects[player].runRatingByMap[map] = 
+          (currentScore / projectedMaxes[map]) * 1000;
       }
     });
 
@@ -590,13 +584,14 @@ export const GemHuntRecords = () => {
               </NavLink>
             </span>
             {mapIndex !== 0 && (
-              <span className='text-lg text-cyan-400 italic'>Projected Max: {projectedMaxes[maps[mapIndex]]}</span>
+              <span className="text-lg text-cyan-400 italic">
+                Projected Max: {projectedMaxes[maps[mapIndex]]}
+              </span>
             )}
             {mapIndex === 0 && (
               <span className="bg-black/70 sm:text-xl text-md py-1 px-2 rounded-md mb-8">
                 <span className="text-cyan-400">
-                  Sum of All Bests:{" "}
-                    <span>{communityWorldRecord}</span>
+                  Sum of All Bests: <span>{communityWorldRecord}</span>
                 </span>
               </span>
             )}
