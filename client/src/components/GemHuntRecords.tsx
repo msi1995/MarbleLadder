@@ -29,7 +29,7 @@ export const GemHuntRecords = () => {
   const token = cookies.get("MarbleToken");
   const navigate = useNavigate();
   const maps = [
-    "Overall",
+    "Total Rating",
     "Arcadia",
     "Assault",
     "Brawl",
@@ -568,7 +568,7 @@ export const GemHuntRecords = () => {
           >
             {"<"}
           </button>
-          <div className="sm:text-6xl text-3xl italic sm:w-72 w-40 inline-block">
+          <div className="sm:text-6xl text-3xl italic sm:w-80 w-40 inline-block">
             <span className="whitespace-nowrap">{maps[mapIndex]}</span>
           </div>
           <button
