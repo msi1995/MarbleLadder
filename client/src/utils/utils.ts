@@ -48,8 +48,8 @@ export const calculateScoreColor = (score: number) => {
     color = lightGreen.map((channel, index) =>
       Math.round(channel + percentage * (teal[index] - channel))
     );
-  } else if (score < 93) {
-    // teal and intense teal
+  } else if (score < 92.5) {
+    // teal and intense teal up to 924
     const percentage = (score - 80) / 20;
     const intenseTeal = [0, 240, 255];
     const finalColor = teal.map((channel, index) =>
@@ -58,11 +58,11 @@ export const calculateScoreColor = (score: number) => {
 
     color = finalColor.map((value) => Math.min(255, value));
   }
-  // gold for 93-95.5
-  else if (score < 95.5) {
+  // gold for 930-949
+  else if (score < 95) {
     color = [255, 255, 0];
   } else {
-    // volcano for 95.5+
+    // volcano for 950+
     color = [255, 0, 0];
   }
 
