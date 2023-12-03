@@ -24,34 +24,34 @@ export const calculateScoreColor = (score: number) => {
 
   let color;
 
-  if (score <= 20) {
+  if (score <= 50) {
     // dark red and orange
-    const percentage = score / 20;
+    const percentage = (score - 5) / 20;
     color = darkRed.map((channel, index) =>
       Math.round(channel + percentage * (orange[index] - channel))
     );
-  } else if (score <= 40) {
+  } else if (score <= 60) {
     // orange and yellow
-    const percentage = (score - 20) / 20;
+    const percentage = (score - 25) / 20;
     color = orange.map((channel, index) =>
       Math.round(channel + percentage * (yellow[index] - channel))
     );
-  } else if (score <= 60) {
+  } else if (score <= 75) {
     // yellow and green
-    const percentage = (score - 40) / 20;
+    const percentage = (score - 60) / 20;
     color = yellow.map((channel, index) =>
       Math.round(channel + percentage * (lightGreen[index] - channel))
     );
-  } else if (score <= 80) {
+  } else if (score <= 85) {
     // green and teal
-    const percentage = (score - 60) / 20;
+    const percentage = (score - 70) / 20;
     color = lightGreen.map((channel, index) =>
       Math.round(channel + percentage * (teal[index] - channel))
     );
   } else if (score < 92.5) {
     // teal and intense teal up to 924
-    const percentage = (score - 80) / 20;
-    const intenseTeal = [0, 240, 255];
+    const percentage = (score - 75) / 20;
+    const intenseTeal = [0, 225, 225];
     const finalColor = teal.map((channel, index) =>
       Math.round(channel + percentage * (intenseTeal[index] - channel))
     );

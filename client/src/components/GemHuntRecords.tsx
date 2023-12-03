@@ -146,7 +146,7 @@ export const GemHuntRecords = () => {
       }));
 
     if (filteredAllRecords.length) {
-      setSortedMapRecordAllData(filteredAllRecords.slice(0, 10));
+      setSortedMapRecordAllData(filteredAllRecords);
     } else {
       setSortedMapRecordAllData([]);
     }
@@ -202,7 +202,7 @@ export const GemHuntRecords = () => {
       }));
 
     if (filteredUniqueRecords.length) {
-      setSortedMapRecordUniqueData(filteredUniqueRecords.slice(0, 10));
+      setSortedMapRecordUniqueData(filteredUniqueRecords);
       setMapWorldRecordHolder(filteredUniqueRecords[0].player);
       setMapWorldRecord(filteredUniqueRecords[0].score);
       setYTEmbedURL(filteredUniqueRecords[0].media);
