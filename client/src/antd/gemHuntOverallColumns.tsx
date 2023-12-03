@@ -20,7 +20,7 @@ export let gemHuntOverallColumns: ColumnsType<any> = [
   {
     title: (
       <Tooltip
-        overlayInnerStyle={{ fontSize: "14px" }}
+        overlayInnerStyle={{ fontSize: "10px" }}
         title="Sum of all map ratings"
         color="#108ee9"
       >
