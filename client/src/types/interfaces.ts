@@ -89,13 +89,13 @@ export interface OpponentDropdownData {
 
 export interface TimelineEvent {
   date: Date;
-  playerName: String;
-  map?: String;
-  description?: String;
-  multiLineDescription?: String[];
+  playerName: string;
+  map?: string;
+  description?: string;
+  multiLineDescription?: string[];
   score: number;
   previousRecord?: number;
-  type: String;
+  type: string;
 }
 
 export interface ModalProps {

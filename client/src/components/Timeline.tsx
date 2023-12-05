@@ -6,10 +6,16 @@ import {
 import "react-vertical-timeline-component/style.min.css";
 import { BASE_ROUTE } from "../App";
 import { TimelineEvent } from "../types/interfaces";
+import { projectedMaxes, round } from "../utils/utils";
+import { Tooltip } from "antd";
 
 export const Timeline = () => {
-  const [rawTimelineEvents, setRawTimelineEvents] = useState<TimelineEvent[]>([]);
-  const [displayedTimelineEvents, setDisplayedTimelineEvents] = useState<TimelineEvent[]>([]);
+  const [rawTimelineEvents, setRawTimelineEvents] = useState<TimelineEvent[]>(
+    []
+  );
+  const [displayedTimelineEvents, setDisplayedTimelineEvents] = useState<
+    TimelineEvent[]
+  >([]);
   const [mapToFilterBy, setMapToFilterBy] = useState<string>("Select");
   const fetchTimelineData = async () => {
     try {
@@ -30,8 +36,7 @@ export const Timeline = () => {
   const filterTimelineEvents = () => {
     const filteredEvents = rawTimelineEvents.filter(
       (event) =>
-        event.type === "solo-IL" &&
-        (mapToFilterBy !== "Select" ? event.map === mapToFilterBy : true)
+        (mapToFilterBy !== "Select" ? event?.map === mapToFilterBy : true)
     );
     setDisplayedTimelineEvents(filteredEvents);
   };
@@ -104,6 +109,46 @@ export const Timeline = () => {
                       {entry.previousRecord === 0
                         ? `This was the first record recorded.`
                         : `The previous record was ${entry.previousRecord}.`}
+                    </p>
+                  </div>
+                );
+                break;
+
+              case "gold-run":
+                content = (
+                  <div>
+                    <h3 className="font-semibold text-yellow-400">
+                      Gold Run -{" "}
+                      <span className="italic text-cyan-400">
+                        {`${entry.map}, ${entry.score} — ${entry.playerName}`}
+                      </span>
+                    </h3>
+                    <p className="!font-normal">
+                      <a
+                        href={`/player/${entry.playerName}`}
+                        className="text-cyan-400 hover:text-cyan-500"
+                      >
+                        {entry.playerName}{" "}
+                      </a>
+                      {`
+                    records a `}{" "}
+                      <Tooltip
+                        className="text-yellow-400"
+                        overlayInnerStyle={{ fontSize: "12px", color: "black", border: "2px solid black", fontStyle: 'italic'}}
+                        arrow={false}
+                        title="Run rating of 980+"
+                        color="#29dcec"
+                      >
+                        gold run
+                      </Tooltip>
+                      <span> on {entry.map}, with a rating of </span>
+                      <span className="text-yellow-400">{`${round(
+                        (entry.score / projectedMaxes[entry.map!]) * 1000,
+                        1
+                      )}! `}</span>
+                      <br />
+                      <br />
+                      <span>This is an extraordinary score.</span>
                     </p>
                   </div>
                 );

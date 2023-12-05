@@ -34,9 +34,15 @@ export let gemHuntColumns: ColumnsType<GemHuntMapRecordScore> = [
   {
     title: (
       <Tooltip
-        overlayInnerStyle={{ fontSize: "10px" }}
+      overlayInnerStyle={{
+        width: "160px",
+        textAlign: "center",
+        fontSize: "12px",
+        color: "black",
+        border: "2px solid black",
+      }}
         title="Calculated as player score / projectedMax * 1000."
-        color="#108ee9"
+        color="#29dcec"
       >
         Run Rating ⓘ
       </Tooltip>
