@@ -570,14 +570,13 @@ try {
               Confirm Results ({unconfirmedMatches.length} pending!)
             </button>
           )}
-          {Boolean(token) && (
             <button
+            disabled={!Boolean(token)}
               onClick={handleOpenMatchReportModal}
-              className="block sm:w-64 w-48 rounded-md hover:bg-blue-500 bg-black px-4 py-2.5 sm:mr-4 mr-2 mb-2 text-center text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              className={`${Boolean(token) ? 'opacity-100 hover:text-white' : 'opacity-60'} block text-cyan-400 sm:w-48 w-42 px-2 py-2 my-2 mr-2 sm:mr-0 sm:text-sm text-xs font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 rounded-md bg-black`}
             >
-              Report Match Results
+              {Boolean(token) ? 'Report Match Results' : 'Sign in to report matches'}
             </button>
-          )}
         </div>
         <div className="flex justify-center items-center md:text-2xl text-md text-white w-full text-center pb-2">
           <span className="bg-black-opacity-50 sm:pb-1.5 sm:pt-1 sm:px-3 py-1 px-1.5 rounded-md">

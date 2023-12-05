@@ -7,9 +7,7 @@ import {
   handleLogout,
   smallScreen,
   userIsAdmin,
-  calculateScoreColor,
   projectedMaxes,
-  round,
 } from "../utils/utils";
 import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
 import { FormEvent, useEffect, useRef, useState } from "react";
@@ -659,18 +657,17 @@ export const GemHuntRecords = () => {
             )}
             <a
               href="/timeline"
-              className="block self-end sm:w-48 w-36 px-2 py-2 mt-2 mr-2 sm:mr-0 sm:text-sm text-xs font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 rounded-md hover:bg-blue-500 bg-black"
+              className="block self-end text-cyan-400  sm:w-48 w-36 px-2 py-2 mt-2 mr-2 sm:mr-0 sm:text-sm text-xs font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 rounded-md hover:text-white bg-black"
             >
               View Timeline
             </a>
-            {Boolean(token) && (
               <button
+              disabled={!Boolean(token)}
                 onClick={() => setSubmissionModalOpen(true)}
-                className="block self-end sm:w-48 w-36 px-2 py-2 mt-2 mr-2 sm:mr-0 sm:text-sm text-xs font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 rounded-md hover:bg-blue-500 bg-black"
+                className={`${Boolean(token) ? 'opacity-100 hover:text-white' : 'opacity-60'} block self-end text-cyan-400  sm:w-48 w-36 px-2 py-2 mt-2 mr-2 sm:mr-0 sm:text-sm text-xs font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 rounded-md bg-black`}
               >
-                Report a run
+                {Boolean(token) ? 'Report a run' : 'Log in to report runs'}
               </button>
-            )}
           </div>
         </div>
       </div>
