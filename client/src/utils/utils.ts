@@ -119,7 +119,7 @@ export const above1080 = () => {
 
 export const projectedMaxes: Record<string, number> = {
   "Arcadia": 190,
-  "Assault": 275,
+  "Assault": 290,
   "Brawl": 215,
   "Frostbite": 150,
   "Jumphouse": 250,
