@@ -1,7 +1,7 @@
 import { ColumnsType } from "antd/es/table";
 import { NavLink } from "react-router-dom";
 import { calculateScoreColor, round, smallScreen } from "../utils/utils";
-import { Tooltip } from 'antd'
+import { Tooltip } from "antd";
 
 export let gemHuntOverallColumns: ColumnsType<any> = [
   {
@@ -20,10 +20,14 @@ export let gemHuntOverallColumns: ColumnsType<any> = [
   {
     title: (
       <Tooltip
-        overlayInnerStyle={{ fontSize: "10px" }}
+        overlayInnerStyle={{
+          fontSize: "12px",
+          color: "black",
+          border: "2px solid black",
+        }}
         title="Sum of all map ratings"
-        color="#108ee9"
-      >
+        color="#29dcec"
+        >
         Overall Rating ⓘ
       </Tooltip>
     ),

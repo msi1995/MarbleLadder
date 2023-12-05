@@ -6,6 +6,7 @@ const gemHuntMapRecord = require('../models/GemHuntRecord');
 const ladderPlayer = require('../models/LadderPlayer');
 const TimelineEvent = require('../models/TimelineEvent');
 const router = express.Router();
+const { round, projectedMaxes } = require('../utils/utils')
 
 
 router.get('/gem-hunt-map-records/', async (req, res) => {
@@ -67,7 +68,26 @@ router.post('/approve-gem-hunt-record/', auth, async (req, res) => {
     const { worldRecord: mapWR } = await gemHuntMapRecord.findOne({ mapName: map })
     try {
         const unverifiedMatch = await gemHuntMapRecord.findOne({ "scores.runID": runID }, { "scores.$": 1 })
-        //WR will be new WR if approved score beats it
+
+        // create a gold run event if rating is 980+
+        if (round((unverifiedMatch.scores[0].score / projectedMaxes[map] * 1000), 1) >= 980) {
+            try {
+                const newTimelineEvent = new TimelineEvent({
+                    date: new Date(),
+                    playerName: runner,
+                    map: map,
+                    score: unverifiedMatch.scores[0].score,
+                    type: 'gold-run'
+                })
+                newTimelineEvent.save()
+            }
+            catch {
+                (err) => console.log(err);
+                res.status(500).send({ error: "Error creating a timeline event." })
+            }
+        }
+
+        // WR will be new WR if approved score beats it
         const WR = Math.max(unverifiedMatch.scores[0].score, mapWR)
 
         await gemHuntMapRecord.updateOne(
