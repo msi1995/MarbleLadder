@@ -15,10 +15,10 @@ export const Homepage = () => {
         </div>
       </div>
       <div className="fixed bottom-0 py-4 w-full bg-black/70 items-center justify-center text-white text-center">
-        <span className="block w-full sm:px-4 sm:pb-8 sm:text-4xl text-lg">
+        <span className="block w-full sm:px-4 sm:pb-8 xl:text-4xl sm:text-3xl text-lg">
           MarbleLadder implements features supporting <i className='neon-text-allsize'>Marble It Up! Ultra</i> ranked matches and gem hunt record tracking!
         </span>
-        <span className="block w-full sm:px-64 px-4 mt-4 sm:text-xl text-xs">
+        <span className="block w-full 2xl:px-64 lg:px-32 px-4 mt-4 sm:text-xl text-xs">
           Play and report 1v1 matches against opponents on PC, Xbox, PlayStation or Switch to climb the 1v1 ladder, or play solo to try and set a Solo Gem Hunt world record! You can look for opponents in the
           MIU Discord and then host a private game to play ranked matches.
         </span>
