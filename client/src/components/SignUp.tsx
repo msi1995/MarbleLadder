@@ -12,12 +12,25 @@ export const SignUp = () => {
 
   const handleRegisterSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email || !password || !confirmedPassword || !displayName) {
       alert("Please fill out all required fields.");
       return;
     }
     if (password !== confirmedPassword) {
       alert("Passwords don't match.");
+      return;
+    }
+    if(!email.match(emailRegex)){
+      alert("Enter a valid email address.");
+      return;
+    }
+    if(!(displayName.length >= 2)){
+      alert("Display name must be at least 2 characters.");
+      return;
+    }
+    if(!(password.length >= 6)){
+      alert("Password must be at least 6 characters.");
       return;
     }
 
