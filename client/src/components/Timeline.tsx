@@ -107,7 +107,7 @@ export const Timeline = () => {
                     </p>
                     <p className="!font-normal">
                       {entry.previousRecord === 0
-                        ? `This was the first record recorded.`
+                        ? `This was the first score reported for the map.`
                         : `The previous record was ${entry.previousRecord}.`}
                     </p>
                   </div>
