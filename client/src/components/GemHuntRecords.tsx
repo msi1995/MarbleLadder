@@ -358,6 +358,7 @@ export const GemHuntRecords = () => {
         setSubmissionModalOpen(false);
         setReportedScore(null);
         setMediaLink(null);
+        setDescription('');
       }
       if (res.status === 403) {
         handleLogout(navigate, cookies);
@@ -436,6 +437,7 @@ export const GemHuntRecords = () => {
           setSubmissionModalOpen(false);
           setMediaLink(null);
           setReportedScore(null);
+          setDescription('');
         }}
       >
         <div className="flex flex-col items-center sm:px-16 sm:py-4 px-2 pt-4 pb-2 gap-y-4">
