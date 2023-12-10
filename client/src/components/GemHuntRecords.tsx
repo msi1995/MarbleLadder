@@ -135,8 +135,7 @@ export const GemHuntRecords = () => {
       })
       .map((item, index) => ({
         ...item,
-        runRating:
-          (item.score / projectedMaxes[maps[mapIndex]]) * 1000,
+        runRating: (item.score / projectedMaxes[maps[mapIndex]]) * 1000,
         rank: index + 1,
         key: `${index + 1}`,
       }));
@@ -189,8 +188,7 @@ export const GemHuntRecords = () => {
         ...item,
         // using maps[mapIndex] which returns the name of the selected map to get the projectedMax
         // entry for the map. Don't have an easy way to access map name here. not ideal. maybe revisit.
-        runRating:
-          (item.score / projectedMaxes[maps[mapIndex]]) * 1000,
+        runRating: (item.score / projectedMaxes[maps[mapIndex]]) * 1000,
         rank: index + 1,
         key: `${index + 1}`,
       }));
@@ -240,7 +238,7 @@ export const GemHuntRecords = () => {
       ) {
         // set best scores/rating
         playerTotalScoreObjects[player].bestScoresByMap[map] = currentScore;
-        playerTotalScoreObjects[player].runRatingByMap[map] = 
+        playerTotalScoreObjects[player].runRatingByMap[map] =
           (currentScore / projectedMaxes[map]) * 1000;
       }
     });
@@ -359,7 +357,7 @@ export const GemHuntRecords = () => {
       if (res.status === 201) {
         setSubmissionModalOpen(false);
         setReportedScore(null);
-        setMediaLink(null)
+        setMediaLink(null);
       }
       if (res.status === 403) {
         handleLogout(navigate, cookies);
@@ -434,7 +432,11 @@ export const GemHuntRecords = () => {
       )}
       <Modal
         isOpen={submissionModalOpen}
-        onClose={() => setSubmissionModalOpen(false)}
+        onClose={() => {
+          setSubmissionModalOpen(false);
+          setMediaLink(null);
+          setReportedScore(null);
+        }}
       >
         <div className="flex flex-col items-center sm:px-16 sm:py-4 px-2 pt-4 pb-2 gap-y-4">
           <span className="sm:text-4xl text-2xl font-bold">
@@ -662,13 +664,15 @@ export const GemHuntRecords = () => {
             >
               View Timeline
             </a>
-              <button
+            <button
               disabled={!Boolean(token)}
-                onClick={() => setSubmissionModalOpen(true)}
-                className={`${Boolean(token) ? 'opacity-100 hover:text-white' : 'opacity-60'} block self-end text-cyan-400  sm:w-48 w-36 px-2 py-2 mt-2 mr-2 sm:mr-0 sm:text-sm text-xs font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 rounded-md bg-black`}
-              >
-                {Boolean(token) ? 'Report a run' : 'Log in to report runs'}
-              </button>
+              onClick={() => setSubmissionModalOpen(true)}
+              className={`${
+                Boolean(token) ? "opacity-100 hover:text-white" : "opacity-60"
+              } block self-end text-cyan-400  sm:w-48 w-36 px-2 py-2 mt-2 mr-2 sm:mr-0 sm:text-sm text-xs font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 rounded-md bg-black`}
+            >
+              {Boolean(token) ? "Report a run" : "Log in to report runs"}
+            </button>
           </div>
         </div>
       </div>
