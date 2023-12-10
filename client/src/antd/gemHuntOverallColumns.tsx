@@ -56,6 +56,6 @@ export let gemHuntOverallColumns: ColumnsType<any> = [
 
 if (smallScreen()) {
   gemHuntOverallColumns = gemHuntOverallColumns.filter(
-    (item) => item.key !== "media"
+    (item) => item.key !== "mediaLink"
   );
 }
