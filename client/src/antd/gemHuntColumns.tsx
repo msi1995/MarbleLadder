@@ -100,7 +100,6 @@ export let gemHuntColumns: ColumnsType<GemHuntMapRecordScore> = [
 
 if (smallScreen()) {
   gemHuntColumns = gemHuntColumns.filter(
-    (item) =>
-      item.key !== "game" && item.key !== "description" && item.key !== "date"
+    (item) => item.key !== "description" && item.key !== "date"
   );
 }
