@@ -359,6 +359,7 @@ export const GemHuntRecords = () => {
       if (res.status === 201) {
         setSubmissionModalOpen(false);
         setReportedScore(null);
+        setMediaLink(null)
       }
       if (res.status === 403) {
         handleLogout(navigate, cookies);

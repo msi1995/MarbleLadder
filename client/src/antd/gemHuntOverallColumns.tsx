@@ -27,7 +27,7 @@ export let gemHuntOverallColumns: ColumnsType<any> = [
         }}
         title="Sum of all map ratings"
         color="#29dcec"
-        >
+      >
         Overall Rating ⓘ
       </Tooltip>
     ),
@@ -56,6 +56,6 @@ export let gemHuntOverallColumns: ColumnsType<any> = [
 
 if (smallScreen()) {
   gemHuntOverallColumns = gemHuntOverallColumns.filter(
-    (item) => item.key !== "game"
+    (item) => item.key !== "game" && item.key !== "media"
   );
 }

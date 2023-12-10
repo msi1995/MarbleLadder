@@ -34,13 +34,13 @@ export let gemHuntColumns: ColumnsType<GemHuntMapRecordScore> = [
   {
     title: (
       <Tooltip
-      overlayInnerStyle={{
-        width: "160px",
-        textAlign: "center",
-        fontSize: "12px",
-        color: "black",
-        border: "2px solid black",
-      }}
+        overlayInnerStyle={{
+          width: "160px",
+          textAlign: "center",
+          fontSize: "12px",
+          color: "black",
+          border: "2px solid black",
+        }}
         title="Calculated as player score / projectedMax * 1000."
         color="#29dcec"
       >
@@ -100,6 +100,7 @@ export let gemHuntColumns: ColumnsType<GemHuntMapRecordScore> = [
 
 if (smallScreen()) {
   gemHuntColumns = gemHuntColumns.filter(
-    (item) => item.key !== "game" && item.key !== "description"
+    (item) =>
+      item.key !== "game" && item.key !== "description" && item.key !== "date"
   );
 }
