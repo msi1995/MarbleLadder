@@ -17,7 +17,7 @@ export const Timeline = () => {
     TimelineEvent[]
   >([]);
   const [mapToFilterBy, setMapToFilterBy] = useState<string>("All");
-  const [eventTypeToFilterBy, setEventTypeToFilterBy] = useState<string>("Any");
+  const [eventTypeToFilterBy, setEventTypeToFilterBy] = useState<string>("All");
   const fetchTimelineData = async () => {
     try {
       const res: Response = await fetch(
