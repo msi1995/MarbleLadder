@@ -225,7 +225,7 @@ export const Timeline = () => {
                 content = (
                   <div>
                     <h3 className="font-semibold">Event </h3>
-                    <p className="!font-normal text-cyan-400">
+                    <p className="!font-normal">
                       {entry.playerName && (
                         <a
                           href={`/player/${entry.playerName}`}
