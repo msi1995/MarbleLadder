@@ -16,7 +16,8 @@ export const Timeline = () => {
   const [displayedTimelineEvents, setDisplayedTimelineEvents] = useState<
     TimelineEvent[]
   >([]);
-  const [mapToFilterBy, setMapToFilterBy] = useState<string>("Select");
+  const [mapToFilterBy, setMapToFilterBy] = useState<string>("All");
+  const [eventTypeToFilterBy, setEventTypeToFilterBy] = useState<string>("Any");
   const fetchTimelineData = async () => {
     try {
       const res: Response = await fetch(
@@ -33,10 +34,21 @@ export const Timeline = () => {
     }
   };
 
+  //first filter by map, if no map then filter by event type.
   const filterTimelineEvents = () => {
-    const filteredEvents = rawTimelineEvents.filter((event) =>
-      mapToFilterBy !== "Select" ? event?.map === mapToFilterBy : true
-    );
+    const filteredEvents = rawTimelineEvents
+      .filter((event) =>
+        mapToFilterBy !== "All" ? event?.map === mapToFilterBy : true
+      )
+      // if the event is not solo-IL/gold-run, return all non solo-IL/gold-run. Done this way because there are many types of custom events.
+      // if NOT custom and NOT all, filter based on eventTypeToFilterBy. If all, return everything.
+      .filter((event) =>
+        eventTypeToFilterBy === "custom"
+          ? event?.type !== "solo-IL" && event?.type !== "gold-run"
+          : eventTypeToFilterBy === "All"
+          ? true
+          : event?.type === eventTypeToFilterBy
+      );
     setDisplayedTimelineEvents(filteredEvents);
   };
 
@@ -46,7 +58,7 @@ export const Timeline = () => {
 
   useEffect(() => {
     filterTimelineEvents();
-  }, [mapToFilterBy]);
+  }, [mapToFilterBy, eventTypeToFilterBy]);
 
   const formatDate = (date: Date) => {
     return new Date(date).toDateString().split(" ").slice(1).join(" ");
@@ -55,29 +67,48 @@ export const Timeline = () => {
   return (
     <div className="pt-24 w-full !overflow-x-hidden">
       <div className="mt-12 flex flex-col items-center justify-center text-white">
-        <div className="flex pb-8 gap-x-4 items-center">
-          <label htmlFor="map-filter">Filter by map:</label>
-          <select
-            value={mapToFilterBy}
-            onChange={(e) => {
-              setMapToFilterBy(e.target.value);
-            }}
-            name="map-filter"
-            id="map-filter"
-            className="!text-cyan-400 italic w-32 rounded-md px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 bg-black"
-          >
-            <option value="Select">Select</option>
-            <option value="Arcadia">Arcadia</option>
-            <option value="Assault">Assault</option>
-            <option value="Brawl">Brawl</option>
-            <option value="Frostbite">Frostbite</option>
-            <option value="Jumphouse">Jumphouse</option>
-            <option value="Mosh Pit">Mosh Pit</option>
-            <option value="Nexus">Nexus</option>
-            <option value="Pythagoras">Pythagoras</option>
-            <option value="Stadion">Stadion</option>
-            <option value="Surf's Up">Surf's Up</option>
-          </select>
+        <div className="flex flex-col pb-8 gap-y-2 items-center">
+          <div className="flex gap-x-4 items-center">
+            <label htmlFor="map-filter">Filter by map:</label>
+            <select
+              value={mapToFilterBy}
+              onChange={(e) => {
+                setMapToFilterBy(e.target.value);
+              }}
+              name="map-filter"
+              id="map-filter"
+              className="!text-cyan-400 italic w-32 rounded-md px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 bg-black"
+            >
+              <option value="All">All</option>
+              <option value="Arcadia">Arcadia</option>
+              <option value="Assault">Assault</option>
+              <option value="Brawl">Brawl</option>
+              <option value="Frostbite">Frostbite</option>
+              <option value="Jumphouse">Jumphouse</option>
+              <option value="Mosh Pit">Mosh Pit</option>
+              <option value="Nexus">Nexus</option>
+              <option value="Pythagoras">Pythagoras</option>
+              <option value="Stadion">Stadion</option>
+              <option value="Surf's Up">Surf's Up</option>
+            </select>
+          </div>
+          <div className="flex gap-x-4 items-center">
+            <label htmlFor="event-filter">Filter by type:</label>
+            <select
+              value={eventTypeToFilterBy}
+              onChange={(e) => {
+                setEventTypeToFilterBy(e.target.value);
+              }}
+              name="event-filter"
+              id="event-filter"
+              className="!text-cyan-400 italic w-32 rounded-md px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 bg-black"
+            >
+              <option value="All">All</option>
+              <option value="gold-run">Gold Runs</option>
+              <option value="solo-IL">Records</option>
+              <option value="custom">Special Events</option>
+            </select>
+          </div>
         </div>
         <VerticalTimeline lineColor={"black"}>
           {displayedTimelineEvents.map((entry) => {
@@ -189,7 +220,7 @@ export const Timeline = () => {
                 );
                 break;
 
-              default:
+              case "custom":
                 // non IL event. display playerName with link if the entry has a player associated with it
                 content = (
                   <div>
