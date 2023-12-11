@@ -34,9 +34,8 @@ export const Timeline = () => {
   };
 
   const filterTimelineEvents = () => {
-    const filteredEvents = rawTimelineEvents.filter(
-      (event) =>
-        (mapToFilterBy !== "Select" ? event?.map === mapToFilterBy : true)
+    const filteredEvents = rawTimelineEvents.filter((event) =>
+      mapToFilterBy !== "Select" ? event?.map === mapToFilterBy : true
     );
     setDisplayedTimelineEvents(filteredEvents);
   };
@@ -134,7 +133,12 @@ export const Timeline = () => {
                     records a `}{" "}
                       <Tooltip
                         className="text-yellow-400"
-                        overlayInnerStyle={{ fontSize: "12px", color: "black", border: "2px solid black", fontStyle: 'italic'}}
+                        overlayInnerStyle={{
+                          fontSize: "12px",
+                          color: "black",
+                          border: "2px solid black",
+                          fontStyle: "italic",
+                        }}
                         arrow={false}
                         title="Run rating of 980+"
                         color="#29dcec"
@@ -186,11 +190,19 @@ export const Timeline = () => {
                 break;
 
               default:
-                // non IL event. custom event or something.
+                // non IL event. display playerName with link if the entry has a player associated with it
                 content = (
                   <div>
                     <h3 className="font-semibold">Event </h3>
                     <p className="!font-normal text-cyan-400">
+                      {entry.playerName && (
+                        <a
+                          href={`/player/${entry.playerName}`}
+                          className="text-cyan-400 hover:text-cyan-500"
+                        >
+                          {entry.playerName}{" "}
+                        </a>
+                      )}
                       {entry.description}
                     </p>
                   </div>
