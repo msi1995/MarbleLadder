@@ -178,7 +178,7 @@ export const Timeline = () => {
                       </Tooltip>
                       <span> on {entry.map}, with a rating of </span>
                       <span className="text-yellow-400">{`${round(
-                        (entry.score / projectedMaxes[entry.map!]) * 1000,
+                        (entry.score / entry.projMaxWas!) * 1000,
                         1
                       )}! `}</span>
                       <br />
