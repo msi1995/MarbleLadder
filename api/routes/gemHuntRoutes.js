@@ -77,6 +77,7 @@ router.post('/approve-gem-hunt-record/', auth, async (req, res) => {
                     playerName: runner,
                     map: map,
                     score: unverifiedMatch.scores[0].score,
+                    projMaxWas: projectedMaxes[map],
                     type: 'gold-run'
                 })
                 newTimelineEvent.save()

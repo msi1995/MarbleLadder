@@ -95,6 +95,7 @@ export interface TimelineEvent {
   multiLineDescription?: string[];
   score: number;
   previousRecord?: number;
+  projMaxWas?: number;
   type: string;
 }
 
