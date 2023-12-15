@@ -182,7 +182,10 @@ export const Timeline = () => {
                         1
                       )}! `}</span>
                       <br />
+                      The projected max at the time was{" "}
+                      <span className="text-cyan-400">{entry.projMaxWas}.</span>
                       <br />
+                      <br/>
                       <span>This is an extraordinary score.</span>
                     </p>
                   </div>

@@ -1,6 +1,10 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var TimelineEventModel = {
+    type: {
+        type: String,
+        required: true,
+    },
     date: {
         type: Date,
         required: true,
@@ -21,9 +25,9 @@ var TimelineEventModel = {
         type: Number,
         required: false,
     },
-    type: {
-        type: String,
-        required: true,
+    projMaxWas: {
+        type: Number,
+        required: false,
     },
     description: {
         type: String,
