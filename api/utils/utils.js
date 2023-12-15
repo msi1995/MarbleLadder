@@ -1,5 +1,5 @@
 const projectedMaxes = {
-  "Arcadia": 190,
+  "Arcadia": 200,
   "Assault": 280,
   "Brawl": 215,
   "Frostbite": 153,
