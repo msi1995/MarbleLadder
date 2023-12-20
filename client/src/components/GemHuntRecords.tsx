@@ -44,11 +44,14 @@ export const GemHuntRecords = () => {
   const [admin, setAdmin] = useState<boolean>(false);
   const [gemHuntSubmitButtonText, setGemHuntSubmitButtonText] =
     useState<string>("Submit score");
-  const [runApprovalButtonsDisabled, setRunApprovalButtonsDisabled] = useState<boolean>(false);
-  const [runApprovalButtonText, setRunApprovalButtonText] = useState<string>('Approve run');
-  const [runDenialButtonText, setRunDenialButtonText] = useState<string>('Deny run');
   const [gemHuntModalDisabled, setGemHuntModalDisabled] =
     useState<boolean>(false);
+  const [runApprovalButtonsDisabled, setRunApprovalButtonsDisabled] =
+    useState<boolean>(false);
+  const [runApprovalButtonText, setRunApprovalButtonText] =
+    useState<string>("Approve run");
+  const [runDenialButtonText, setRunDenialButtonText] =
+    useState<string>("Deny run");
   const [mapIndex, setMapIndex] = useState<number>(0);
   const [selectedMap, setSelectedMap] = useState<string>(maps[1]);
   const [allMapData, setAllMapData] = useState<GemHuntMapRecord[]>([]);
@@ -369,6 +372,7 @@ export const GemHuntRecords = () => {
         setReportedScore(null);
         setMediaLink(null);
         setDescription("");
+        setGemHuntModalDisabled(false);
       }
       if (res.status === 403) {
         handleLogout(navigate, cookies);
@@ -416,12 +420,12 @@ export const GemHuntRecords = () => {
   };
 
   const handleConfirmRun = () => {
-    setRunApprovalButtonText("Approving...")
+    setRunApprovalButtonText("Approving...");
     handleVerifyAction("approve");
   };
 
   const handleDenyRun = () => {
-    setRunDenialButtonText("Denying...")
+    setRunDenialButtonText("Denying...");
     handleVerifyAction("deny");
   };
 
@@ -495,8 +499,7 @@ export const GemHuntRecords = () => {
               htmlFor="text"
               className="block text-sm font-semibold w-full"
             >
-              Screenshot or video link:{" "}
-              <span className="text-red-600"> *</span>
+              Screenshot or video link: <span className="text-red-600"> *</span>
             </label>
             <input
               type="text"
@@ -539,7 +542,8 @@ export const GemHuntRecords = () => {
       >
         <div className="flex flex-col items-center sm:px-16 py-4 gap-y-4">
           <span className="sm:text-4xl text-2xl font-bold">
-            Verify Gem Hunt Record - {runConfirmationIdx + 1} of {unverifiedRuns.length}
+            Verify Gem Hunt Record - {runConfirmationIdx + 1} of{" "}
+            {unverifiedRuns.length}
           </span>
           <span className="text-green-600 text-2xl">
             {unverifiedRuns[runConfirmationIdx]?.player} -{" "}
@@ -564,12 +568,14 @@ export const GemHuntRecords = () => {
           </a>
           <div className="flex flex-row border-0 border-red-600 border-solid w-full justify-center gap-x-8">
             <button
+              disabled={runApprovalButtonsDisabled}
               onClick={handleConfirmRun}
               className="w-36 h-8 mt-2 py-1 px-1 bg-blue-600 hover:bg-blue-700 text-sm text-white font-semibold rounded transition duration-200"
             >
               {runApprovalButtonText}
             </button>
             <button
+              disabled={runApprovalButtonsDisabled}
               onClick={handleDenyRun}
               className="w-36 h-8 mt-2 py-1 px-1 bg-red-600 hover:bg-red-700 text-sm text-white font-semibold rounded transition duration-200"
             >
