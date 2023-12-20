@@ -17,7 +17,6 @@ var gemHuntMapRecordModel = {
             description: String,
             verified: Boolean,
             verifiedBy: String,
-            denied: Boolean,
             date: Date,
         },
     ],

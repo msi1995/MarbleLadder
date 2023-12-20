@@ -61,7 +61,6 @@ export interface GemHuntMapRecordScore {
   description: string;
   verified: boolean;
   verifiedBy: string;
-  denied: boolean;
   date: Date;
 }
 export interface GemHuntMapRecordScoreWithMap extends GemHuntMapRecordScore {

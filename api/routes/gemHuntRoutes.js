@@ -35,7 +35,7 @@ router.get('/gem-hunt-map-records/unverified', async (req, res) => {
         const mapsWithUnverifiedScores = await gemHuntMapRecord.find({ 'scores.verified': false })
         const allUnverifiedScores = [];
         mapsWithUnverifiedScores.forEach((mapEntry) => {
-            const unverifiedScoresSingleMap = mapEntry.scores.filter((score) => !score.verified && !score.denied);
+            const unverifiedScoresSingleMap = mapEntry.scores.filter((score) => !score.verified);
 
             unverifiedScoresSingleMap.forEach((scoreEntry) => {
                 //use toObject to avoid this being in a very strange format when returned
@@ -183,7 +183,7 @@ router.post('/deny-gem-hunt-record/', auth, async (req, res) => {
             { "scores.runID": runID },
             { $pull: { scores: { runID: runID } } }
         );
-        res.status(200).send({ message: "Run updated as denied." })
+        res.status(200).send({ message: "Run rejected." })
     } catch (err) {
         console.error(`error: ${err}`);
     }
@@ -221,7 +221,6 @@ router.post('/submit-gem-hunt-record/', auth, async (req, res) => {
                     media: mediaLink,
                     description: description,
                     verified: false,
-                    denied: false,
                     date: new Date(),
                 }
             }
