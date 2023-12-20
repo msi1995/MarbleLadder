@@ -42,6 +42,13 @@ export const GemHuntRecords = () => {
   const [searchParams] = useSearchParams();
   const paramIdx = searchParams.get("mapIdx");
   const [admin, setAdmin] = useState<boolean>(false);
+  const [gemHuntSubmitButtonText, setGemHuntSubmitButtonText] =
+    useState<string>("Submit score");
+  const [runApprovalButtonsDisabled, setRunApprovalButtonsDisabled] = useState<boolean>(false);
+  const [runApprovalButtonText, setRunApprovalButtonText] = useState<string>('Approve run');
+  const [runDenialButtonText, setRunDenialButtonText] = useState<string>('Deny run');
+  const [gemHuntModalDisabled, setGemHuntModalDisabled] =
+    useState<boolean>(false);
   const [mapIndex, setMapIndex] = useState<number>(0);
   const [selectedMap, setSelectedMap] = useState<string>(maps[1]);
   const [allMapData, setAllMapData] = useState<GemHuntMapRecord[]>([]);
@@ -334,9 +341,11 @@ export const GemHuntRecords = () => {
   ) => {
     event?.preventDefault();
     if (!mediaLink || !reportedScore) {
-      alert("Score & screenshot or YT link are required.");
+      alert("Score & screenshot/video link are required fields.");
       return;
     }
+    setGemHuntModalDisabled(true);
+    setGemHuntSubmitButtonText("Submitting...");
     try {
       const res: Response = await fetch(
         BASE_ROUTE + `/submit-gem-hunt-record/`,
@@ -356,9 +365,10 @@ export const GemHuntRecords = () => {
       );
       if (res.status === 201) {
         setSubmissionModalOpen(false);
+        setGemHuntSubmitButtonText("Submit score");
         setReportedScore(null);
         setMediaLink(null);
-        setDescription('');
+        setDescription("");
       }
       if (res.status === 403) {
         handleLogout(navigate, cookies);
@@ -369,6 +379,7 @@ export const GemHuntRecords = () => {
   };
 
   const handleVerifyAction = async (actionType: string) => {
+    setRunApprovalButtonsDisabled(true);
     try {
       const endpoint =
         actionType === "approve"
@@ -389,6 +400,9 @@ export const GemHuntRecords = () => {
       });
 
       setRunConfirmationIdx(runConfirmationIdx + 1);
+      setRunApprovalButtonText("Approve run");
+      setRunDenialButtonText("Deny run");
+      setRunApprovalButtonsDisabled(false);
       if (runConfirmationIdx >= unverifiedRuns.length - 1) {
         setVerifyRunsModalOpen(false);
         window.location.reload();
@@ -402,10 +416,12 @@ export const GemHuntRecords = () => {
   };
 
   const handleConfirmRun = () => {
+    setRunApprovalButtonText("Approving...")
     handleVerifyAction("approve");
   };
 
   const handleDenyRun = () => {
+    setRunDenialButtonText("Denying...")
     handleVerifyAction("deny");
   };
 
@@ -437,7 +453,7 @@ export const GemHuntRecords = () => {
           setSubmissionModalOpen(false);
           setMediaLink(null);
           setReportedScore(null);
-          setDescription('');
+          setDescription("");
         }}
       >
         <div className="flex flex-col items-center sm:px-16 sm:py-4 px-2 pt-4 pb-2 gap-y-4">
@@ -464,6 +480,7 @@ export const GemHuntRecords = () => {
               </label>
               <input
                 type="number"
+                disabled={gemHuntModalDisabled}
                 placeholder="999"
                 onChange={(e) =>
                   parseInt(e.target.value) > 999
@@ -478,11 +495,12 @@ export const GemHuntRecords = () => {
               htmlFor="text"
               className="block text-sm font-semibold w-full"
             >
-              Screenshot or Youtube Link:{" "}
+              Screenshot or video link:{" "}
               <span className="text-red-600"> *</span>
             </label>
             <input
               type="text"
+              disabled={gemHuntModalDisabled}
               onChange={(e) => setMediaLink(e.target.value)}
               value={mediaLink ?? ""}
               placeholder="Ex: https://i.imgur.com/BB7F6Oa.jpg"
@@ -496,6 +514,7 @@ export const GemHuntRecords = () => {
             </label>
             <input
               type="textarea"
+              disabled={gemHuntModalDisabled}
               maxLength={36}
               onChange={(e) => setDescription(e.target.value)}
               value={description ?? ""}
@@ -504,9 +523,12 @@ export const GemHuntRecords = () => {
             ></input>
             <button
               type="submit"
-              className="w-1/2 mt-2 py-1 px-1 bg-blue-500 hover:bg-blue-600 text-sm text-white font-bold rounded transition duration-200"
+              disabled={gemHuntModalDisabled}
+              className={`w-1/2 mt-2 py-1 px-1 bg-blue-500 hover:bg-blue-600 text-sm text-white font-bold rounded transition duration-200 ${
+                gemHuntModalDisabled ? "opacity-50" : ""
+              }`}
             >
-              Submit score
+              {gemHuntSubmitButtonText}
             </button>
           </form>
         </div>
@@ -517,7 +539,7 @@ export const GemHuntRecords = () => {
       >
         <div className="flex flex-col items-center sm:px-16 py-4 gap-y-4">
           <span className="sm:text-4xl text-2xl font-bold">
-            Verify Gem Hunt Record
+            Verify Gem Hunt Record - {runConfirmationIdx + 1} of {unverifiedRuns.length}
           </span>
           <span className="text-green-600 text-2xl">
             {unverifiedRuns[runConfirmationIdx]?.player} -{" "}
@@ -545,13 +567,13 @@ export const GemHuntRecords = () => {
               onClick={handleConfirmRun}
               className="w-36 h-8 mt-2 py-1 px-1 bg-blue-600 hover:bg-blue-700 text-sm text-white font-semibold rounded transition duration-200"
             >
-              Approve Run
+              {runApprovalButtonText}
             </button>
             <button
               onClick={handleDenyRun}
               className="w-36 h-8 mt-2 py-1 px-1 bg-red-600 hover:bg-red-700 text-sm text-white font-semibold rounded transition duration-200"
             >
-              Deny Run
+              {runDenialButtonText}
             </button>
           </div>
         </div>
