@@ -132,6 +132,7 @@ export const GemHuntRecords = () => {
 
   const getAllBestRunsOnMap = (mapScoreRecordData: GemHuntMapRecordScore[]) => {
     const filteredAllRecords = mapScoreRecordData
+      .filter((entry) => entry.verified !== false)
       .sort((a, b) => {
         if (b.score !== a.score) {
           return b.score - a.score;
@@ -160,6 +161,7 @@ export const GemHuntRecords = () => {
     mapScoreRecordData: GemHuntMapRecordScore[]
   ) => {
     const filteredUniqueRecords = mapScoreRecordData
+      .filter((entry: GemHuntMapRecordScore) => entry.verified !== false)
       .reduce(
         (
           accumulator: GemHuntMapRecordScore[],
@@ -213,14 +215,15 @@ export const GemHuntRecords = () => {
   };
 
   const handleOverallTabData = (mapRecordData: GemHuntMapRecord[]) => {
-    const allScoresWithMapName: GemHuntMapRecordScoreWithMap[] =
-      mapRecordData.flatMap((mapEntry: GemHuntMapRecord) =>
+    const allScoresWithMapName: GemHuntMapRecordScoreWithMap[] = mapRecordData
+      .flatMap((mapEntry: GemHuntMapRecord) =>
         mapEntry.scores.map((score: GemHuntMapRecordScore) => ({
           ...score,
           map: mapEntry.mapName,
           runRating: 5,
         }))
-      );
+      )
+      .filter((score) => score.verified !== false);
 
     const playerTotalScoreObjects: Record<string, PlayerTotalScoreObject> = {};
 
