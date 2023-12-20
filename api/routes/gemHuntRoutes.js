@@ -11,7 +11,7 @@ const { round, projectedMaxes } = require('../utils/utils')
 
 router.get('/gem-hunt-map-records/', async (req, res) => {
     try {
-        const gemHuntRecordData = await gemHuntMapRecord.find({})
+        const gemHuntRecordData = await gemHuntMapRecord.find({ 'scores.verified': true})
         res.status(200).json(gemHuntRecordData)
     } catch (err) {
         console.error(`error: ${err}`);
@@ -35,7 +35,7 @@ router.get('/gem-hunt-map-records/unverified', async (req, res) => {
         const mapsWithUnverifiedScores = await gemHuntMapRecord.find({ 'scores.verified': false })
         const allUnverifiedScores = [];
         mapsWithUnverifiedScores.forEach((mapEntry) => {
-            const unverifiedScoresSingleMap = mapEntry.scores.filter((score) => !score.verified && !score.denied);
+            const unverifiedScoresSingleMap = mapEntry.scores.filter((score) => !score.denied);
 
             unverifiedScoresSingleMap.forEach((scoreEntry) => {
                 //use toObject to avoid this being in a very strange format when returned
