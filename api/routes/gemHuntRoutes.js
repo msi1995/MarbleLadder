@@ -181,7 +181,7 @@ router.post('/deny-gem-hunt-record/', auth, async (req, res) => {
     try {
         await gemHuntMapRecord.updateOne(
             { "scores.runID": runID },
-            { $set: { "scores.$.denied": true } }
+            { $pull: { scores: { runID: runID } } }
         );
         res.status(200).send({ message: "Run updated as denied." })
     } catch (err) {
