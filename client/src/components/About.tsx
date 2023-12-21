@@ -49,8 +49,8 @@ export const About = () => {
         <span className="basis-full sm:text-lg text-sm p-4 text-white">
           MarbleLadder is a passion project built to try and support competitive
           multiplayer play. MarbleLadder is not affiliated with Marble
-          Collective in any capacity. If you find major bugs, feel free to
-          contact me on Discord at msi#8029.
+          Collective in any capacity. If you find bugs, feel free to
+          send an email to marbleladder0@gmail.com.
         </span>
       </div>
     </div>
