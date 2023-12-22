@@ -1,6 +1,7 @@
 # MarbleLadder
+
 <p align="center">
-  <img width="100" height="100" src="https://github.com/msi1995/MarbleLadder/assets/63132397/5c86f2fa-e019-4c13-8861-c5a1ac6ef9e5">
+  <img width="128" height="128" src="https://github.com/msi1995/MarbleLadder/assets/63132397/7a085b78-2f94-45c2-b808-26ad9712a896">
 </p>
 <img src="https://github.com/msi1995/MarbleLadder/assets/63132397/a558c014-1024-415c-b0e8-8bf46b65600b">
 <img src="https://github.com/msi1995/MarbleLadder/assets/63132397/de3a085d-c000-4d28-8d09-9919b880dffe">
