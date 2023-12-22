@@ -11,9 +11,9 @@ export const About = () => {
   };
   return (
     <div className="flex w-full h-screen items-center">
-      <div className="max-h-full flex flex-row flex-wrap max-w-6xl sm:p-8 p-4 mx-auto bg-black/90 rounded-md text-center justify-center">
+      <div className="max-h-full flex flex-row flex-wrap max-w-6xl sm:p-8 p-4 !pb-0 mx-auto bg-black/90 rounded-md text-center justify-center">
         <div className="w-full flex flex-row flex-wrap justify-center items-center">
-          <span className="sm:basis-1/4 sm:text-4xl text-2xl text-white pb-4"></span>
+          <span className="sm:basis-1/4 sm:text-4xl text-2xl text-white pb-4" />
           <span className="sm:basis-1/2 basis-full sm:text-4xl text-2xl text-white pb-4">
             What is MarbleLadder?
           </span>
@@ -49,9 +49,14 @@ export const About = () => {
         <span className="basis-full sm:text-lg text-sm p-4 text-white">
           MarbleLadder is a passion project built to try and support competitive
           multiplayer play. MarbleLadder is not affiliated with Marble
-          Collective in any capacity. If you find bugs, feel free to
-          send an email to marbleladder0@gmail.com.
+          Collective in any capacity. If you find bugs, feel free to send an
+          email to marbleladder0@gmail.com.
         </span>
+        <img
+          alt="Website Logo"
+          className="sm:h-36 h-8 sm:px-4"
+          src={`/main_logo.webp`}
+        ></img>
       </div>
     </div>
   );

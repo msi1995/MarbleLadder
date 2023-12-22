@@ -3,17 +3,17 @@
   "name": "Marble Ladder",
   "icons": [
     {
-      "src": "marbleladder01tsp.png",
+      "src": "main_logo_tightcrop.webp",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "marbleladder01tsp.png",
+      "src": "main_logo.webp",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "marbleladder01tsp.png",
+      "src": "main_logo.webp",
       "type": "image/png",
       "sizes": "512x512"
     }
