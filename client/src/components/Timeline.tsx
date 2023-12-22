@@ -250,7 +250,7 @@ export const Timeline = () => {
                 contentArrowStyle={{ borderRight: "7px solid  #11bdd7" }}
                 date={formatDate(entry.date)}
                 iconStyle={{ background: "rgb(0, 0, 0)", color: "#fff" }}
-                icon={<img src={`/marbleladder01tsp.webp`} />}
+                icon={<img src={`/main_logo.webp`} />}
               >
                 {content}
               </VerticalTimelineElement>

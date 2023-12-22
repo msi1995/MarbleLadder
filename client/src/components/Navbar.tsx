@@ -54,12 +54,12 @@ export const Navbar = () => {
 
   return (
     <>
-      <nav className="fixed w-full z-50 select-none px-4 sm:py-4 py-2 flex justify-between items-center bg-black opacity-100">
+      <nav className="fixed w-full z-50 select-none px-4 sm:py-0 py-2 flex justify-between items-center bg-black opacity-100">
         <NavLink to={"/"}>
           <img
             alt="Website Logo"
-            className="sm:h-16 h-8 sm:px-4 hover:scale-105 hover:cursor-pointer"
-            src={`/marbleladder01tsp.webp`}
+            className="sm:h-20 h-8 sm:px-4 hover:scale-105 hover:cursor-pointer"
+            src={`/main_logo.webp`}
           ></img>
         </NavLink>
         <div className="xl:hidden">
