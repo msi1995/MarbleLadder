@@ -150,7 +150,7 @@ router.post('/forgot-password', async (req, res) => {
         subject: 'Password Reset Request',
         html: `
           <p>Click the following link to reset your password. This link will expire in 10 minutes.</p>
-          <a href="https://marbleladder.com/reset-password?email=${email}&token=${token}">Reset Password</a>
+          <a href="https://www.marbleladder.com/reset-password?email=${email}&token=${token}">Reset Password</a>
         `,
     };
     transporter.sendMail(mailOptions, (error, info) => {
